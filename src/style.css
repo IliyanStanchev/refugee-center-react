@@ -1,0 +1,44 @@
+.show {
+    display: block;
+    transition: 800ms;
+    opacity: 1;
+}
+
+.show.active {
+    transform: translateY(100px) scale(0) rotateY(230deg);
+    opacity: 0;
+}
+
+.showPicture {
+    display: block;
+    transition: 800ms;
+    opacity: 1;
+}
+
+.showPicture.active {
+    transform: translateY(100px) scale(0) rotateY(230deg);
+    opacity: 0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #637d63;
+}
+
+.App {
+    font-family: sans-serif;
+    text-align: center;
+}
+
+.main-footer {
+    color: white;
+    background-color: rgba(34, 139, 34);
+    padding-top: 1em;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

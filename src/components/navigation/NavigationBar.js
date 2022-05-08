@@ -14,6 +14,7 @@ import DrawerComponent from "./Drawer";
 import logoImage from "../../images/safe_shelter_logo.png"
 import LoginIcon from '@mui/icons-material/Login';
 import Tooltip from '@mui/material/Tooltip';
+import styled, { css } from 'styled-components'
 
 const useStyles = makeStyles((theme) => ({
     navigationBar: {
@@ -46,6 +47,8 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: "right",
     }
 }));
+
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
 function NavigationBar({ handleLoginClick }) {
     const classes = useStyles();

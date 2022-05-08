@@ -96,20 +96,19 @@ export default class ForgotPasswordComponent extends React.Component {
                         marginTop: 22,
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ ml: 25, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
+                    <Typography component="h1" variant="h5" sx={{ ml: 17 }}>
                         Forgot password
                     </Typography>
                     <Box sx={{ mt: 3, mb: 3 }}>
                         {errorMessage && <p style={{ color: "red" }} >{errorMessage}</p>}
                         {successMessage && <p style={{ color: "#228B22" }} >{successMessage}</p>}
                         <TextValidator
-                            sx={{ width: 300, mt: 3, mb: 3 }}
+                            sx={{ ml: 10, width: 300, mt: 3, mb: 3 }}
                             label="Email"
                             onChange={this.handleChange}
                             name="email"
@@ -118,16 +117,22 @@ export default class ForgotPasswordComponent extends React.Component {
                             validators={['required', 'isEmail']}
                             errorMessages={['Enter email', 'Wrong email format']}
                         />
-                        <Reaptcha
-                            sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
-                            onVerify={this.onVerify}
-                            reset />
+                        <div style={{
+                            display: 'flex',
+                            marginLeft: 80
+                        }}>
+                            <Reaptcha
+                                sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
+                                onVerify={this.onVerify}
+                                reset />
+                        </div>
+
                         {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
                         <Button
                             type="submit"
-                            fullWidth
+
                             variant="contained"
-                            sx={{ mt: 5, mb: 3 }}
+                            sx={{ width: 300, ml: 10, mt: 5, mb: 3 }}
                         >
                             Send new password
                         </Button>

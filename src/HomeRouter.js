@@ -31,12 +31,15 @@ export default function HomeRouter() {
       <div className="page-container">
         <div className="content-wrap">
           <NavigationBar handleLoginClick={handleLoginClick} />
-          <Grid container component="main" sx={{ height: '100vh' }}>
+          <Grid container
+            justifyContent="center"
+            style={{ minHeight: '100vh' }}>
             <CssBaseline />
             <Grid item
+              alignContent="center"
               xs={9}
               sx={{
-                backgroundImage: 'url(https://source.unsplash.com/random)',
+                backgroundImage: 'url(https://img.huffingtonpost.com/asset/5d0179702500004e12df2b4e.jpeg?ops=1778_1000)',
                 backgroundRepeat: 'no-repeat',
                 backgroundColor: (t) =>
                   t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -52,8 +55,8 @@ export default function HomeRouter() {
                 <Route path="/contact" element={<Contact />} />
               </Routes>
             </Grid>
-
-            <Grid item xs={3} component={Paper} elevation={6} square>
+            <Grid item xs={3} component={Paper} elevation={6}
+              justifyContent="center" >
               <Routes>
                 <Route path="/forgot-password" element={!isLoginShown ? (<LoginComponent />) : <ForgotPasswordComponent />} />
                 <Route path="/" element={isLoginShown ? (<LoginComponent />) : (<div>Hello</div>)} />
@@ -63,7 +66,6 @@ export default function HomeRouter() {
                 <Route path="/donate" element={isLoginShown ? (<LoginComponent />) : (<div>Hello</div>)} />
                 <Route path="/contact" element={isLoginShown ? (<LoginComponent />) : (<div>Hello</div>)} />
               </Routes>
-
             </Grid>
           </Grid>
         </div>

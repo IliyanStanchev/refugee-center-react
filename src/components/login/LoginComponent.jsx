@@ -13,6 +13,9 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import validator from 'validator';
 import Tooltip from '@mui/material/Tooltip';
 import env from "react-dotenv";
+import {
+    makeStyles,
+} from "@material-ui/core";
 
 const ADMINISTRATOR = env.ADMINISTRATOR;
 const MODERATOR = env.MODERATOR;
@@ -107,22 +110,23 @@ export default function LoginComponent() {
             <CssBaseline />
             <Box
                 sx={{
+
                     marginTop: 8,
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
+                    justifyContent: 'center',
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                <Avatar sx={{ bgcolor: 'secondary.main', ml: 25 }}>
                     <LockOutlinedIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h5" sx={{ ml: 24 }}>
                     Login
                 </Typography>
                 <Box sx={{ mt: 2, mb: 2 }}>
                     {loginMessage && <p style={{ color: "red" }} >{loginMessage}</p>}
                     <TextValidator
-                        sx={{ width: 300, mt: 2, mb: 2 }}
+                        sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }}
                         label="Email"
                         onChange={handleEmailChange}
                         name="email"
@@ -132,7 +136,7 @@ export default function LoginComponent() {
                         errorMessages={['Enter email', 'Wrong email format']}
                     />
                     <TextValidator
-                        sx={{ width: 300, mt: 2, mb: 2 }}
+                        sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }}
                         label="Password"
                         onChange={handlePasswordChange}
                         name="password"
@@ -142,27 +146,34 @@ export default function LoginComponent() {
                         validators={['required', 'minStringLength:3']}
                         errorMessages={['Enter password', 'Password must be at least 3 characters long']}
                     />
-                    <Reaptcha
-                        sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
-                        onVerify={handleOnVerify} />
+                    <div style={{
+                        display: 'flex',
+                        marginLeft: 80,
+
+                    }}>
+                        <Reaptcha
+                            sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
+                            onVerify={handleOnVerify}
+                        />
+                    </div>
+
+
                     {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
                     <Button
                         type="submit"
-                        fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-
+                        sx={{ width: 300, ml: 10, mt: 3, mb: 2 }}
                     >
                         Login
                     </Button>
-                    <Grid container sx={{ mt: 1, mb: 2 }} >
+                    <Grid container sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }} >
                         <Grid item xs>
                             <Link to="/forgot-password" variant="body2">
                                 Forgot password
                             </Link>
                         </Grid>
                     </Grid>
-                    <Grid container>
+                    <Grid container sx={{ width: 300, ml: 10, mt: 2, mb: 2, mr: 10 }}>
                         <Grid item>
                             <Tooltip title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
                                 <p variant="body2">

@@ -1,17 +1,31 @@
 import React from "react";
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import HomeRouter from "./HomeRouter";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AdminComponent from "./components/admin/AdminComponent";
+import Admin from "./components/administration/Admin";
+import { ReactSession } from 'react-client-session';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { lightGreen } from '@mui/material/colors';
 
 export default function App() {
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: lightGreen[800],
+      },
+    },
+  });
+
+  ReactSession.setStoreType("localStorage");
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/admin" element={<AdminComponent />} />
-        <Route path="/*" element={<HomeRouter />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/*" element={<HomeRouter />} />
+          <Route path="/admin/*" element={<Admin />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }

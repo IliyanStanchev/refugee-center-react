@@ -12,14 +12,14 @@ import Reaptcha from 'reaptcha';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import validator from 'validator';
 import Tooltip from '@mui/material/Tooltip';
-import env from "react-dotenv";
-import {
-    makeStyles,
-} from "@material-ui/core";
+import { ReactSession } from 'react-client-session';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+import MyTheme from '../../controls/MyTheme';
+import lightGreen from '@mui/material/colors/lightGreen';
 
-const ADMINISTRATOR = env.ADMINISTRATOR;
-const MODERATOR = env.MODERATOR;
-const CUSTOMER = env.CUSTOMER;
+const ADMINISTRATOR = process.env.REACT_APP_ADMINISTRATOR;
+const MODERATOR = process.env.REACT_APP_MODERATOR;
+const CUSTOMER = process.env.REACT_APP_CUSTOMER;
 
 export default function LoginComponent() {
 
@@ -88,11 +88,13 @@ export default function LoginComponent() {
         if (id == null)
             return;
 
+        ReactSession.set('id', id);
+
         if (role.roleType == ADMINISTRATOR)
-            navigate('/admin', { state: { id: id } });
+            navigate('/admin');
 
         if (role.roleType == MODERATOR)
-            navigate('/admin', { state: { id: id } });
+            navigate('/admin');
 
         if (role.roleType == CUSTOMER)
             navigate('/admin');
@@ -102,88 +104,84 @@ export default function LoginComponent() {
 
 
     return (
-        <ValidatorForm
-            noValidate={true}
-            onSubmit={handleSubmit}
+        <ThemeProvider theme={MyTheme}>
+            <ValidatorForm
+                noValidate={true}
+                onSubmit={handleSubmit}
 
-        >
-            <CssBaseline />
-            <Box
-                sx={{
-
-                    marginTop: 8,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                }}
             >
-                <Avatar sx={{ bgcolor: 'secondary.main', ml: 25 }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5" sx={{ ml: 24 }}>
-                    Login
-                </Typography>
-                <Box sx={{ mt: 2, mb: 2 }}>
-                    {loginMessage && <p style={{ color: "red" }} >{loginMessage}</p>}
-                    <TextValidator
-                        sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }}
-                        label="Email"
-                        onChange={handleEmailChange}
-                        name="email"
-                        value={email}
-                        required
-                        validators={['required', 'isEmail']}
-                        errorMessages={['Enter email', 'Wrong email format']}
-                    />
-                    <TextValidator
-                        sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }}
-                        label="Password"
-                        onChange={handlePasswordChange}
-                        name="password"
-                        type="password"
-                        value={password}
-                        required
-                        validators={['required', 'minStringLength:3']}
-                        errorMessages={['Enter password', 'Password must be at least 3 characters long']}
-                    />
-                    <div style={{
-                        display: 'flex',
-                        marginLeft: 80,
-
-                    }}>
-                        <Reaptcha
-                            sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
-                            onVerify={handleOnVerify}
-                        />
+                <CssBaseline />
+                <Box container
+                    sx={{
+                        alignItems: 'center',
+                        textAlign: 'center',
+                        marginTop: 8,
+                    }}
+                >
+                    <div style={{ display: 'flex', justifyContent: 'center' }} >
+                        <Avatar sx={{ bgcolor: lightGreen[800] }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
                     </div>
-
-
-                    {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{ width: 300, ml: 10, mt: 3, mb: 2 }}
-                    >
+                    <Typography component="h1" variant="h5" >
                         Login
-                    </Button>
-                    <Grid container sx={{ width: 300, ml: 10, mt: 1, mb: 2, mr: 10 }} >
-                        <Grid item xs>
-                            <Link to="/forgot-password" variant="body2">
-                                Forgot password
-                            </Link>
+                    </Typography>
+                    <Box sx={{ mt: 2, mb: 2 }}>
+                        {loginMessage && <p style={{ color: "red" }} >{loginMessage}</p>}
+                        <TextValidator
+                            sx={{ width: 300, mt: 1, mb: 2 }}
+                            label="Email"
+                            onChange={handleEmailChange}
+                            name="email"
+                            value={email}
+                            required
+                            validators={['required', 'isEmail']}
+                            errorMessages={['Enter email', 'Wrong email format']}
+                        />
+                        <TextValidator
+                            sx={{ width: 300, mt: 1, mb: 2 }}
+                            label="Password"
+                            onChange={handlePasswordChange}
+                            name="password"
+                            type="password"
+                            value={password}
+                            required
+                            validators={['required', 'minStringLength:3']}
+                            errorMessages={['Enter password', 'Password must be at least 3 characters long']}
+                        />
+                        <div style={{ display: 'flex', justifyContent: 'center' }} >
+                            <Reaptcha
+                                sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
+                                onVerify={handleOnVerify}
+                            />
+                        </div>
+                        {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            sx={{ width: 300, mt: 3, mb: 2 }}
+                        >
+                            Login
+                        </Button>
+                        <Grid container sx={{ mt: 1, mb: 2 }} >
+                            <Grid item xs>
+                                <Link to="/forgot-password" variant="body2">
+                                    Forgot password
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid container sx={{ width: 300, ml: 10, mt: 2, mb: 2, mr: 10 }}>
-                        <Grid item>
-                            <Tooltip title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
-                                <p variant="body2">
-                                    {"I am a refugee"}
-                                </p>
-                            </Tooltip>
+                        <Grid container sx={{ mt: 2, mb: 2 }}>
+                            <Grid item xs>
+                                <Tooltip title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
+                                    <p variant="body2">
+                                        {"I am a refugee"}
+                                    </p>
+                                </Tooltip>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
-            </Box>
-        </ValidatorForm >
+            </ValidatorForm >
+        </ThemeProvider>
     );
 }

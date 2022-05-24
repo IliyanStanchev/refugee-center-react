@@ -86,7 +86,7 @@ export default function DonateMoney() {
             <Card   >
                 <PayPalScriptProvider
                     options={{
-                        "client-id": env.CLIENT_ID,
+                        "client-id": process.env.REACT_APP_CLIENT_ID,
                     }}
                 >
                     <FormControl sx={{ mt: 5 }}>

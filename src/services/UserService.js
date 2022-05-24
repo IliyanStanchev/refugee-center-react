@@ -1,6 +1,5 @@
 import axios from 'axios'
-import env from "react-dotenv";
-const API_URL = env.API_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 class UserService {
 
@@ -11,6 +10,18 @@ class UserService {
 
     sendNewPassword(user) {
         return axios.post(`${API_URL}/forgot-password`, user);
+    }
+
+    createEmployee(user) {
+        return axios.post(`${API_URL}/create-employee`, user);
+    }
+
+    createRefugee(refugee) {
+        return axios.post(`${API_URL}/create-refugee`, refugee);
+    }
+
+    validateUserCreation(user) {
+        return axios.post(`${API_URL}/validate-user-creation`, user);
     }
 
     retrieveAllUsers() {

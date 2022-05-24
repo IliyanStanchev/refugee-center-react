@@ -9,6 +9,10 @@ import Typography from '@mui/material/Typography';
 import Reaptcha from 'reaptcha';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import validator from 'validator';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { lightGreen } from '@mui/material/colors';
+import MyTheme from '../../controls/MyTheme';
+
 
 export default class ForgotPasswordComponent extends React.Component {
 
@@ -84,61 +88,61 @@ export default class ForgotPasswordComponent extends React.Component {
     render() {
         const { user, errorMessage, successMessage, reCaptchaMessage } = this.state;
         return (
-            <ValidatorForm
-                ref="form"
-                noValidate={true}
-                onSubmit={this.handleSubmit}
+            <ThemeProvider theme={MyTheme}>
+                <ValidatorForm
+                    noValidate={true}
+                    onSubmit={this.handleSubmit}
 
-            >
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 22,
-                        display: 'flex',
-                        flexDirection: 'column',
-                    }}
                 >
-                    <Avatar sx={{ ml: 25, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5" sx={{ ml: 17 }}>
-                        Forgot password
-                    </Typography>
-                    <Box sx={{ mt: 3, mb: 3 }}>
-                        {errorMessage && <p style={{ color: "red" }} >{errorMessage}</p>}
-                        {successMessage && <p style={{ color: "#228B22" }} >{successMessage}</p>}
-                        <TextValidator
-                            sx={{ ml: 10, width: 300, mt: 3, mb: 3 }}
-                            label="Email"
-                            onChange={this.handleChange}
-                            name="email"
-                            value={user.email}
-                            required
-                            validators={['required', 'isEmail']}
-                            errorMessages={['Enter email', 'Wrong email format']}
-                        />
-                        <div style={{
+                    <CssBaseline />
+                    <Box
+                        sx={{
+                            marginTop: 22,
                             display: 'flex',
-                            marginLeft: 80
-                        }}>
-                            <Reaptcha
-                                sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
-                                onVerify={this.onVerify}
-                                reset />
+                            flexDirection: 'column',
+                            textAlign: 'center',
+                        }}
+                    >
+                        <div style={{ display: 'flex', justifyContent: 'center' }} >
+                            <Avatar sx={{ bgcolor: lightGreen[800] }}>
+                                <LockOutlinedIcon />
+                            </Avatar>
                         </div>
+                        <Typography component="h1" variant="h5">
+                            Forgot password
+                        </Typography>
+                        <Box sx={{ mt: 3, mb: 3 }}>
+                            {errorMessage && <p style={{ color: "red" }} >{errorMessage}</p>}
+                            {successMessage && <p style={{ color: lightGreen[800] }}>{successMessage}</p>}
+                            <TextValidator
+                                sx={{ width: 300, mt: 3, mb: 3 }}
+                                label="Email"
+                                onChange={this.handleChange}
+                                name="email"
+                                value={user.email}
+                                required
+                                validators={['required', 'isEmail']}
+                                errorMessages={['Enter email', 'Wrong email format']}
+                            />
+                            <div style={{ display: 'flex', justifyContent: 'center' }} >
+                                <Reaptcha
+                                    sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
+                                    onVerify={this.onVerify}
+                                    reset />
+                            </div>
+                            {reCaptchaMessage && <p style={{ textAlign: 'center', color: "red" }} >{reCaptchaMessage}</p>}
+                            <Button
+                                type="submit"
 
-                        {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
-                        <Button
-                            type="submit"
-
-                            variant="contained"
-                            sx={{ width: 300, ml: 10, mt: 5, mb: 3 }}
-                        >
-                            Send new password
-                        </Button>
+                                variant="contained"
+                                sx={{ width: 300, mt: 5, mb: 3 }}
+                            >
+                                Send new password
+                            </Button>
+                        </Box>
                     </Box>
-                </Box>
-            </ValidatorForm >
+                </ValidatorForm >
+            </ThemeProvider>
         );
     }
 }

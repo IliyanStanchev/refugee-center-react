@@ -24,33 +24,8 @@ class UserService {
         return axios.post(`${API_URL}/validate-user-creation`, user);
     }
 
-    retrieveAllUsers() {
-        //console.log('executed service')
-        return axios.get(`${API_URL}/users`);
-    }
-
-    retrieveAdmin() {
-        return axios.post(`${API_URL}/admin/profile`)
-    }
-
-    retrieveUser(id) {
-        //console.log('executed service')
-        return axios.get(`${API_URL}/users/${id}`);
-    }
-
-    deleteUser(id) {
-        //console.log('executed service')
-        return axios.delete(`${API_URL}/users/${id}`);
-    }
-
-    updateUser(id, user) {
-        //console.log('executed service')
-        return axios.put(`${API_URL}/users/${id}`, user);
-    }
-
-    createUser(user) {
-        //console.log('executed service')
-        return axios.post(`${API_URL}/login`, user);
+    getPengingRegistrations() {
+        return axios.get(`${API_URL}/get-pending-registrations`);
     }
 }
 

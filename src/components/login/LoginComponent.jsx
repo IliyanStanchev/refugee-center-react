@@ -73,14 +73,35 @@ export default function LoginComponent() {
         }
 
         UserService.authenticateUser(user)
-            .then(response => loginUser(
-                response.data.id,
-                response.data.role,
-            ))
-            .catch(setLoginMessage('Wrong username or password.'));
+            .then(response => handleResponse(response))
+            .catch(error => handleError(error.response));
 
         setIsVerified(false);
         window.grecaptcha.reset();
+    }
+
+    const handleResponse = (response) => {
+
+        if (response.status == process.env.REACT_APP_HTTP_STATUS_OK) {
+
+            loginUser(response.data.id, response.data.role);
+        }
+        else {
+            handleError(response);
+        }
+    }
+
+    const handleError = (response) => {
+
+        if (response.status == process.env.REACT_APP_HTTP_STATUS_INTERNAL_SERVER_ERROR) {
+            setLoginMessage("Something went wrong. Please try again later");
+        }
+        else if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
+            setLoginMessage(response.data);
+        }
+        else {
+            setLoginMessage("Something went wrong. Please try again later");
+        }
     }
 
     const loginUser = (id, role) => {

@@ -18,6 +18,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import InfoIcon from '@mui/icons-material/Info';
+import FacilityInfo from "../FacilityInfo";
 
 const MIN_AGE = 1
 const MAX_AGE = 99
@@ -430,93 +431,12 @@ const PersonalData = (props) => {
                     )}
                 />
                 <Dialog open={open} onClose={() => toggleOpen(false)}>
-                    <Box sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        m: 'auto',
-                        width: 'fit-content',
-                    }}>
-                        <DialogTitle> Shelter Data</DialogTitle>
-                        <DialogContent>
-                            <TextField
-
-                                fullWidth
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.facilityType}
-
-                                label="Facility type"
-                                type="text"
-                                variant="outlined"
-                            />
-                            <Divider sx={{ mt: 2, mb: 2 }} />
-                            <TextField
-                                sx={{ mr: 13 }}
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.address.countryIsoCode}
-
-                                label="Country"
-                                type="text"
-                                variant="outlined"
-                            />
-                            <TextField
-
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.address.cityName}
-
-                                label="City"
-                                type="text"
-                                variant="outlined"
-                            />
-                            <TextField
-
-                                fullWidth
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.address.address}
-
-                                label="Address"
-                                type="text"
-                                variant="outlined"
-                            />
-                            <Divider sx={{ mt: 2, mb: 2 }} />
-                            <TextField
-
-                                fullWidth
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.responsibleUser.firstName + ' ' + dialogFacility.option.responsibleUser.lastName}
-
-                                label="Responsible person"
-                                type="text"
-                                variant="outlined"
-                            />
-                            <TextField
-
-                                fullWidth
-                                autoFocus
-                                margin="dense"
-                                id="name"
-                                value={dialogFacility && dialogFacility.option.responsibleUser.email}
-
-                                label="Contact"
-                                type="text"
-                                variant="outlined"
-                            />
-                        </DialogContent>
-                        <DialogActions>
-                            <Button variant="contained" onClick={() => toggleOpen(false)}>Ok</Button>
-                        </DialogActions>
-                    </Box>
+                    <FacilityInfo facility={dialogFacility} />
+                    <DialogActions>
+                        <Button variant="contained" onClick={() => toggleOpen(false)}>Ok</Button>
+                    </DialogActions>
                 </Dialog>
-            </Box>
+            </Box >
         </ThemeProvider >
     );
 }

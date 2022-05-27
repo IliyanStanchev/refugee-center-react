@@ -24,8 +24,8 @@ class UserService {
         return axios.post(`${API_URL}/validate-user-creation`, user);
     }
 
-    getPengingRegistrations() {
-        return axios.get(`${API_URL}/get-pending-registrations`);
+    getResponsibleUsers() {
+        return axios.get(`${API_URL}/get-responsible-users`);
     }
 }
 

@@ -15,20 +15,16 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { visuallyHidden } from '@mui/utils';
 import { Button, Grid, LinearProgress, Link } from "@mui/material";
-import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
 import GroupService from "../../services/GroupService";
 import UserInfo from './UserInfo';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import GroupDialog from './GroupDialog';
 import { ThemeProvider } from "@material-ui/styles";
-import MyTheme from './../../controls/MyTheme';
+import MyTheme from '../../controls/MyTheme';
 import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import SelectUserDialog from "./SelectUserDialog";
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -60,28 +56,22 @@ function getComparator(order, orderBy) {
 
 const headCells = [
     {
-        id: 'responsibleUser',
-        numeric: false,
-        disablePadding: false,
-        label: 'Responsible Person',
-    },
-    {
         id: 'email',
         numeric: false,
         disablePadding: false,
-        label: 'Group Email',
+        label: 'Email',
     },
     {
-        id: 'groupType',
+        id: 'name',
         numeric: false,
         disablePadding: false,
-        label: 'Group Type',
+        label: 'Name',
     },
     {
-        id: 'creationDate',
+        id: 'role',
         numeric: false,
         disablePadding: false,
-        label: 'Creation Date',
+        label: 'Role',
     },
     {
         id: 'actions',
@@ -137,7 +127,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, loading } = props;
+    const { onActionPerformed, errorMessage, successMessage } = props;
 
     return (
         <Toolbar
@@ -152,22 +142,12 @@ const EnhancedTableToolbar = (props) => {
                 id="tableTitle"
                 component="div"
             >
-                Groups
+                Group users
+                {<p style={{ color: "red" }} >{errorMessage}</p>}
+                {<p style={{ color: "green" }} >{successMessage}</p>}
             </Typography>
-            {loading && (
-                <CircularProgress
-                    size={60}
-                    sx={{
-                        color: green[500],
-                        position: 'center',
-                        top: -6,
-                        left: -6,
-                        zIndex: 1,
-                    }}
-                />
-            )}
-            {<p style={{ color: "red" }} >{errorMessage}</p>}
-            <Tooltip title="Add new group">
+
+            <Tooltip title="Add user to group">
                 <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
             </Tooltip>
         </Toolbar >
@@ -177,10 +157,14 @@ const EnhancedTableToolbar = (props) => {
 EnhancedTableToolbar.propTypes = {
     onActionPerformed: PropTypes.func.isRequired,
     errorMessage: PropTypes.string.isRequired,
-    loading: PropTypes.bool.isRequired,
+    successMessage: PropTypes.string.isRequired,
 };
 
-const Groups = () => {
+const GroupUsersTable = (props) => {
+
+    const group = props.group;
+
+    const [newGroup, setNewGroup] = useState(group.id == 0 ? true : false);
 
     const id = ReactSession.get('id');
 
@@ -191,46 +175,62 @@ const Groups = () => {
             navigate('/');
     });
 
-    const getGroups = async () => {
+    const getGroupUsers = async () => {
         try {
 
-            GroupService.getAllGroups()
+            GroupService.getGroupUsers(group.id)
                 .then(
                     response => {
-                        setGroups(response.data);
+                        setUsers(response.data);
                     }
                 )
 
         } catch (error) {
-            setGroups([]);
+            setUsers([]);
         }
     };
 
     useEffect(() => {
-        getGroups();
+        getGroupUsers();
+    }, []);
+
+    const getUsersForAdding = async () => {
+        try {
+
+            GroupService.getUsersForAdding(group)
+                .then(
+                    response => {
+                        let extractedUsers = response.data?.map(({ user }) => ({
+                            user
+                        }));
+                        setUsersForAdding(extractedUsers);
+                    }
+                )
+
+        } catch (error) {
+            setUsersForAdding([]);
+        }
+    };
+
+    useEffect(() => {
+        getUsersForAdding();
     }, []);
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [groups, setGroups] = React.useState([]);
+    const [users, setUsers] = React.useState([]);
+    const [usersForAdding, setUsersForAdding] = React.useState([]);
+    const [userForAdding, setUserForAdding] = React.useState(null);
 
-    const [openGroupDialog, setOpenGroupDialog] = React.useState(false);
-    const [selectedGroup, setSelectedGroup] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
+    const [successMessage, setSuccessMessage] = React.useState('');
 
     const [selectedUser, setSelectedUser] = React.useState(null);
     const [openUserDialog, setOpenUserDialog] = React.useState(false);
-
-    const [newGroup, setNewGroup] = React.useState({
-        id: 0,
-        email: '@safe_shelter.com'
-        , groupType: 'COMMON'
-        , responsibleUser: null
-        , groupUsers: []
-    });
+    const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -249,52 +249,72 @@ const Groups = () => {
 
     const handleActionPerformed = () => {
 
-        setSelectedGroup(newGroup);
-        setOpenGroupDialog(true);
+        setOpenAddUserDialog(true);
     };
 
     const handleGroupActionPerformed = () => {
-
-        getGroups();
-        setOpenGroupDialog(false);
+        getGroupUsers();
     };
 
     const handleUserActionPerformed = () => {
         setOpenUserDialog(false);
     };
 
-    const handleOpenUserDialog = (user) => {
-
-        setSelectedUser(user);
-        setOpenUserDialog(true);
-    };
-
-    const handleDeleteGroup = (group) => {
+    const handleAddUserActionPerformed = (user) => {
 
         setLoading(true);
-        setErrorMessage('');
-        GroupService.deleteGroup(group.id)
-            .then(
-                response => {
-                    getGroups();
-                    setLoading(false);
-                }
-            )
-            .catch(error => {
-                setLoading(false);
-                setErrorMessage(error.data);
-            });
+
+        let userGroup = {
+            user: user,
+            group: group,
+        }
+
+        GroupService.addUserToGroup(userGroup)
+            .then((response) => { actionsAfterResponse(response); })
+            .catch((error) => { actionsAfterResponse(error.response); });
+
+    }
+
+    const handleRemoveUserFromGroup = (user) => {
+
+        setLoading(true);
+
+        let userGroup = {
+            user: user,
+            group: group,
+        }
+
+        GroupService.removeUserFromGroup(userGroup)
+            .then((response) => { actionsAfterResponse(response); })
+            .catch((error) => { actionsAfterResponse(error.response); });
+    }
+
+    const actionsAfterResponse = (response) => {
+
+        if (response.status === process.env.REACT_APP_HTTP_STATUS_OK) {
+            setSuccessMessage("Action processed successfully!")
+        }
+
+        if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR
+            || response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
+            setErrorMessage(response.data);
+        }
+
+        getGroupUsers();
+        getUsersForAdding();
+        setOpenAddUserDialog(false);
+        setLoading(false);
     };
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - groups.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
     return (
         <ThemeProvider theme={MyTheme}>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '80%' }}>
+                <Box sx={{ width: '100%' }}>
                     <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} successMessage={successMessage} loading={loading} />
                         <TableContainer>
                             <Table
                                 sx={{ minWidth: 750 }}
@@ -305,10 +325,10 @@ const Groups = () => {
                                     order={order}
                                     orderBy={orderBy}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={groups.length}
+                                    rowCount={users.length}
                                 />
                                 <TableBody>
-                                    {stableSort(groups, getComparator(order, orderBy))
+                                    {stableSort(users, getComparator(order, orderBy))
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, index) => {
 
@@ -320,27 +340,13 @@ const Groups = () => {
                                                     tabIndex={-1}
                                                     key={row.id}
                                                 >
-                                                    <TableCell>
-                                                        <Link component="button" onClick={() => { handleOpenUserDialog(row.responsibleUser) }} underline="hover">
-                                                            {row.responsibleUser.name}
+                                                    <TableCell> {row.email}</TableCell>
+                                                    <TableCell >{row.name}</TableCell>
+                                                    <TableCell >{row.role.roleType}</TableCell>
+                                                    <TableCell ><Button onClick={() => {
+                                                        handleRemoveUserFromGroup(row);
 
-                                                        </Link>
-                                                    </TableCell>
-                                                    <TableCell >{row.email}</TableCell>
-                                                    <TableCell >{row.groupType}</TableCell>
-                                                    <TableCell >{new Date(row.creationDate).toLocaleDateString("en-US", options)}</TableCell>
-                                                    <TableCell >
-                                                        <Tooltip title="Edit group">
-                                                            <Button onClick={() => {
-                                                                setSelectedGroup(row);
-                                                                setOpenGroupDialog(true);
-                                                            }}> <EditIcon /> </Button>
-                                                        </Tooltip>
-                                                        <Tooltip title="Remove group">
-                                                            <Button onClick={() => {
-                                                                handleDeleteGroup(row);
-                                                            }}> <DeleteIcon /> </Button>
-                                                        </Tooltip></TableCell>
+                                                    }}> <DeleteIcon /> </Button></TableCell>
                                                 </TableRow>
                                             );
                                         })}
@@ -359,19 +365,18 @@ const Groups = () => {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={groups.length}
+                            count={users.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                         <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
-                        <GroupDialog selectedGroup={selectedGroup} open={openGroupDialog} onActionPerformed={handleGroupActionPerformed} />
                     </Paper>
+                    <SelectUserDialog loading={loading} parentUser={userForAdding} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
                 </Box>
             </div >
-        </ThemeProvider>
-    );
+        </ThemeProvider>)
 }
 
-export default Groups;
+export default GroupUsersTable;

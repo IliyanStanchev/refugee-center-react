@@ -3,6 +3,10 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 class RefugeeService {
 
+    getPengingRegistrations() {
+        return axios.get(`${API_URL}/get-pending-registrations`);
+    }
+
     approvePendingRegistrations(pendingRegistrations) {
         return axios.post(`${API_URL}/approve-pending-registrations`, pendingRegistrations);
     }

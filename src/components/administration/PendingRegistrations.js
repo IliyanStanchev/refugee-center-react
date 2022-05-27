@@ -31,7 +31,6 @@ import PendingRegistrationInfo from './PendingRegistrationInfo';
 import RefugeeService from "../../services/RefugeeService";
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
-import { display } from "@mui/system";
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -282,7 +281,7 @@ const PendingRegistrations = () => {
     const getPendingRegistrations = async () => {
         try {
 
-            UserService.getPengingRegistrations()
+            RefugeeService.getPengingRegistrations()
                 .then(
                     response => {
                         setPendingRegistrations(response.data);

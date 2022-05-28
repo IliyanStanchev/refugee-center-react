@@ -19,6 +19,7 @@ import { lightGreen } from '@mui/material/colors';
 const AdminNavigationBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const [pageTitle, setPageTitle] = React.useState('');
 
     const navigate = useNavigate();
 
@@ -39,30 +40,37 @@ const AdminNavigationBar = () => {
 
     const handleRegisterUser = () => {
         navigate('/admin/registration');
+        setPageTitle('Register User');
     };
 
     const handleConfirmRegistrations = () => {
         navigate('/admin/confirm-registrations');
+        setPageTitle('Confirm Registrations');
     };
     const handleGroups = () => {
         navigate('/admin/groups');
+        setPageTitle('Groups');
     };
 
     const handleMessages = () => {
         navigate('/admin/messages');
+        setPageTitle('Messages');
     };
 
     const handleFacilities = () => {
         navigate('/admin/facilities');
+        setPageTitle('Facilities');
     };
 
     const handleDonations = () => {
         navigate('/admin/donations');
+        setPageTitle('Donations');
     };
 
     const handleProfile = () => {
         setAnchorElUser(null);
         navigate('/admin/profile');
+        setPageTitle('Profile');
     };
 
     const handleLogout = () => {
@@ -71,153 +79,174 @@ const AdminNavigationBar = () => {
     };
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: lightGreen[800] }}>
-            <Container maxWidth="x1">
-                <Toolbar disableGutters>
-                    <Typography
-                        variant="h6"
-                        noWrap
-                        component="a"
+        <div>
+            <AppBar position="static" sx={{ backgroundColor: lightGreen[800] }}>
+                <Container maxWidth="x1">
+                    <Toolbar disableGutters>
+                        <Typography
+                            variant="h6"
+                            noWrap
+                            component="a"
 
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        <img src={logoImage} style={{
-                            width: 120,
-                            height: 60,
-                        }} />
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleOpenNavMenu}
-                            color="inherit"
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorElNav}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'left',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left',
-                            }}
-                            open={Boolean(anchorElNav)}
-                            onClose={handleCloseNavMenu}
                             sx={{
-                                display: { xs: 'block', md: 'none' },
+                                mr: 2,
+                                display: { xs: 'none', md: 'flex' },
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
                             }}
                         >
-                            <MenuItem onClick={handleRegisterUser}> Register User </MenuItem>
-                            <MenuItem onClick={handleConfirmRegistrations}> Confirm Registrations </MenuItem>
-                            <MenuItem onClick={handleGroups}> Groups </MenuItem>
-                            <MenuItem onClick={handleMessages}> Messages </MenuItem>
-                            <MenuItem onClick={handleFacilities}> Facilities </MenuItem>
-                            <MenuItem onClick={handleDonations}> Donations </MenuItem>
-                        </Menu>
-                    </Box>
-                    <Typography
-                        variant="h5"
-                        noWrap
-                        sx={{
-                            mr: 2,
-                            display: { xs: 'flex', md: 'none' },
-                            flexGrow: 1,
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
-                            color: 'inherit',
-                            textDecoration: 'none',
-                        }}
-                    >
-                        <img src={logoImage} style={{
-                            width: 120,
-                            height: 60,
-                        }} />
-                    </Typography>
-                    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button
-                            onClick={handleRegisterUser}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Register user
-                        </Button>
-                        <Button
-                            onClick={handleConfirmRegistrations}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Confirm registrations
-                        </Button>
-                        <Button
-                            onClick={handleGroups}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Groups
-                        </Button>
-                        <Button
-                            onClick={handleMessages}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Messages
-                        </Button>
-                        <Button
-                            onClick={handleFacilities}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Facilities
-                        </Button>
-                        <Button
-                            onClick={handleDonations}
-                            sx={{ my: 2, color: 'white', display: 'block' }}
-                        >
-                            Donations
-                        </Button>
-                    </Box>
-
-                    <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar />
+                            <img src={logoImage} style={{
+                                width: 120,
+                                height: 60,
+                            }} />
+                        </Typography>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                            <IconButton
+                                size="large"
+                                aria-label="account of current user"
+                                aria-controls="menu-appbar"
+                                aria-haspopup="true"
+                                onClick={handleOpenNavMenu}
+                                color="inherit"
+                            >
+                                <MenuIcon />
                             </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
+                            <Menu
+                                id="menu-appbar"
+                                anchorEl={anchorElNav}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                                open={Boolean(anchorElNav)}
+                                onClose={handleCloseNavMenu}
+                                sx={{
+                                    display: { xs: 'block', md: 'none' },
+                                }}
+                            >
+                                <MenuItem onClick={handleRegisterUser}> Register User </MenuItem>
+                                <MenuItem onClick={handleConfirmRegistrations}> Confirm Registrations </MenuItem>
+                                <MenuItem onClick={handleGroups}> Groups </MenuItem>
+                                <MenuItem onClick={handleMessages}> Messages </MenuItem>
+                                <MenuItem onClick={handleFacilities}> Facilities </MenuItem>
+                                <MenuItem onClick={handleDonations}> Donations </MenuItem>
+                            </Menu>
+                        </Box>
+                        <Typography
+                            variant="h5"
+                            noWrap
+                            sx={{
+                                mr: 2,
+                                display: { xs: 'flex', md: 'none' },
+                                flexGrow: 1,
+                                fontFamily: 'monospace',
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
                             }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
                         >
-                            <MenuItem onClick={handleProfile}> Profile </MenuItem>
-                            <MenuItem onClick={handleLogout}> Logout </MenuItem>
-                        </Menu>
-                    </Box>
-                </Toolbar>
-            </Container>
-        </AppBar >
+                            <img src={logoImage} style={{
+                                width: 120,
+                                height: 60,
+                            }} />
+                        </Typography>
+                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                            <Button
+                                onClick={handleRegisterUser}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Register user
+                            </Button>
+                            <Button
+                                onClick={handleConfirmRegistrations}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Confirm registrations
+                            </Button>
+                            <Button
+                                onClick={handleGroups}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Groups
+                            </Button>
+                            <Button
+                                onClick={handleMessages}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Messages
+                            </Button>
+                            <Button
+                                onClick={handleFacilities}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Facilities
+                            </Button>
+                            <Button
+                                onClick={handleDonations}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Donations
+                            </Button>
+                        </Box>
+
+                        <Box sx={{ flexGrow: 0 }}>
+                            <Tooltip title="Open settings">
+                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                    <Avatar />
+                                </IconButton>
+                            </Tooltip>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                <MenuItem onClick={handleProfile}> Profile </MenuItem>
+                                <MenuItem onClick={handleLogout}> Logout </MenuItem>
+                            </Menu>
+                        </Box>
+                    </Toolbar>
+                </Container>
+            </AppBar >
+            <AppBar position="static" sx={{ height: 50, backgroundColor: lightGreen[300] }}>
+                <Container maxWidth="x1">
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                        <Typography
+                            variant="h6"
+                            noWrap
+
+                            sx={{
+                                mr: 2,
+                                display: { xs: 'none', md: 'flex' },
+                                fontWeight: 700,
+                                letterSpacing: '.3rem',
+                                color: 'inherit',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            {pageTitle}
+                        </Typography> </div> </Container>
+            </AppBar>
+        </div>
     );
 };
 export default AdminNavigationBar;

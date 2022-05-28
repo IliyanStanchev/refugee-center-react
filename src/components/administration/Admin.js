@@ -32,7 +32,7 @@ const Admin = () => {
                     <Route path="/groups" element={<Groups />} />
                     <Route path="/messages" element={<Messages />} />
                     <Route path="/facilities" element={<Facilities />} />
-                    <Route path="/donation" element={<Donations />} />
+                    <Route path="/donations" element={<Donations />} />
                 </Routes>
             </Box>
         </div>

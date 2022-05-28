@@ -6,6 +6,14 @@ class DonationService {
     donateMoney(donation) {
         return axios.post(`${API_URL}/donate-money`, donation);
     }
+
+    getDonations() {
+        return axios.get(`${API_URL}/get-donations`);
+    }
+
+    saveDonation(donationData) {
+        return axios.post(`${API_URL}/save-donation`, donationData);
+    }
 }
 
 export default new DonationService()

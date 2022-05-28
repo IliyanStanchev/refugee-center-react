@@ -366,7 +366,7 @@ const Groups = () => {
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                         <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
-                        <GroupDialog selectedGroup={selectedGroup} open={openGroupDialog} onActionPerformed={handleGroupActionPerformed} />
+                        <GroupDialog selectedGroup={selectedGroup} open={openGroupDialog} onActionPerformed={handleGroupActionPerformed} readOnly={false} />
                     </Paper>
                 </Box>
             </div >

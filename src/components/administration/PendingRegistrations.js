@@ -22,7 +22,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { visuallyHidden } from '@mui/utils';
-import UserService from "../../services/UserService";
 import { Country, State, City } from 'country-state-city';
 import { Button, Grid } from "@mui/material";
 import Dialog from '@mui/material/Dialog';

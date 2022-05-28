@@ -127,7 +127,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, successMessage } = props;
+    const { onActionPerformed, errorMessage, successMessage, readOnly } = props;
 
     return (
         <Toolbar
@@ -147,9 +147,9 @@ const EnhancedTableToolbar = (props) => {
                 {<p style={{ color: "green" }} >{successMessage}</p>}
             </Typography>
 
-            <Tooltip title="Add user to group">
+            {!readOnly && (<Tooltip title="Add user to group">
                 <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
-            </Tooltip>
+            </Tooltip>)}
         </Toolbar >
     );
 };
@@ -162,7 +162,7 @@ EnhancedTableToolbar.propTypes = {
 
 const GroupUsersTable = (props) => {
 
-    const group = props.group;
+    const { group, readOnly } = props;
 
     const [newGroup, setNewGroup] = useState(group.id == 0 ? true : false);
 
@@ -314,7 +314,7 @@ const GroupUsersTable = (props) => {
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
                 <Box sx={{ width: '100%' }}>
                     <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} successMessage={successMessage} loading={loading} />
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} successMessage={successMessage} loading={loading} readOnly={readOnly} />
                         <TableContainer>
                             <Table
                                 sx={{ minWidth: 750 }}
@@ -343,10 +343,10 @@ const GroupUsersTable = (props) => {
                                                     <TableCell> {row.email}</TableCell>
                                                     <TableCell >{row.name}</TableCell>
                                                     <TableCell >{row.role.roleType}</TableCell>
-                                                    <TableCell ><Button onClick={() => {
+                                                    <TableCell >{!readOnly && <Button onClick={() => {
                                                         handleRemoveUserFromGroup(row);
 
-                                                    }}> <DeleteIcon /> </Button></TableCell>
+                                                    }}> <DeleteIcon /> </Button>}</TableCell>
                                                 </TableRow>
                                             );
                                         })}

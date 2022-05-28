@@ -13,11 +13,10 @@ import { CircularProgress } from "@mui/material";
 import UserInfo from "./UserInfo";
 import GroupUsersTable from "./GroupUsersTable";
 import GroupService from "../../services/GroupService";
-import { OutlinedInput } from '@mui/material/OutlinedInput';
 
 const GroupDialog = (props) => {
 
-    let { selectedGroup, open, onActionPerformed } = props;
+    let { selectedGroup, open, onActionPerformed, readOnly } = props;
 
     const groupTypes = [
         'EMPLOYEES'
@@ -91,11 +90,13 @@ const GroupDialog = (props) => {
     };
 
     const setResponsibleUser = (user) => {
+
         selectedGroup.responsibleUser = user;
         setGroup({ selectedGroup });
     };
 
     const setGroupType = (groupType) => {
+
         selectedGroup.groupType = groupType;
         setGroup({ selectedGroup });
     };
@@ -132,6 +133,9 @@ const GroupDialog = (props) => {
                         fullWidth
                         autoFocus
                         margin="dense"
+                        InputProps={{
+                            readOnly: readOnly,
+                        }}
                         id="name"
                         value={selectedGroup && selectedGroup.email}
                         label="Email"
@@ -153,6 +157,7 @@ const GroupDialog = (props) => {
                         onChange={(event, newValue) => {
                             setGroupType(newValue);
                         }}
+
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
@@ -168,6 +173,8 @@ const GroupDialog = (props) => {
                                 label="Choose group type"
                                 inputProps={{
                                     ...params.inputProps,
+                                    readOnly: readOnly,
+
                                 }}
                             />
                         )}></Autocomplete>
@@ -202,16 +209,17 @@ const GroupDialog = (props) => {
                                 label="Choose a responsible user"
                                 inputProps={{
                                     ...params.inputProps,
+                                    readOnly: readOnly,
                                 }}
                             />
                         )}></Autocomplete>
                     <Divider sx={{ mt: 2, mb: 2 }} />
-                    {selectedGroup && selectedGroup.id > 0 && <GroupUsersTable group={selectedGroup} />}
+                    {selectedGroup && selectedGroup.id > 0 && <GroupUsersTable group={selectedGroup} readOnly={readOnly} />}
                 </DialogContent>
             </Box>
             <DialogActions>
-                <Button variant="contained" onClick={() => handleSaveGroup()}>Save</Button>
-                <Button variant="contained" onClick={() => onActionPerformed()}>Cancel</Button>
+                {!readOnly && <Button variant="contained" onClick={() => handleSaveGroup()}>Save</Button>}
+                <Button variant="contained" onClick={() => onActionPerformed()}> {readOnly ? 'Ok' : 'Cancel'} </Button>
             </DialogActions>
             <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
         </Dialog>

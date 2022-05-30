@@ -13,20 +13,20 @@ import { CircularProgress } from "@mui/material";
 const MIN_VALUE = 1;
 const MAX_VALUE = 100000;
 
-const DonationDialog = (props) => {
+const EditDonationDialog = (props) => {
 
     const donationTypes = [
-        'MONEY'
-        , 'FOOD'
-        , 'CLOTHES'
-        , 'MEDICINES'
-        , 'STOCKS'
-        , 'OTHER'
+        'Money'
+        , 'Food'
+        , 'Clothes'
+        , 'Medicines'
+        , 'Stocks'
+        , 'Other'
     ]
 
     const units = [
         'KG'
-        , 'COUNT'
+        , 'Count'
         , 'USD'
     ]
 
@@ -78,9 +78,6 @@ const DonationDialog = (props) => {
 
     const setDonationType = (newType) => {
 
-        if (donation.id > 0)
-            return;
-
         donation.donationType = newType;
         setReload(!reload);
     };
@@ -91,9 +88,6 @@ const DonationDialog = (props) => {
     };
 
     const setUnit = (newUnit) => {
-
-        if (donation.id > 0)
-            return;
 
         donation.unit = newUnit;
         setReload(!reload);
@@ -118,23 +112,16 @@ const DonationDialog = (props) => {
 
         setLoading(true);
 
-        let donationData = {
-            donation: donation,
-            donor: {
-                email: donatorEmail,
-                name: donatorName,
-            }
-        };
-
-        DonationService.saveDonation(donationData)
+        DonationService.updateDonation(donation)
             .then(response => {
                 setLoading(false);
-                setMessage("Donation saved successfully. Don't forget to thank the donor!");
+                onClose();
             })
             .catch(error => { setLoading(false); setMessage(error.data); });
     }
 
     const getDonations = async () => {
+
         try {
 
             DonationService.getDonations()
@@ -188,17 +175,16 @@ const DonationDialog = (props) => {
                 <p style={{ color: green[500] }}> {message} </p>
                 <DialogContent>
                     <Autocomplete
-                        disabled={readOnly}
                         sx={{ mt: 2, mb: 2 }}
                         id="name"
                         fullWidth
                         freeSolo
+                        readOnly
                         clearOnBlur
                         handleHomeEndKeys
                         defaultValue={donation}
                         value={donation}
                         options={donations}
-
                         onChange={(event, newValue) => {
                             setSelectedDonation(newValue);
                             onLastInputChange(event);
@@ -226,7 +212,6 @@ const DonationDialog = (props) => {
                         sx={{ mt: 2, mb: 2 }}
                         fullWidth
                         id="donationType"
-                        disabled={readOnly}
                         value={donation && donation.donationType}
                         options={donationTypes}
                         isOptionEqualToValue={(option, value) => option === value}
@@ -247,12 +232,10 @@ const DonationDialog = (props) => {
                                 label="Donation type"
                                 inputProps={{
                                     ...params.inputProps
-
                                 }}
                             />
                         )}></Autocomplete>
                     <TextField
-                        disabled={readOnly}
                         fullWidth
                         sx={{ mb: 2 }}
                         value={donation && donation.quantity}
@@ -274,7 +257,6 @@ const DonationDialog = (props) => {
                         }}
                     />
                     <Autocomplete
-                        disabled={readOnly}
                         sx={{ mt: 2, mb: 2 }}
                         id="donationType"
                         value={donation && donation.unit}
@@ -300,48 +282,16 @@ const DonationDialog = (props) => {
                                 }}
                             />
                         )}></Autocomplete>
-                    {!readOnly && (<div>
-                        <Divider sx={{ mt: 2, mb: 2 }} />
-                        <TextField
-                            fullWidth
-                            autoFocus
-                            margin="dense"
-                            id="donatorEmail"
-                            label="Donator Email ( Optional )"
-                            value={donatorEmail}
-                            type="text"
-                            variant="outlined"
-                            onChange={(event) => {
-                                setDonatorEmail(event.target.value);
-                            }}
-                            error={donorError}
-                            helperText={donorError ? 'Enter email' : ''}
-                        />
-                        <TextField
-                            fullWidth
-                            autoFocus
-                            margin="dense"
-                            id="donatorName"
-                            label="Donator Name ( Optional )"
-                            value={donatorName}
-                            type="text"
-                            variant="outlined"
-                            onChange={(event) => {
-                                setDonatorName(event.target.value);
-                            }}
-                            error={donorError}
-                            helperText={donorError ? 'Enter name' : ''}
-                        /> </div>)}
                 </DialogContent>
                 <DialogActions>
-                    {!readOnly && <Button
+                    <Button
                         variant="contained"
                         disabled={loading}
                         onClick={handleSave}
                     >
                         Save
-                    </Button>}
-                    <Button variant="contained" disabled={loading} onClick={() => onClose()}> {!readOnly ? 'Cancel' : 'OK'}</Button>
+                    </Button>
+                    <Button variant="contained" disabled={loading} onClick={() => onClose()}>  Cancel </Button>
                 </DialogActions>
             </Box>
         </Dialog>
@@ -349,4 +299,4 @@ const DonationDialog = (props) => {
 
 }
 
-export default DonationDialog;
+export default EditDonationDialog;

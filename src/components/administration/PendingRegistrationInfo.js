@@ -4,12 +4,12 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import { Box, Grid, Link } from "@mui/material";
-import { Country, State, City } from 'country-state-city';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FacilityInfo from "./FacilityInfo";
+import AddressResolver from "../../utils/AddressResolver";
 
 const PendingRegistrationInfo = (props) => {
 
@@ -18,20 +18,13 @@ const PendingRegistrationInfo = (props) => {
     const [open, setOpen] = useState(false);
 
     function getCountryData(countryCode) {
-        let country = Country.getCountryByCode(countryCode);
-        return country.name;
-    }
 
-    function getStateData(stateCode, countryCode) {
-        let state = State.getStateByCodeAndCountry(stateCode, countryCode);
-        return state.name;
+        return AddressResolver.getCountryData(countryCode);
     }
 
     function getFacilityData(facility) {
 
-        let facilityCountry = getCountryData(facility.address.countryIsoCode);
-        let facilityState = getStateData(facility.address.stateIsoCode, facility.address.countryIsoCode);
-        return facilityCountry + ' / ' + facilityState + ' / ' + facility.address.cityName;
+        AddressResolver.getFacilityData(facility);
     }
 
     return (

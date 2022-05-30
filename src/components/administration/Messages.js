@@ -30,6 +30,7 @@ import MessageDialog from "./MessageDialog";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SendIcon from '@mui/icons-material/Send';
 import InboxIcon from '@mui/icons-material/Inbox';
+import SearchBar from "material-ui-search-bar";
 
 const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -298,9 +299,9 @@ const Messages = () => {
 
     const [open, setOpen] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
-    const [loading, setLoading] = React.useState(false);
 
     const [sendMessagesMode, setSendMessagesMode] = React.useState(false);
+    const [searchedSender, setSearchedSender] = React.useState("");
 
     let newMessage = {
         id: 0,

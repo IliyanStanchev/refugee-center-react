@@ -22,13 +22,11 @@ import { green } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { ThemeProvider } from "@material-ui/styles";
-import MyTheme from './../../controls/MyTheme';
+import MyTheme from '../../controls/MyTheme';
+import RefugeeService from "../../services/RefugeeService";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import FacilityService from "../../services/FacilityService";
-import FacilityDialog from './FacilityDialog';
-import UserInfo from './UserInfo';
-import AddressResolver from './../../utils/AddressResolver';
-import AddFacilityDialog from './AddFacilityDialog';
+import DeleteIcon from '@mui/icons-material/Delete';
+import SelectUserDialog from './SelectUserDialog';
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -60,28 +58,28 @@ function getComparator(order, orderBy) {
 
 const headCells = [
     {
+        id: 'email',
+        numeric: false,
+        disablePadding: false,
+        label: 'Email',
+    },
+    {
         id: 'name',
         numeric: false,
         disablePadding: false,
-        label: 'Responsible user',
+        label: 'Name',
     },
     {
-        id: 'type',
+        id: 'identifier',
         numeric: false,
         disablePadding: false,
-        label: 'Facility type',
+        label: 'Identifier',
     },
     {
-        id: 'address',
-        numeric: false,
+        id: 'age',
+        numeric: true,
         disablePadding: false,
-        label: 'Address',
-    },
-    {
-        id: 'capacity',
-        numeric: false,
-        disablePadding: false,
-        label: 'Capacity ( % )',
+        label: 'Age',
     },
     {
         id: 'actions',
@@ -153,7 +151,7 @@ const EnhancedTableToolbar = (props) => {
                 id="tableTitle"
                 component="div"
             >
-                Facilities
+                Refugees
             </Typography>
             {loading && (
                 <CircularProgress
@@ -168,7 +166,7 @@ const EnhancedTableToolbar = (props) => {
                 />
             )}
             {<p style={{ color: "red" }} >{errorMessage}</p>}
-            <Tooltip title="Register facility">
+            <Tooltip title="Add refugee to shelter">
                 <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
             </Tooltip>
         </Toolbar >
@@ -181,17 +179,11 @@ EnhancedTableToolbar.propTypes = {
     loading: PropTypes.bool.isRequired,
 };
 
-const Facilities = () => {
+const FacilityRefugeesTable = (props) => {
+
+    const { shelterId } = props;
 
     const id = ReactSession.get('id');
-
-    let newFacility = {
-        id: 0,
-        facilityType: 'OTHER',
-        name: '',
-        quantity: 1,
-        unit: 'COUNT',
-    }
 
     const navigate = useNavigate();
 
@@ -200,40 +192,60 @@ const Facilities = () => {
             navigate('/');
     });
 
-    const getFacilities = async () => {
+    const getRefugees = async () => {
         try {
 
-            FacilityService.getAllFacilities()
+            RefugeeService.getRefugeesInShelter(shelterId)
                 .then(
                     response => {
-                        setFacilities(response.data);
+                        setRefugees(response.data);
                     }
                 )
 
         } catch (error) {
-            setFacilities([]);
+            setRefugees([]);
         }
     };
 
     useEffect(() => {
-        getFacilities();
+        getRefugees();
     }, []);
 
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('calories');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [facilitys, setFacilities] = useState([]);
+    const getUsersForAdding = async () => {
+        try {
 
-    const [selectedFacility, setSelectedFacility] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [openFacilityDialog, setOpenFacilityDialog] = useState(false);
-    const [readOnly, setReadOnly] = useState(false);
+            RefugeeService.getUsersWithoutShelter()
+                .then(
+                    response => {
+                        let extractedUsers = response.data?.map(({ user }) => ({
+                            user
+                        }));
+                        setUsersForAdding(extractedUsers);
+                    }
+                )
 
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [openUserDialog, setOpenUserDialog] = useState(false);
-    const [openAddFacilityDialog, setOpenAddFacilityDialog] = useState(false);
+        } catch (error) {
+            setUsersForAdding([]);
+        }
+    };
+
+    useEffect(() => {
+        getUsersForAdding();
+    }, []);
+
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('type');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [refugees, setRefugees] = React.useState([]);
+
+    const [selectedRefugee, setSelectedRefugee] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const [openAddUserDialog, setOpenAddUserDialog] = React.useState(false);
+    const [openRefugeeDialog, setOpenRefugeeDialog] = React.useState(false);
+
+    const [usersForAdding, setUsersForAdding] = React.useState([]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -251,33 +263,65 @@ const Facilities = () => {
     };
 
     const handleActionPerformed = () => {
-        setOpenAddFacilityDialog(true);
+        setOpenAddUserDialog(true);
     };
 
-    const handleFacilityActionPerformed = () => {
-
-        getFacilities();
-        setOpenFacilityDialog(false);
-        setOpenAddFacilityDialog(false);
+    const handleRefugeeActionPerformed = () => {
+        getRefugees();
+        setOpenAddUserDialog(false);
     };
 
-    const getAddress = (facility) => {
+    const handleAddUserActionPerformed = (user) => {
 
-        return AddressResolver.getFacilityData(facility);
-    }
+        setLoading(true);
+        setErrorMessage('');
 
-    const calculateCapacity = (facility) => {
+        try {
+            RefugeeService.addRefugeeToShelter(user.id, shelterId)
+                .then(
+                    response => {
+                        getRefugees();
+                        getUsersForAdding();
+                        setLoading(false);
+                        setOpenAddUserDialog(false);
+                    }
+                )
+                .catch(error => {
+                    setLoading(false);
+                    setErrorMessage(error.response.data);
+                });
+        } catch (error) {
+            setLoading(false);
+            setErrorMessage(error.response.data);
+        }
+    };
 
-        return (facility.currentCapacity / facility.maxCapacity) * 100;
+    const handleRemoveFromShelter = (refugee) => {
+
+        setLoading(true);
+        setErrorMessage('');
+        try {
+            RefugeeService.removeRefugeeFromShelter(refugee.id)
+                .then(
+                    response => {
+                        getRefugees();
+                        getUsersForAdding();
+                    }
+                )
+        } catch (error) {
+            setErrorMessage(error.response.data);
+        } finally {
+            setLoading(false);
+        }
     }
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - facilitys.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - refugees.length) : 0;
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '80%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%' }}>
                     <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
                         <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
                         <TableContainer>
@@ -290,10 +334,10 @@ const Facilities = () => {
                                     order={order}
                                     orderBy={orderBy}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={facilitys.length}
+                                    rowCount={refugees.length}
                                 />
                                 <TableBody>
-                                    {stableSort(facilitys, getComparator(order, orderBy))
+                                    {stableSort(refugees, getComparator(order, orderBy))
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, index) => {
 
@@ -305,24 +349,21 @@ const Facilities = () => {
                                                     tabIndex={-1}
                                                     key={row.id}
                                                 >
-                                                    <TableCell>
-                                                        <Link component="button" onClick={() => {
-                                                            setSelectedUser(row.responsibleUser);
-                                                            setOpenUserDialog(true);
-                                                        }} underline="hover">
-                                                            {row.responsibleUser.name}
-                                                        </Link>
-                                                    </TableCell>
-                                                    <TableCell >{row.facilityType}</TableCell>
-                                                    <TableCell >{getAddress(row)}</TableCell>
-                                                    <TableCell >{calculateCapacity(row)}</TableCell>
+                                                    <TableCell> {row.user.email}  </TableCell>
+                                                    <TableCell >{row.user.name}</TableCell>
+                                                    <TableCell >{row.user.identifier}</TableCell>
+                                                    <TableCell >{row.age}</TableCell>
                                                     <TableCell >
                                                         <Tooltip title="View details">
                                                             <Button onClick={() => {
-                                                                setSelectedFacility(row);
-                                                                setOpenFacilityDialog(true);
-                                                                setReadOnly(true);
+                                                                setSelectedRefugee(row);
+                                                                setOpenRefugeeDialog(true);
                                                             }}> <OpenInNewIcon /> </Button>
+                                                        </Tooltip>
+                                                        <Tooltip title="Remove from shelter">
+                                                            <Button onClick={() => {
+                                                                handleRemoveFromShelter(row);
+                                                            }}> <DeleteIcon /> </Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 </TableRow>
@@ -343,20 +384,18 @@ const Facilities = () => {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={facilitys.length}
+                            count={refugees.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <UserInfo user={selectedUser} open={openUserDialog} onClose={() => { setOpenUserDialog(false); }} />
-                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog} onClose={handleFacilityActionPerformed} />
-                        <AddFacilityDialog open={openAddFacilityDialog} onClose={handleFacilityActionPerformed} />
                     </Paper>
                 </Box>
+                <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
             </div >
         </ThemeProvider>
     );
 }
 
-export default Facilities;
+export default FacilityRefugeesTable;

@@ -13,7 +13,7 @@ import Backdrop from '@mui/material/Backdrop';
 
 const SelectUserDialog = (props) => {
 
-    let { parentUser, users, loading, open, onActionPerformed, onClose } = props;
+    let { users, loading, open, onActionPerformed, onClose } = props;
 
     const [user, setUser] = useState(null);
     const [updateState, setUpdateState] = useState(false);
@@ -28,6 +28,7 @@ const SelectUserDialog = (props) => {
     const handleConfirm = () => {
         if (user == null)
             return;
+
         onActionPerformed(user.user);
         setUser(null);
     }

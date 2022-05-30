@@ -22,6 +22,22 @@ class RefugeeService {
     deletePendingRegistration(refugee) {
         return axios.post(`${API_URL}/delete-single-registration`, refugee);
     }
+
+    getRefugeesInShelter(shelterId) {
+        return axios.get(`${API_URL}/get-refugees-in-shelter/${shelterId}`);
+    }
+
+    removeRefugeeFromShelter(refugeeId) {
+        return axios.put(`${API_URL}/remove-refugee-from-shelter/${refugeeId}`);
+    }
+
+    getUsersWithoutShelter() {
+        return axios.get(`${API_URL}/get-users-without-shelter`);
+    }
+
+    addRefugeeToShelter(userId, shelterId) {
+        return axios.put(`${API_URL}/add-refugee-to-shelter/${userId}/${shelterId}`);
+    }
 }
 
 export default new RefugeeService()

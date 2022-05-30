@@ -24,6 +24,7 @@
     "fs": "^0.0.1-security",
     "history": "^5.3.0",
     "material-ui-phone-number": "^3.0.0",
+    "material-ui-search-bar": "^1.0.0",
     "mdbreact": "^4.6.1",
     "mui-validate": "^0.1.0",
     "react": "^18.1.0",

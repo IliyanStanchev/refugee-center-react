@@ -6,6 +6,14 @@ class FacilityService {
     getAllShelters() {
         return axios.get(`${API_URL}/get-all-shelters`);
     }
+
+    getAllFacilities() {
+        return axios.get(`${API_URL}/get-all-facilities`);
+    }
+
+    saveFacility(facility) {
+        return axios.post(`${API_URL}/save-facility`, facility);
+    }
 }
 
 export default new FacilityService()

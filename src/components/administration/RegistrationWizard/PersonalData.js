@@ -409,9 +409,9 @@ const PersonalData = (props) => {
                             {option.facilityType + ' ' + option.address.countryIsoCode + ' ' + option.address.cityName + ' ' + option.address.address}
                             <Button onClick={() => {
                                 toggleOpen(true);
-                                setDialogFacility({
+                                setDialogFacility(
                                     option
-                                });
+                                );
 
 
                             }}> <InfoIcon /> </Button>

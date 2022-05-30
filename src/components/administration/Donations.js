@@ -27,7 +27,8 @@ import MyTheme from './../../controls/MyTheme';
 import EditIcon from '@mui/icons-material/Edit';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import DonationService from "../../services/DonationService";
-import DonationDialog from './DonationDialog';
+import EditDonationDialog from './EditDonationDialog';
+import AddDonationDialog from "./AddDonationDialog";
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -227,8 +228,8 @@ const Donations = () => {
     const [selectedDonation, setSelectedDonation] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
-    const [openDonationDialog, setOpenDonationDialog] = React.useState(false);
-    const [readOnly, setReadOnly] = React.useState(false);
+    const [openEditDonationDialog, setOpenEditDonationDialog] = React.useState(false);
+    const [openAddDonationDialog, setOpenAddDonationDialog] = React.useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -246,15 +247,16 @@ const Donations = () => {
     };
 
     const handleActionPerformed = () => {
-        setSelectedDonation(newDonation);
-        setOpenDonationDialog(true);
-        setReadOnly(false);
+
+
+        setOpenAddDonationDialog(true);
     };
 
     const handleDonationActionPerformed = () => {
 
         getDonations();
-        setOpenDonationDialog(false);
+        setOpenEditDonationDialog(false);
+        setOpenAddDonationDialog(false);
     };
 
     const emptyRows =
@@ -296,12 +298,11 @@ const Donations = () => {
                                                     <TableCell >{row.quantity}</TableCell>
                                                     <TableCell >{row.unit}</TableCell>
                                                     <TableCell >
-                                                        <Tooltip title="View details">
+                                                        <Tooltip title="Edit donation">
                                                             <Button onClick={() => {
                                                                 setSelectedDonation(row);
-                                                                setOpenDonationDialog(true);
-                                                                setReadOnly(true);
-                                                            }}> <OpenInNewIcon /> </Button>
+                                                                setOpenEditDonationDialog(true);
+                                                            }}> <EditIcon /> </Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 </TableRow>
@@ -328,7 +329,8 @@ const Donations = () => {
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <DonationDialog donation={selectedDonation} open={openDonationDialog} onClose={handleDonationActionPerformed} readOnly={readOnly} />
+                        <EditDonationDialog donation={selectedDonation} open={openEditDonationDialog} onClose={handleDonationActionPerformed} />
+                        <AddDonationDialog open={openAddDonationDialog} onClose={handleDonationActionPerformed} />
                     </Paper>
                 </Box>
             </div >

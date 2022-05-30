@@ -222,7 +222,6 @@ const GroupUsersTable = (props) => {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [users, setUsers] = React.useState([]);
     const [usersForAdding, setUsersForAdding] = React.useState([]);
-    const [userForAdding, setUserForAdding] = React.useState(null);
 
     const [loading, setLoading] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -373,7 +372,7 @@ const GroupUsersTable = (props) => {
                         />
                         <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
                     </Paper>
-                    <SelectUserDialog loading={loading} parentUser={userForAdding} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
+                    <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
                 </Box>
             </div >
         </ThemeProvider>)

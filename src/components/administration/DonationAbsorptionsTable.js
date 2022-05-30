@@ -22,13 +22,10 @@ import { green } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { ThemeProvider } from "@material-ui/styles";
-import MyTheme from './../../controls/MyTheme';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import FacilityService from "../../services/FacilityService";
-import FacilityDialog from './FacilityDialog';
-import UserInfo from './UserInfo';
-import AddressResolver from './../../utils/AddressResolver';
-import AddFacilityDialog from './AddFacilityDialog';
+import MyTheme from '../../controls/MyTheme';
+import EditIcon from '@mui/icons-material/Edit';
+import DonationAbsorptionService from "../../services/DonationAbsorptionService";
+import DonationAbsorptionDialog from './DonationAbsorptionDialog';
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -60,28 +57,28 @@ function getComparator(order, orderBy) {
 
 const headCells = [
     {
-        id: 'name',
-        numeric: false,
-        disablePadding: false,
-        label: 'Responsible user',
-    },
-    {
         id: 'type',
         numeric: false,
         disablePadding: false,
-        label: 'Facility type',
+        label: 'Donation type',
     },
     {
-        id: 'address',
+        id: 'name',
         numeric: false,
         disablePadding: false,
-        label: 'Address',
+        label: 'Name',
     },
     {
-        id: 'capacity',
+        id: 'quantity',
         numeric: false,
         disablePadding: false,
-        label: 'Capacity ( % )',
+        label: 'Quantity',
+    },
+    {
+        id: 'intake',
+        numeric: false,
+        disablePadding: false,
+        label: 'Absorption/24',
     },
     {
         id: 'actions',
@@ -153,7 +150,7 @@ const EnhancedTableToolbar = (props) => {
                 id="tableTitle"
                 component="div"
             >
-                Facilities
+                Donations
             </Typography>
             {loading && (
                 <CircularProgress
@@ -168,7 +165,7 @@ const EnhancedTableToolbar = (props) => {
                 />
             )}
             {<p style={{ color: "red" }} >{errorMessage}</p>}
-            <Tooltip title="Register facility">
+            <Tooltip title="Register donation">
                 <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
             </Tooltip>
         </Toolbar >
@@ -181,17 +178,10 @@ EnhancedTableToolbar.propTypes = {
     loading: PropTypes.bool.isRequired,
 };
 
-const Facilities = () => {
+const DonationAbsorptionsTable = (props) => {
 
+    const shelterId = props.shelterId;
     const id = ReactSession.get('id');
-
-    let newFacility = {
-        id: 0,
-        facilityType: 'OTHER',
-        name: '',
-        quantity: 1,
-        unit: 'COUNT',
-    }
 
     const navigate = useNavigate();
 
@@ -200,40 +190,35 @@ const Facilities = () => {
             navigate('/');
     });
 
-    const getFacilities = async () => {
+    const getDonations = async () => {
         try {
 
-            FacilityService.getAllFacilities()
+            DonationAbsorptionService.getDonationAbsorptions(shelterId)
                 .then(
                     response => {
-                        setFacilities(response.data);
+                        setDonations(response.data);
                     }
                 )
 
         } catch (error) {
-            setFacilities([]);
+            setDonations([]);
         }
     };
 
     useEffect(() => {
-        getFacilities();
+        getDonations();
     }, []);
 
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('calories');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [facilitys, setFacilities] = useState([]);
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('type');
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [donations, setDonations] = React.useState([]);
 
-    const [selectedFacility, setSelectedFacility] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [openFacilityDialog, setOpenFacilityDialog] = useState(false);
-    const [readOnly, setReadOnly] = useState(false);
-
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [openUserDialog, setOpenUserDialog] = useState(false);
-    const [openAddFacilityDialog, setOpenAddFacilityDialog] = useState(false);
+    const [selectedDonation, setSelectedDonation] = React.useState(null);
+    const [loading, setLoading] = React.useState(false);
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const [openDonationDialog, setOpenDonationDialog] = React.useState(false);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -251,33 +236,33 @@ const Facilities = () => {
     };
 
     const handleActionPerformed = () => {
-        setOpenAddFacilityDialog(true);
+
+        let newDonation = {
+            id: 0,
+            donation: null,
+            facility: {
+                id: shelterId,
+            },
+            absorption: 0
+        };
+
+        setSelectedDonation(newDonation);
+        setOpenDonationDialog(true);
     };
 
-    const handleFacilityActionPerformed = () => {
+    const handleDonationActionPerformed = () => {
 
-        getFacilities();
-        setOpenFacilityDialog(false);
-        setOpenAddFacilityDialog(false);
+        getDonations();
+        setOpenDonationDialog(false);
     };
-
-    const getAddress = (facility) => {
-
-        return AddressResolver.getFacilityData(facility);
-    }
-
-    const calculateCapacity = (facility) => {
-
-        return (facility.currentCapacity / facility.maxCapacity) * 100;
-    }
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - facilitys.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - donations.length) : 0;
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '80%' }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ width: '100%' }}>
                     <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
                         <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
                         <TableContainer>
@@ -290,10 +275,10 @@ const Facilities = () => {
                                     order={order}
                                     orderBy={orderBy}
                                     onRequestSort={handleRequestSort}
-                                    rowCount={facilitys.length}
+                                    rowCount={donations.length}
                                 />
                                 <TableBody>
-                                    {stableSort(facilitys, getComparator(order, orderBy))
+                                    {stableSort(donations, getComparator(order, orderBy))
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map((row, index) => {
 
@@ -305,24 +290,16 @@ const Facilities = () => {
                                                     tabIndex={-1}
                                                     key={row.id}
                                                 >
-                                                    <TableCell>
-                                                        <Link component="button" onClick={() => {
-                                                            setSelectedUser(row.responsibleUser);
-                                                            setOpenUserDialog(true);
-                                                        }} underline="hover">
-                                                            {row.responsibleUser.name}
-                                                        </Link>
-                                                    </TableCell>
-                                                    <TableCell >{row.facilityType}</TableCell>
-                                                    <TableCell >{getAddress(row)}</TableCell>
-                                                    <TableCell >{calculateCapacity(row)}</TableCell>
+                                                    <TableCell> {row.donation.donationType}  </TableCell>
+                                                    <TableCell >{row.donation.name}</TableCell>
+                                                    <TableCell >{row.donation.quantity + ' ' + row.donation.unit}</TableCell>
+                                                    <TableCell >{row.absorption}</TableCell>
                                                     <TableCell >
-                                                        <Tooltip title="View details">
+                                                        <Tooltip title="Edit absorption">
                                                             <Button onClick={() => {
-                                                                setSelectedFacility(row);
-                                                                setOpenFacilityDialog(true);
-                                                                setReadOnly(true);
-                                                            }}> <OpenInNewIcon /> </Button>
+                                                                setSelectedDonation(row);
+                                                                setOpenDonationDialog(true);
+                                                            }}> <EditIcon /> </Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 </TableRow>
@@ -343,15 +320,13 @@ const Facilities = () => {
                         <TablePagination
                             rowsPerPageOptions={[5, 10, 25]}
                             component="div"
-                            count={facilitys.length}
+                            count={donations.length}
                             rowsPerPage={rowsPerPage}
                             page={page}
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <UserInfo user={selectedUser} open={openUserDialog} onClose={() => { setOpenUserDialog(false); }} />
-                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog} onClose={handleFacilityActionPerformed} />
-                        <AddFacilityDialog open={openAddFacilityDialog} onClose={handleFacilityActionPerformed} />
+                        <DonationAbsorptionDialog shelterId={shelterId} donation={selectedDonation} open={openDonationDialog} onClose={handleDonationActionPerformed} />
                     </Paper>
                 </Box>
             </div >
@@ -359,4 +334,4 @@ const Facilities = () => {
     );
 }
 
-export default Facilities;
+export default DonationAbsorptionsTable;

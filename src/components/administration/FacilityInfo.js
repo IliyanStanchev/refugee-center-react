@@ -4,6 +4,7 @@ import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import { Box, Link } from "@mui/material";
+import Grid from '@mui/material/Grid';
 
 const FacilityInfo = (props) => {
 
@@ -32,28 +33,34 @@ const FacilityInfo = (props) => {
                     variant="outlined"
                 />
                 <Divider sx={{ mt: 2, mb: 2 }} />
-                <TextField
-                    sx={{ mr: 13 }}
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    value={facility && facility.address.countryIsoCode}
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            value={facility && facility.address.countryIsoCode}
 
-                    label="Country"
-                    type="text"
-                    variant="outlined"
-                />
-                <TextField
+                            label="Country"
+                            type="text"
+                            variant="outlined"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            value={facility && facility.address.cityName}
 
-                    autoFocus
-                    margin="dense"
-                    id="name"
-                    value={facility && facility.address.cityName}
-
-                    label="City"
-                    type="text"
-                    variant="outlined"
-                />
+                            label="City"
+                            type="text"
+                            variant="outlined"
+                        />
+                    </Grid>
+                </Grid>
                 <TextField
 
                     fullWidth

@@ -2,7 +2,7 @@ window.env = {
   "ALLUSERSPROFILE": "C:\\ProgramData",
   "APPDATA": "C:\\Users\\ench3\\AppData\\Roaming",
   "APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL": "true",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_6196_YSEAWFMFWXSIOGOO",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\crashpad_11984_HWGLKFISYDEQKEPG",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "CommonProgramFiles": "C:\\Program Files\\Common Files",
@@ -90,6 +90,6 @@ window.env = {
   "windir": "C:\\WINDOWS",
   "WSLENV": "WT_SESSION::WT_PROFILE_ID",
   "WT_PROFILE_ID": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-  "WT_SESSION": "27aa8f68-bcbd-4240-b41c-0a35f58114c0",
+  "WT_SESSION": "4c6e4c75-6fb8-470e-beac-b83b7ea98c47",
   "ZES_ENABLE_SYSMAN": "1"
 };

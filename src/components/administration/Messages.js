@@ -308,7 +308,7 @@ const Messages = () => {
         message: {
             id: 0
             , sender: { id: id }
-            , messageType: 'INFORMATIVE'
+            , messageType: 'Informative'
             , subject: ''
             , content: ''
 
@@ -320,7 +320,7 @@ const Messages = () => {
         message: {
             id: 0
             , sender: { id: id }
-            , messageType: 'INFORMATIVE'
+            , messageType: 'Informative'
             , subject: ''
             , content: ''
 

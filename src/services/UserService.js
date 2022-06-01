@@ -27,6 +27,14 @@ class UserService {
     getResponsibleUsers() {
         return axios.get(`${API_URL}/get-responsible-users`);
     }
+
+    getUser(userId) {
+        return axios.get(`${API_URL}/get-user/${userId}`);
+    }
+
+    changePassword(accountData) {
+        return axios.post(`${API_URL}/change-password`, accountData);
+    }
 }
 
 export default new UserService()

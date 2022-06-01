@@ -8,6 +8,7 @@ import Groups from './Groups';
 import Messages from './Messages';
 import Facilities from './Facilities';
 import Donations from './Donations';
+import UserProfile from './UserProfile';
 import { ReactSession } from 'react-client-session';
 import Box from '@mui/material/Box';
 
@@ -33,6 +34,7 @@ const Admin = () => {
                     <Route path="/messages" element={<Messages />} />
                     <Route path="/facilities" element={<Facilities />} />
                     <Route path="/donations" element={<Donations />} />
+                    <Route path="/profile" element={<UserProfile />} />
                 </Routes>
             </Box>
         </div>

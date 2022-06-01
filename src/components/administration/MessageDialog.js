@@ -10,15 +10,14 @@ import { CircularProgress } from "@mui/material";
 import MessageService from "../../services/MessageService";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ReceiverDialog from './ReceiverDialog';
-import { ResetTvRounded } from "@mui/icons-material";
 
 const MessageDialog = (props) => {
 
     let { selectedMessage, open, onActionPerformed, readOnly } = props;
 
     const messageTypes = [
-        'INFORMATIVE',
-        'IMPORTANT'
+        'Informative',
+        'Important'
     ];
 
     const [reload, setReload] = useState(false);

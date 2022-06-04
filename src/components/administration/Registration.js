@@ -1,7 +1,6 @@
 import * as React from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import Stepper from '@mui/material/Stepper';
@@ -20,6 +19,7 @@ import Avatar from '@mui/material/Avatar';
 import MyTheme from '../../controls/MyTheme';
 import UserService from '../../services/UserService';
 import { useEffect } from 'react';
+import { ReactSession } from 'react-client-session';
 
 const ABSTRACT_API_URL = process.env.REACT_APP_ABSTRACT_API_URL;
 const DELIVERABLE_EMAIL = 'DELIVERABLE';
@@ -44,6 +44,8 @@ function Copyright() {
 const steps = ['Main Data', 'Personal Data', 'Additional Data'];
 
 const Registration = () => {
+
+    const id = ReactSession.get('id');
 
     const [user, setUser] = React.useState({
         firstName: ''
@@ -70,6 +72,7 @@ const Registration = () => {
     const [disableNext, setDisableNext] = React.useState(false);
 
     const [activeStep, setActiveStep] = React.useState(0);
+    const [userRole, setUserRole] = React.useState(process.env.REACT_APP_MODERATOR)
 
     const handleNext = () => {
 
@@ -150,7 +153,12 @@ const Registration = () => {
             , specialDiet: user.specialDiet
         }
 
-        UserService.createRefugee(refugee)
+        let refugeeRegistrationData = {
+            employeeId: id
+            , refugee: refugee
+        }
+
+        UserService.createRefugee(refugeeRegistrationData)
             .then(response => handleResponse(response))
             .catch((error) => handleError(error.response));
     }
@@ -159,6 +167,7 @@ const Registration = () => {
 
         if (response.status == process.env.REACT_APP_HTTP_STATUS_OK) {
             setActiveStep(steps.length);
+            setUserRole(response.data);
         }
         else {
             handleError(response);
@@ -270,7 +279,10 @@ const Registration = () => {
                                     Succesfull user registration
                                 </Typography>
                                 <Typography variant="subtitle1" align='center'>
-                                    Don't forget to remind customer to check his email for account information
+                                    {userRole == process.env.REACT_APP_MODERATOR ?
+                                        "Refugee registration is pending for approval" :
+                                        "Don't forget to remind customer to check his email for account information"
+                                    }
                                 </Typography>
                             </React.Fragment>
                         ) : (

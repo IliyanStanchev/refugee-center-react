@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import AdminNavigationBar from "../navigation/AdminNavigation";
+import ModeratorNavigationBar from "../navigation/ModeratorNavigation";
 import { Routes, Route } from "react-router-dom";
 import Registration from './Registration';
 import PendingRegistrations from './PendingRegistrations';
@@ -13,8 +13,7 @@ import { ReactSession } from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
 
-
-const Admin = () => {
+const Moderator = () => {
 
     const navigate = useNavigate();
     const id = ReactSession.get('id');
@@ -31,21 +30,19 @@ const Admin = () => {
             navigate(-1);
 
         UserService.getUser(id).then(response => {
-            if (response.data.role.roleType !== process.env.REACT_APP_ADMINISTRATOR) {
+            if (response.data.role.roleType !== process.env.REACT_APP_MODERATOR) {
                 navigate(-1);
             }
         })
             .catch(error => { navigate(-1); });
 
     });
-
     return (
         <div>
-            <AdminNavigationBar></AdminNavigationBar>
+            <ModeratorNavigationBar></ModeratorNavigationBar>
             <Box>
                 <Routes>
                     <Route path="/registration" element={<Registration />} />
-                    <Route path="/confirm-registrations" element={<PendingRegistrations />} />
                     <Route path="/groups" element={<Groups />} />
                     <Route path="/messages" element={<Messages />} />
                     <Route path="/facilities" element={<Facilities />} />
@@ -58,4 +55,4 @@ const Admin = () => {
 
 }
 
-export default Admin
+export default Moderator

@@ -186,11 +186,6 @@ const Groups = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getGroups = async () => {
         try {
 

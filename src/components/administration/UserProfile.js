@@ -24,11 +24,6 @@ const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [openChangePassword, setOpenChangePassword] = useState(false);
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getUser = async () => {
         try {
 
@@ -51,13 +46,13 @@ const UserProfile = () => {
     return (
 
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Box sx={{ width: '50%' }}>
                     <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
                         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
                             <Box sx={{ width: '60%' }}>
                                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                    {user && user.role.roleType == process.env.REACT_APP_ADMINISTRATOR ? <AdminPanelSettingsIcon sx={{ fontSize: 50 }} color='primary' /> : <BadgeIcon sx={{ fontSize: 50 }} color='primary' />}
+                                    <AdminPanelSettingsIcon sx={{ fontSize: 50 }} color='primary' />
                                 </div>
                                 <TextField
                                     InputLabelProps={{ shrink: true }}

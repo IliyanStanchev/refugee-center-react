@@ -170,11 +170,6 @@ const GroupUsersTable = (props) => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getGroupUsers = async () => {
         try {
 

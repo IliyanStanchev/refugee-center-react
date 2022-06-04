@@ -38,6 +38,14 @@ class RefugeeService {
     addRefugeeToShelter(userId, shelterId) {
         return axios.put(`${API_URL}/add-refugee-to-shelter/${userId}/${shelterId}`);
     }
+
+    getRefugeeByUserId(userId) {
+        return axios.get(`${API_URL}/get-refugee-by-user-id/${userId}`);
+    }
+
+    updateRefugee(refugee) {
+        return axios.put(`${API_URL}/update-refugee`, refugee);
+    }
 }
 
 export default new RefugeeService()

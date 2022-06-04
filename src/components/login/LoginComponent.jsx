@@ -115,10 +115,10 @@ export default function LoginComponent() {
             navigate('/admin');
 
         if (role.roleType == MODERATOR)
-            navigate('/admin');
+            navigate('/moderator');
 
         if (role.roleType == CUSTOMER)
-            navigate('/admin');
+            navigate('/refugee');
 
         setLoginMessage('Wrong username or password.');
     }

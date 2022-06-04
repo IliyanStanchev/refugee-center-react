@@ -187,11 +187,6 @@ const FacilityRefugeesTable = (props) => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getRefugees = async () => {
         try {
 

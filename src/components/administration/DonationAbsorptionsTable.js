@@ -181,14 +181,8 @@ EnhancedTableToolbar.propTypes = {
 const DonationAbsorptionsTable = (props) => {
 
     const shelterId = props.shelterId;
-    const id = ReactSession.get('id');
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
 
     const getDonations = async () => {
         try {

@@ -195,11 +195,6 @@ const Donations = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getDonations = async () => {
         try {
 

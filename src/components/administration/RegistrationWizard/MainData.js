@@ -5,12 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import validator from 'validator';
-import { ReactSession } from 'react-client-session';
-
 
 const MainData = (props) => {
     const navigate = useNavigate();
-    const id = ReactSession.get('id');
 
     const parentUser = props.user;
 
@@ -51,9 +48,6 @@ const MainData = (props) => {
     }
 
     useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-
         checkForErrors();
     });
 

@@ -11,6 +11,10 @@ class FacilityService {
         return axios.get(`${API_URL}/get-all-facilities`);
     }
 
+    getSheltersForTransfer(id) {
+        return axios.get(`${API_URL}/get-shelters-for-transfer/${id}`);
+    }
+
     saveFacility(facility) {
         return axios.post(`${API_URL}/save-facility`, facility);
     }

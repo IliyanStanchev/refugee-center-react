@@ -13,7 +13,7 @@ import FacilityRefugeesTable from './FacilityRefugeesTable';
 
 const FacilityDialog = (props) => {
 
-    let { facility, open, onClose } = props;
+    let { facility, open, onClose, viewMode } = props;
 
     const [refugeesMode, setRefugeesMode] = useState(true);
     const [reload, setReload] = useState(false);
@@ -110,7 +110,7 @@ const FacilityDialog = (props) => {
                             variant="outlined"
                         />)}
                     <Divider sx={{ mt: 2, mb: 2 }} />
-                    {facility && facility.facilityType === 'Shelter' ?
+                    {!viewMode && facility && facility.facilityType === 'Shelter' ?
                         <div>
                             <ToggleButtonGroup value={refugeesMode} color="primary">
                                 <ToggleButton value={true} onClick={() => setRefugeesMode(true)} >   Shelter refugees </ToggleButton>

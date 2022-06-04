@@ -247,11 +247,6 @@ const Messages = () => {
     const id = ReactSession.get('id');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getSendMessages = async () => {
         try {
 

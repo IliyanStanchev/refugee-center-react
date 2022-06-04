@@ -183,8 +183,6 @@ EnhancedTableToolbar.propTypes = {
 
 const Facilities = () => {
 
-    const id = ReactSession.get('id');
-
     let newFacility = {
         id: 0,
         facilityType: 'OTHER',
@@ -194,11 +192,6 @@ const Facilities = () => {
     }
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
 
     const getFacilities = async () => {
         try {
@@ -350,7 +343,7 @@ const Facilities = () => {
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
                         <UserInfo user={selectedUser} open={openUserDialog} onClose={() => { setOpenUserDialog(false); }} />
-                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog} onClose={handleFacilityActionPerformed} />
+                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog} onClose={handleFacilityActionPerformed} viewMode={false} />
                         <AddFacilityDialog open={openAddFacilityDialog} onClose={handleFacilityActionPerformed} />
                     </Paper>
                 </Box>

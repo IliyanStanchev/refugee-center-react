@@ -272,11 +272,6 @@ const PendingRegistrations = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (id <= 0)
-            navigate('/');
-    });
-
     const getPendingRegistrations = async () => {
         try {
 

@@ -12,6 +12,7 @@ import UserProfile from './UserProfile';
 import { ReactSession } from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
+import CustomerFooter from './../footer/CustomerFooter';
 
 
 const Admin = () => {
@@ -27,15 +28,18 @@ const Admin = () => {
         if (id == null)
             return;
 
-        if (id <= 0)
+        if (id <= 0) {
             navigate(-1);
+            return;
+        }
 
         UserService.getUser(id).then(response => {
             if (response.data.role.roleType !== process.env.REACT_APP_ADMINISTRATOR) {
                 navigate(-1);
+                return;
             }
         })
-            .catch(error => { navigate(-1); });
+            .catch(error => { navigate(-1); return; });
 
     });
 
@@ -52,6 +56,7 @@ const Admin = () => {
                     <Route path="/donations" element={<Donations />} />
                     <Route path="/profile" element={<UserProfile />} />
                 </Routes>
+                <CustomerFooter />
             </Box>
         </div>
     );

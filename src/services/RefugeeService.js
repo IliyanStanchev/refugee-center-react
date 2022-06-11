@@ -44,7 +44,7 @@ class RefugeeService {
     }
 
     updateRefugee(refugee) {
-        return axios.put(`${API_URL}/update-refugee`, refugee);
+        return axios.patch(`${API_URL}/update-refugee`, refugee);
     }
 }
 

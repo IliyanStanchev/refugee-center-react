@@ -67,6 +67,18 @@ const FacilityDialog = (props) => {
                         type="text"
                         variant="outlined"
                     />
+                    <TextField
+
+                        fullWidth
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        value={facility && facility.phoneNumber}
+
+                        label="Phone number "
+                        type="text"
+                        variant="outlined"
+                    />
                     <Divider sx={{ mt: 2, mb: 2 }} />
 
                     {facility && facility.facilityType === 'Shelter' ? (

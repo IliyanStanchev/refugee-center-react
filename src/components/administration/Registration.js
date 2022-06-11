@@ -28,19 +28,6 @@ const MAIN_DATA_STEP = 0;
 const PERSONAL_DATA_STEP = 1;
 const ADDITIONAL_DATA_STEP = 2;
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center">
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 const steps = ['Main Data', 'Personal Data', 'Additional Data'];
 
 const Registration = () => {
@@ -306,7 +293,6 @@ const Registration = () => {
                         )}
                     </React.Fragment>
                 </Paper>
-                <Copyright />
             </Container >
         </ThemeProvider >
     );

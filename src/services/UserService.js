@@ -35,6 +35,10 @@ class UserService {
     changePassword(accountData) {
         return axios.post(`${API_URL}/change-password`, accountData);
     }
+
+    sendVerificationCode(user) {
+        return axios.post(`${API_URL}/send-verification-code`, user);
+    }
 }
 
 export default new UserService()

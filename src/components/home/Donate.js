@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import env from "react-dotenv";
-import { useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import { Button } from "@mui/material";
-import TextField from '@mui/material/TextField';
-import NumberFormat from 'react-number-format';
 import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Card from '@mui/material/Card';
 import MyText from "../../controls/MyText";
 import DonationService from "../../services/DonationService";
+import { lightGreen } from '@mui/material/colors';
+import Grid from '@mui/material/Grid';
+import RecentDonors from './RecentDonors';
 
 export default function DonateMoney() {
     const [show, setShow] = useState(false);
@@ -20,8 +19,6 @@ export default function DonateMoney() {
     const [errorMessage, setErrorMessage] = useState(null);
     const [orderID, setOrderID] = useState(false);
     const [amount, setAmount] = useState(0);
-
-    const navigate = useNavigate();
 
     const createOrder = (data, actions) => {
         return actions.order
@@ -62,12 +59,6 @@ export default function DonateMoney() {
         DonationService.donateMoney(donation);
     }
 
-    const handleValueChange = (value) => {
-
-        setErrorMessage(null);
-        setAmount(value);
-    }
-
     const handleDonateButton = () => {
 
         setSuccess(false);
@@ -82,48 +73,64 @@ export default function DonateMoney() {
     }
 
     return (
-        <Box sx={{ ml: 10, mr: 10, mb: 10, mt: 10 }} textAlign='center' marginTop={5}>
-            <Card   >
-                <PayPalScriptProvider
-                    options={{
-                        "client-id": process.env.REACT_APP_CLIENT_ID,
-                    }}
-                >
-                    <FormControl sx={{ mt: 5 }}>
-                        <InputLabel htmlFor="outlined-adornment-amount">Amount</InputLabel>
-                        <NumberFormat
-                            customInput={OutlinedInput}
-                            onValueChange={(values) => handleValueChange(values.value)}
+        <Grid container >
+            <Grid item xs={3.5}>
+                <RecentDonors />
+            </Grid>
+            <Grid item xs={7.5}>
+                <Card
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        maxWidth: 800,
+                        textAlign: 'center',
+                        border: 1
+                        , borderColor: lightGreen[800]
+                        , borderRadius: '16px'
+                        , mt: 5
+                    }}>
+                    <FormControl variant="outlined" sx={{ ml: 2, mr: 2, mt: 2, mb: 2 }}>
+                        <InputLabel htmlFor="outlined-adornment-oldPassword">Amount</InputLabel>
+                        <OutlinedInput
+                            id="outlined-adornment-oldPassword"
+                            type='number'
                             value={amount}
-                            id="outlined-adornment-amount"
-                            variant="outlined"
-                            error={amount <= 0}
-                            endAdornment={<InputAdornment position="end">USD</InputAdornment>}
+                            onChange={(e) => setAmount(parseFloat(e.target.value).toFixed(2))}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    USD
+                                </InputAdornment>
+                            }
                             label="Amount"
-                            disabled={show}
                         />
                     </FormControl>
                     <Button
-                        sx={{ ml: 2, mt: 6, mb: 5 }}
+                        sx={{ ml: 2, mr: 2, mt: 2, mb: 2 }}
                         variant="contained"
                         onClick={() => handleDonateButton(!show)}>
                         {show ? "Change amount" : "Donate"}
                     </Button>
-                    {errorMessage && <p style={{ color: "red" }} > {errorMessage} </p>}
-                    <Box margin={10} >
-                        {show ? (
-                            <div>
-                                <MyText> Pick your payment method </MyText>
-                                <PayPalButtons
-                                    style={{ layout: "vertical" }}
-                                    createOrder={createOrder}
-                                    onApprove={onApprove}
-                                />
-                            </div>
-                        ) : success ? (<MyText> Thank you for donating!  </MyText>) : null}
-                    </Box>
-                </PayPalScriptProvider>
-            </ Card >
-        </Box >
+                    <PayPalScriptProvider
+                        options={{
+                            "client-id": process.env.REACT_APP_CLIENT_ID,
+                        }}
+                    >
+                        {errorMessage && <p style={{ color: "red" }} > {errorMessage} </p>}
+                        <Box margin={10} >
+                            {show ? (
+                                <div>
+                                    <MyText> Pick your payment method </MyText>
+                                    <PayPalButtons
+                                        style={{ layout: "vertical" }}
+                                        createOrder={createOrder}
+                                        onApprove={onApprove}
+                                    />
+                                </div>
+                            ) : success ? (<MyText> Thank you for donating!  </MyText>) : null}
+                        </Box>
+                    </PayPalScriptProvider>
+                </ Card >
+            </Grid>
+        </Grid>
     );
 }

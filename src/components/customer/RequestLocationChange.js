@@ -75,7 +75,7 @@ const RequestLocationChange = () => {
                 id: id
             },
             shelter: facility,
-            reason: reason
+            description: reason
         }
 
         RequestService.requestLocationChange(locationChangeRequest)

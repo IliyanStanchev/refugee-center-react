@@ -18,6 +18,10 @@ class DonationService {
     updateDonation(donation) {
         return axios.post(`${API_URL}/update-donation`, donation);
     }
+
+    getDonors() {
+        return axios.get(`${API_URL}/get-donors`);
+    }
 }
 
 export default new DonationService()

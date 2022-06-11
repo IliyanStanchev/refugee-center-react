@@ -183,16 +183,6 @@ EnhancedTableToolbar.propTypes = {
 
 const Facilities = () => {
 
-    let newFacility = {
-        id: 0,
-        facilityType: 'OTHER',
-        name: '',
-        quantity: 1,
-        unit: 'COUNT',
-    }
-
-    const navigate = useNavigate();
-
     const getFacilities = async () => {
         try {
 

@@ -18,5 +18,11 @@ class AddressResolver {
         let facilityState = this.getStateData(facility.address.stateIsoCode, facility.address.countryIsoCode);
         return facilityCountry + ' / ' + facilityState + ' / ' + facility.address.cityName;
     }
+
+    getFacilityLocation(facility) {
+        let facilityState = State.getStateByCodeAndCountry(facility.address.stateIsoCode, facility.address.countryIsoCode);
+        return { lat: parseFloat(facilityState.latitude), lng: parseFloat(facilityState.longitude) };
+
+    }
 }
 export default new AddressResolver;

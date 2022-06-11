@@ -56,6 +56,11 @@ const RefugeeNavigationBar = () => {
         setPageTitle('Messages');
     };
 
+    const handleRequests = () => {
+        navigate('/refugee/requests');
+        setPageTitle('Requests');
+    };
+
     const handleProfile = () => {
         setAnchorElUser(null);
         navigate('/refugee/profile');
@@ -125,6 +130,7 @@ const RefugeeNavigationBar = () => {
                                 <MenuItem onClick={handleRequestLocationChange}> Request location change </MenuItem>
                                 <MenuItem onClick={handleRequestMedicalHelp}> Request medical help </MenuItem>
                                 <MenuItem onClick={handleMessages}> Messages </MenuItem>
+                                <MenuItem onClick={handleRequests}> My requests </MenuItem>
                             </Menu>
                         </Box>
                         <Typography
@@ -170,6 +176,12 @@ const RefugeeNavigationBar = () => {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Messages
+                            </Button>
+                            <Button
+                                onClick={handleRequests}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                My Requests
                             </Button>
                         </Box>
 

@@ -12,6 +12,7 @@ import UserProfile from './UserProfile';
 import { ReactSession } from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
+import CustomerFooter from "../footer/CustomerFooter";
 
 const Moderator = () => {
 
@@ -49,6 +50,7 @@ const Moderator = () => {
                     <Route path="/donations" element={<Donations />} />
                     <Route path="/profile" element={<UserProfile />} />
                 </Routes>
+                <CustomerFooter />
             </Box>
         </div>
     );

@@ -14,6 +14,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import UserInfo from './UserInfo';
 import FacilityService from "../../services/FacilityService";
 import { DialogActions } from "@mui/material";
+import MuiPhoneNumber from 'material-ui-phone-number';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
@@ -39,6 +40,7 @@ const AddFacilityDialog = (props) => {
     const [state, setState] = useState(null);
     const [city, setCity] = useState(null);
     const [address, setAddress] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
 
     const [currentCapacity, setCurrentCapacity] = useState(MIN_VALUE);
     const [maxCapacity, setMaxCapacity] = useState(MAX_VALUE);
@@ -189,6 +191,7 @@ const AddFacilityDialog = (props) => {
             , maxCapacity: maxCapacity
             , responsibleUser: responsibleUser
             , facilityType: facilityType
+            , phoneNumber: phoneNumber
         };
 
         setErrorMessage('');
@@ -347,6 +350,18 @@ const AddFacilityDialog = (props) => {
                         multiline
                         onChange={(event) => {
                             setAddress(event.target.value);
+                        }}
+                    />
+                    <MuiPhoneNumber
+                        sx={{ mb: 2, mt: 2 }}
+                        variant='outlined'
+                        label='Phone number'
+                        name="phoneNumber"
+                        value={phoneNumber}
+                        fullWidth
+                        defaultCountry={'bg'}
+                        onChange={(event) => {
+                            setPhoneNumber(event);
                         }}
                     />
                     <Divider sx={{ mt: 2, mb: 2 }} />

@@ -9,13 +9,13 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Reaptcha from 'reaptcha';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import validator from 'validator';
 import Tooltip from '@mui/material/Tooltip';
 import { ReactSession } from 'react-client-session';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import MyTheme from '../../controls/MyTheme';
 import lightGreen from '@mui/material/colors/lightGreen';
+import { TextField } from '@mui/material';
 
 const ADMINISTRATOR = process.env.REACT_APP_ADMINISTRATOR;
 const MODERATOR = process.env.REACT_APP_MODERATOR;
@@ -27,7 +27,7 @@ export default function LoginComponent() {
     const [password, setPassword] = useState('');
     const [loginMessage, setLoginMessage] = useState(null);
     const [reCaptchaMessage, setReCaptchaMessage] = useState(null);
-    const [isVerified, setIsVerified] = useState(false);
+    const [isVerified, setIsVerified] = useState(true);
     const navigate = useNavigate();
 
     const handleOnVerify = (recaptchaResponse) => {
@@ -76,8 +76,8 @@ export default function LoginComponent() {
             .then(response => handleResponse(response))
             .catch(error => handleError(error.response));
 
-        setIsVerified(false);
-        window.grecaptcha.reset();
+        //setIsVerified(false);
+        //window.grecaptcha.reset();
     }
 
     const handleResponse = (response) => {
@@ -126,12 +126,8 @@ export default function LoginComponent() {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <ValidatorForm
-                noValidate={true}
-                onSubmit={handleSubmit}
-
-            >
-                <CssBaseline />
+            <CssBaseline />
+            <div style={{ display: 'flex', justifyContent: 'center' }} >
                 <Box container
                     sx={{
                         alignItems: 'center',
@@ -149,17 +145,16 @@ export default function LoginComponent() {
                     </Typography>
                     <Box sx={{ mt: 2, mb: 2 }}>
                         {loginMessage && <p style={{ color: "red" }} >{loginMessage}</p>}
-                        <TextValidator
+                        <TextField
                             sx={{ width: 300, mt: 1, mb: 2 }}
                             label="Email"
                             onChange={handleEmailChange}
                             name="email"
                             value={email}
                             required
-                            validators={['required', 'isEmail']}
-                            errorMessages={['Enter email', 'Wrong email format']}
+
                         />
-                        <TextValidator
+                        <TextField
                             sx={{ width: 300, mt: 1, mb: 2 }}
                             label="Password"
                             onChange={handlePasswordChange}
@@ -167,8 +162,7 @@ export default function LoginComponent() {
                             type="password"
                             value={password}
                             required
-                            validators={['required', 'minStringLength:3']}
-                            errorMessages={['Enter password', 'Password must be at least 3 characters long']}
+
                         />
                         <div style={{ display: 'flex', justifyContent: 'center' }} >
                             <Reaptcha
@@ -178,9 +172,9 @@ export default function LoginComponent() {
                         </div>
                         {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
                         <Button
-                            type="submit"
+                            sx={{ mt: 2, mb: 2 }}
+                            onClick={handleSubmit}
                             variant="contained"
-                            sx={{ width: 300, mt: 3, mb: 2 }}
                         >
                             Login
                         </Button>
@@ -202,7 +196,7 @@ export default function LoginComponent() {
                         </Grid>
                     </Box>
                 </Box>
-            </ValidatorForm >
+            </div>
         </ThemeProvider>
     );
 }

@@ -182,10 +182,6 @@ EnhancedTableToolbar.propTypes = {
 
 const Groups = () => {
 
-    const id = ReactSession.get('id');
-
-    const navigate = useNavigate();
-
     const getGroups = async () => {
         try {
 

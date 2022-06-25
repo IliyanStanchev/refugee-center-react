@@ -39,6 +39,21 @@ class RequestService {
         return axios.post(`${API_URL}/decline-medical-help-requests`, requests);
     }
 
+    declineStockRequest(stockRequest) {
+        return axios.post(`${API_URL}/decline-stock-request`, stockRequest);
+    }
+
+    declineLocationChangeRequest(locationChangeRequest) {
+        return axios.post(`${API_URL}/decline-location-change-request`, locationChangeRequest);
+    }
+
+    approveStockRequest(stockRequest) {
+        return axios.post(`${API_URL}/approve-stock-request`, stockRequest);
+    }
+
+    approveLocationChangeRequest(locationChangeRequest) {
+        return axios.post(`${API_URL}/approve-location-change-request`, locationChangeRequest);
+    }
 }
 
 export default new RequestService()

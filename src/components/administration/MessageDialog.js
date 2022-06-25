@@ -243,7 +243,7 @@ const MessageDialog = (props) => {
                 </DialogContent>
             </Box>
             <DialogActions>
-                {!readOnly && <Button variant="contained" onClick={handleSendMessage}>Save</Button>}
+                {!readOnly && <Button variant="contained" onClick={handleSendMessage}>Send Message</Button>}
                 <Button variant="contained" onClick={() => onActionPerformed()}> {readOnly ? 'OK' : 'Cancel'}</Button>
             </DialogActions>
             <ReceiverDialog receiver={selectedReceiver} open={openReceiverDialog} onClose={() => { setOpenReceiverDialog(false) }} />

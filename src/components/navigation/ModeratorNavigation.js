@@ -63,6 +63,11 @@ const ModeratorNavigationBar = () => {
         setPageTitle('Donations');
     };
 
+    const handleRequests = () => {
+        navigate('/moderator/requests');
+        setPageTitle('Requests');
+    };
+
     const handleProfile = () => {
         setAnchorElUser(null);
         navigate('/moderator/profile');
@@ -133,6 +138,7 @@ const ModeratorNavigationBar = () => {
                                 <MenuItem onClick={handleMessages}> Messages </MenuItem>
                                 <MenuItem onClick={handleFacilities}> Facilities </MenuItem>
                                 <MenuItem onClick={handleDonations}> Donations </MenuItem>
+                                <MenuItem onClick={handleRequests}> Requests </MenuItem>
                             </Menu>
                         </Box>
                         <Typography
@@ -184,6 +190,12 @@ const ModeratorNavigationBar = () => {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Donations
+                            </Button>
+                            <Button
+                                onClick={handleRequests}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Requests
                             </Button>
                         </Box>
 

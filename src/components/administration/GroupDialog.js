@@ -19,9 +19,9 @@ const GroupDialog = (props) => {
     let { selectedGroup, open, onActionPerformed, readOnly } = props;
 
     const groupTypes = [
-        'EMPLOYEES'
-        , 'REFUGEES'
-        , 'COMMON'
+        'Employees'
+        , 'Refugees'
+        , 'Common'
     ];
 
     const [group, setGroup] = useState(selectedGroup);
@@ -76,7 +76,7 @@ const GroupDialog = (props) => {
 
         selectedGroup.id = 0;
         selectedGroup.email = '@safe_shelter.com';
-        selectedGroup.groupType = 'COMMON';
+        selectedGroup.groupType = 'Common';
 
         setLoading(false);
         onActionPerformed();

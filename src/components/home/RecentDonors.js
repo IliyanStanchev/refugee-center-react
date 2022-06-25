@@ -25,7 +25,6 @@ export default function RecentDonors() {
 
     const getDonors = async () => {
         try {
-
             DonationService.getDonors()
                 .then(
                     response => {

@@ -67,6 +67,16 @@ const AdminNavigationBar = () => {
         setPageTitle('Donations');
     };
 
+    const handleRequests = () => {
+        navigate('/admin/requests');
+        setPageTitle('Requests');
+    };
+
+    const handleQuestions = () => {
+        navigate('/admin/questions');
+        setPageTitle('Questions');
+    };
+
     const handleProfile = () => {
         setAnchorElUser(null);
         navigate('/admin/profile');
@@ -138,6 +148,8 @@ const AdminNavigationBar = () => {
                                 <MenuItem onClick={handleMessages}> Messages </MenuItem>
                                 <MenuItem onClick={handleFacilities}> Facilities </MenuItem>
                                 <MenuItem onClick={handleDonations}> Donations </MenuItem>
+                                <MenuItem onClick={handleRequests}> Requests </MenuItem>
+                                <MenuItem onClick={handleQuestions}> Questions </MenuItem>
                             </Menu>
                         </Box>
                         <Typography
@@ -195,6 +207,18 @@ const AdminNavigationBar = () => {
                                 sx={{ my: 2, color: 'white', display: 'block' }}
                             >
                                 Donations
+                            </Button>
+                            <Button
+                                onClick={handleRequests}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Requests
+                            </Button>
+                            <Button
+                                onClick={handleQuestions}
+                                sx={{ my: 2, color: 'white', display: 'block' }}
+                            >
+                                Questions
                             </Button>
                         </Box>
 

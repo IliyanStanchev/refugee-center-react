@@ -11,7 +11,7 @@ export default function Footer() {
     const ref = React.useRef(null);
 
     return (
-        <Box sx={{ pb: 7, height: '180px' }} ref={ref}>
+        <Box sx={{ height: '180px', mt: 5 }} ref={ref}>
             <CssBaseline />
             <Paper sx={{ position: 'fixed', height: '180px', bottom: 0, left: 0, right: 0 }} elevation={22}>
                 <BottomNavigation

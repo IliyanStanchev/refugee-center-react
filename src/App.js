@@ -5,14 +5,14 @@ import Admin from "./components/administration/Admin";
 import Moderator from "./components/administration/Moderator";
 import Refugee from "./components/customer/Refugee";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
 import VerifyRefugeeDialog from './components/customer/VerifyRefugeeDialog';
 import { ReactSession } from 'react-client-session';
 import MyTheme from './controls/MyTheme';
+import UnauthorizedPage from './components/error/UnauthorizedPage';
 
 export default function App() {
 
-  ReactSession.setStoreType("localStorage");
+  ReactSession.setStoreType("sessionStorage");
 
   return (
     <ThemeProvider theme={MyTheme}>
@@ -23,6 +23,7 @@ export default function App() {
           <Route path="/moderator/*" element={<Moderator />} />
           <Route path="/verify-refugee" element={<VerifyRefugeeDialog />} />
           <Route path="/refugee/*" element={<Refugee />} />
+          <Route path="/unauthorized-page" element={<UnauthorizedPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

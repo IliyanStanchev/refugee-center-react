@@ -34,10 +34,6 @@ class MessageService {
     setAsSeen(messageId) {
         return axios.put(`${API_URL}/set-as-seen/${messageId}`);
     }
-
-    sendQuestion(question) {
-        return axios.post(`${API_URL}/send-question`, question);
-    }
 }
 
 export default new MessageService()

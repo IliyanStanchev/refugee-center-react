@@ -76,6 +76,7 @@ export default function LoginComponent() {
             .then(response => handleResponse(response))
             .catch(error => handleError(error.response));
 
+
         //setIsVerified(false);
         //window.grecaptcha.reset();
     }
@@ -84,7 +85,7 @@ export default function LoginComponent() {
 
         if (response.status == process.env.REACT_APP_HTTP_STATUS_OK) {
 
-            loginUser(response.data.id, response.data.role);
+            loginUser(response.data);
         }
         else {
             handleError(response);
@@ -104,12 +105,16 @@ export default function LoginComponent() {
         }
     }
 
-    const loginUser = (id, role) => {
+    const loginUser = (userSession) => {
+
+        let id = userSession.user.id;
+        let role = userSession.user.role;
 
         if (id == null)
             return;
 
         ReactSession.set('id', id);
+        ReactSession.set('authorization', userSession.authorizationToken);
 
         if (role.roleType == ADMINISTRATOR)
             navigate('/admin');
@@ -188,9 +193,9 @@ export default function LoginComponent() {
                         <Grid container sx={{ mt: 2, mb: 2 }}>
                             <Grid item xs>
                                 <Tooltip title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
-                                    <p variant="body2">
-                                        {"I am a refugee"}
-                                    </p>
+                                    <Link to="/" variant="body2">
+                                        I am a refugee
+                                    </Link>
                                 </Tooltip>
                             </Grid>
                         </Grid>

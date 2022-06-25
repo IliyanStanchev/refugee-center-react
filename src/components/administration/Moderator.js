@@ -3,7 +3,6 @@ import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import ModeratorNavigationBar from "../navigation/ModeratorNavigation";
 import { Routes, Route } from "react-router-dom";
 import Registration from './Registration';
-import PendingRegistrations from './PendingRegistrations';
 import Groups from './Groups';
 import Messages from './Messages';
 import Facilities from './Facilities';
@@ -13,6 +12,7 @@ import { ReactSession } from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
 import CustomerFooter from "../footer/CustomerFooter";
+import Requests from './Requests';
 
 const Moderator = () => {
 
@@ -21,23 +21,24 @@ const Moderator = () => {
 
     useEffect(() => {
 
-        if (id === undefined)
-            return;
+        const authorizationToken = ReactSession.get('authorization');
 
-        if (id == null)
-            return;
-
-        if (id <= 0)
-            navigate(-1);
-
-        UserService.getUser(id).then(response => {
+        UserService.verifyUser(id, authorizationToken).then(response => {
             if (response.data.role.roleType !== process.env.REACT_APP_MODERATOR) {
                 navigate(-1);
+                return;
             }
         })
-            .catch(error => { navigate(-1); });
+            .catch(error => {
+                if (error.response.status == process.env.REACT_APP_HTTP_STATUS_UNAUTHORIZED) {
+                    navigate("/unauthorized-page");
+                    return;
+                }
 
+                navigate(-1);
+            });
     });
+
     return (
         <div>
             <ModeratorNavigationBar></ModeratorNavigationBar>
@@ -48,6 +49,7 @@ const Moderator = () => {
                     <Route path="/messages" element={<Messages />} />
                     <Route path="/facilities" element={<Facilities />} />
                     <Route path="/donations" element={<Donations />} />
+                    <Route path="/requests" element={<Requests />} />
                     <Route path="/profile" element={<UserProfile />} />
                 </Routes>
                 <CustomerFooter />

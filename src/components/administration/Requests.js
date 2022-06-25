@@ -21,17 +21,14 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import MessageService from "../../services/MessageService";
-import WarningIcon from '@mui/icons-material/Warning';
-import InfoIcon from '@mui/icons-material/Info';
-import MessageDialog from "./MessageDialog";
-import SendIcon from '@mui/icons-material/Send';
-import InboxIcon from '@mui/icons-material/Inbox';
+import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import RequestService from "../../services/RequestService";
+import UserService from "../../services/UserService";
+import Button from '@mui/material/Button';
+import RequestDialog from './RequestDialog';
 
 const STOCKS_MODE = 0;
 const LOCATION_CHANGE_MODE = 1;
@@ -90,6 +87,12 @@ const headCells = [
         numeric: false,
         disablePadding: false,
         label: 'Status',
+    },
+    {
+        id: 'actions',
+        numeric: false,
+        disablePadding: false,
+
     },
 ];
 
@@ -285,13 +288,31 @@ const Requests = () => {
         getMedicalHelpRequests();
     }, []);
 
+    useEffect(() => {
+
+        UserService.getUser(id).then(response => {
+            if (response.data.role.roleType == process.env.REACT_APP_CUSTOMER) {
+                setEmployeeMode(false);
+                return;
+            }
+
+            setEmployeeMode(true);
+        }).catch(error => {
+            setEmployeeMode(false);
+            return;
+        });
+    });
+
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [requests, setRequests] = React.useState([]);
     const [requestMode, setRequestMode] = React.useState(MEDICAL_HELP_MODE);
+    const [employeeMode, setEmployeeMode] = React.useState(false);
+    const [openRequestDialog, setOpenRequestDialog] = React.useState(false);
+    const [selectedRequest, setSelectedRequest] = React.useState(null);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -346,7 +367,7 @@ const Requests = () => {
 
     const handleActionPerformed = () => {
         setSelected([]);
-
+        setOpenRequestDialog(false);
         if (requestMode === STOCKS_MODE) {
 
             getStockRequests();
@@ -361,18 +382,21 @@ const Requests = () => {
 
     const handleStockRequestClicked = () => {
 
+        setSelectedRequest(null);
         getStockRequests();
         setRequestMode(STOCKS_MODE);
     };
 
     const handleMedicalHelpRequestClicked = () => {
 
+        setSelectedRequest(null);
         getMedicalHelpRequests();
         setRequestMode(MEDICAL_HELP_MODE);
     };
 
     const handleLocationChangeRequestClicked = () => {
 
+        setSelectedRequest(null);
         getLocationChangeRequests();
         setRequestMode(LOCATION_CHANGE_MODE);
     };
@@ -422,6 +446,7 @@ const Requests = () => {
                                                     backgroundColor: row.requestStatus != 'Pending' ? "#f5f5f5" : "white"
                                                     , "& th": row.requestStatus != 'Pending' ? {} : {
                                                         fontSize: "1.10rem",
+                                                        fontWeight: "bold",
                                                     }
                                                 }}
                                                 onClick={(event) => handleClick(event, row)}
@@ -444,6 +469,10 @@ const Requests = () => {
                                                 <TableCell component="th">{row.description}</TableCell>
                                                 <TableCell component="th">{new Date(row.dateCreated).toLocaleString("en-US", options)}</TableCell>
                                                 <TableCell component="th">{row.requestStatus}</TableCell>
+                                                <TableCell component="th"> {requestMode != MEDICAL_HELP_MODE && <Button onClick={() => {
+                                                    setOpenRequestDialog(true);
+                                                    setSelectedRequest(row);
+                                                }}> <OpenInNewIcon /> </Button>} </TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -469,6 +498,7 @@ const Requests = () => {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
+                <RequestDialog requestType={requestMode} employeeMode={employeeMode} open={openRequestDialog} onActionPerformed={handleActionPerformed} request={selectedRequest} />
             </Box>
         </div>
     );

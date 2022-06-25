@@ -246,10 +246,10 @@ const EnhancedTableToolbar = (props) => {
                     justifyContent: 'flex-end',
                 }} >
                     <Tooltip title="Approve selected">
-                        <IconButton onClick={handleApproveSelected}> <HowToRegIcon /></IconButton>
+                        <IconButton onClick={handleApproveSelected}> <HowToRegIcon color='primary' /></IconButton>
                     </Tooltip>
                     <Tooltip title="Decline selected">
-                        <IconButton onClick={handleDeleteSelected}> <DeleteIcon /></IconButton>
+                        <IconButton onClick={handleDeleteSelected}> <DeleteIcon color='primary' /></IconButton>
                     </Tooltip>
                 </Grid>
             ) : (

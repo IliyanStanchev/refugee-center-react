@@ -89,7 +89,7 @@ const UserProfile = () => {
                                     id="name"
                                     readOnly
                                     value={user && user.identifier}
-                                    label="Name"
+                                    label="Identifier"
                                     type="text"
                                     variant="outlined"
                                 />

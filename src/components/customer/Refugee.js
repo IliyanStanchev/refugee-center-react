@@ -17,24 +17,16 @@ const Refugee = () => {
 
     const navigate = useNavigate();
     const id = ReactSession.get('id');
+    const sessionTimestamp = ReactSession.get('timestamp');
 
     const [user, setUser] = useState(null);
     const [openVerification, setOpenVerification] = useState(false);
 
     useEffect(() => {
 
-        if (id === undefined)
-            return;
+        const authorizationToken = ReactSession.get('authorization');
 
-        if (id == null)
-            return;
-
-        if (id <= 0) {
-            navigate(-1);
-            return;
-        }
-
-        UserService.getUser(id).then(response => {
+        UserService.verifyUser(id, authorizationToken).then(response => {
             if (response.data.role.roleType !== process.env.REACT_APP_CUSTOMER) {
                 navigate(-1);
                 return;
@@ -46,10 +38,13 @@ const Refugee = () => {
             }
         })
             .catch(error => {
-                navigate(-1);
-                return;
-            });
+                if (error.response.status == process.env.REACT_APP_HTTP_STATUS_UNAUTHORIZED) {
+                    navigate("/unauthorized-page");
+                    return;
+                }
 
+                navigate(-1);
+            });
     });
 
     return (

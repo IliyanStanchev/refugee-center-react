@@ -4,20 +4,15 @@ import { Country, State, City } from 'country-state-city';
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import MyTheme from '../../../controls/MyTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiPhoneNumber from 'material-ui-phone-number';
 import FacilityService from "../../../services/FacilityService";
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import InfoIcon from '@mui/icons-material/Info';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FacilityInfo from "../FacilityInfo";
 
 const MIN_AGE = 1
@@ -414,7 +409,7 @@ const PersonalData = (props) => {
                                 );
 
 
-                            }}> <InfoIcon /> </Button>
+                            }}> <OpenInNewIcon /> </Button>
                         </Box>
                     )}
                     renderInput={(params) => (

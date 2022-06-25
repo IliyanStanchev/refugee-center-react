@@ -27,7 +27,8 @@ export default function HomeRouter() {
   }
 
   useEffect(() => {
-    ReactSession.set('id', 0);
+    ReactSession.set('id', null);
+    ReactSession.set('authorization', null);
   });
 
   return (

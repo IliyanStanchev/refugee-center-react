@@ -24,7 +24,7 @@ const PendingRegistrationInfo = (props) => {
 
     function getFacilityData(facility) {
 
-        AddressResolver.getFacilityData(facility);
+        return AddressResolver.getFacilityData(facility);
     }
 
     return (

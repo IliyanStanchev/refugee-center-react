@@ -8,7 +8,7 @@ import { lightGreen } from '@mui/material/colors';
 import { TextField } from "@mui/material";
 import Reaptcha from 'reaptcha';
 import { Button } from "@mui/material";
-import MessageService from "../../services/MessageService";
+import QuestionService from "../../services/QuestionService";
 
 const Contact = () => {
 
@@ -50,7 +50,7 @@ const Contact = () => {
             message: message
         }
 
-        MessageService.sendQuestion(question)
+        QuestionService.sendQuestion(question)
             .then(() => {
                 setResponseMessage("Question send successfully");
                 setVerify(false);

@@ -31,6 +31,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import SendIcon from '@mui/icons-material/Send';
 import InboxIcon from '@mui/icons-material/Inbox';
 import SearchBar from "material-ui-search-bar";
+import QuestionService from "../../services/QuestionService";
+import QuestionDialog from './QuestionDialog';
 
 const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
@@ -64,21 +66,16 @@ function getComparator(order, orderBy) {
 
 const headCells = [
     {
-        id: 'type',
-        numeric: false,
-        disablePadding: true,
-    },
-    {
         id: 'email',
         numeric: false,
         disablePadding: true,
         label: 'Sender',
     },
     {
-        id: 'subject',
+        id: 'name',
         numeric: false,
         disablePadding: false,
-        label: 'Subject',
+        label: 'Name',
     },
     {
         id: 'date',
@@ -99,8 +96,7 @@ function EnhancedTableHead(props) {
         , orderBy
         , numSelected
         , rowCount
-        , onRequestSort
-        , sendMessagesMode } = props;
+        , onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -108,7 +104,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {!sendMessagesMode && <TableCell padding="checkbox" >
+                <TableCell padding="checkbox" >
 
                     <Checkbox
                         color="primary"
@@ -119,7 +115,7 @@ function EnhancedTableHead(props) {
                             'aria-label': 'select all mails',
                         }}
                     />
-                </TableCell>}
+                </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -158,23 +154,11 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = (props) => {
     const { selected
         , numSelected
-        , onActionPerformed
-        , onNewMailClicked
-        , onSendMessagesClicked
-        , onReceivedMessagesClicked
-        , sendMessagesMode } = props;
-
-    const handleMarkAsRead = () => {
-
-        MessageService.markMessagesAsRead(selected).then(() => {
-            onActionPerformed();
-        });
-
-    };
+        , onActionPerformed } = props;
 
     const handleDeleteSelected = () => {
 
-        MessageService.deleteMessages(selected).then(() => {
+        QuestionService.deleteSelectedQuestions(selected).then(() => {
             onActionPerformed();
         });
     };
@@ -206,29 +190,18 @@ const EnhancedTableToolbar = (props) => {
                     id="tableTitle"
                     component="div"
                 >
-                    <ToggleButtonGroup value={sendMessagesMode} color="primary">
-                        <ToggleButton value={false} onClick={onReceivedMessagesClicked} > <InboxIcon color='primary' sx={{ mr: 2 }} /> Received messages </ToggleButton>
-                        <ToggleButton value={true} onClick={onSendMessagesClicked}> <SendIcon color='primary' sx={{ mr: 2 }} /> Send messages </ToggleButton>
-                    </ToggleButtonGroup>
+
                 </Typography>
             )}
-            {numSelected > 0 ? (
+            {numSelected > 0 && (
                 <Grid container sx={{
                     justifyContent: 'flex-end',
                 }} >
-                    <Tooltip title="Mark as read">
-                        <IconButton onClick={() => { handleMarkAsRead() }}> <MarkEmailReadIcon color="primary" /></IconButton>
-                    </Tooltip>
                     <Tooltip title="Delete selected">
                         <IconButton onClick={() => { handleDeleteSelected() }}> <DeleteIcon color="primary" /></IconButton>
                     </Tooltip>
                 </Grid>
-            ) : (
-                <Tooltip title="New message">
-                    <IconButton onClick={onNewMailClicked}> <AddBoxIcon color="primary" /></IconButton>
-                </Tooltip>
-            )
-            }
+            )}
         </Toolbar >
     );
 };
@@ -242,47 +215,27 @@ EnhancedTableToolbar.propTypes = {
     onReceivedMessagesClicked: PropTypes.func.isRequired,
 };
 
-const Messages = () => {
+const Questions = () => {
 
     const id = ReactSession.get('id');
-    const navigate = useNavigate();
 
-    const getSendMessages = async () => {
+    const getQuestions = async () => {
         try {
 
-            MessageService.getSendMessages(id)
+            QuestionService.getQuestions()
                 .then(
                     response => {
-                        setMessages(response.data);
+                        setQuestions(response.data);
                     }
                 )
 
         } catch (error) {
-            setMessages([]);
+            setQuestions([]);
         }
     };
 
     useEffect(() => {
-        getSendMessages();
-    }, []);
-
-    const getReceivedMessages = async () => {
-        try {
-
-            MessageService.getReceivedMessages(id)
-                .then(
-                    response => {
-                        setMessages(response.data);
-                    }
-                )
-
-        } catch (error) {
-            setMessages([]);
-        }
-    };
-
-    useEffect(() => {
-        getReceivedMessages();
+        getQuestions();
     }, []);
 
     const [order, setOrder] = React.useState('asc');
@@ -290,27 +243,12 @@ const Messages = () => {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [messages, setMessages] = React.useState([]);
+    const [questions, setQuestions] = React.useState([]);
 
     const [open, setOpen] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
 
-    const [sendMessagesMode, setSendMessagesMode] = React.useState(false);
-    const [searchedSender, setSearchedSender] = React.useState("");
-
-    let newMessage = {
-        id: 0,
-        message: {
-            id: 0
-            , sender: { id: id }
-            , messageType: 'Informative'
-            , subject: ''
-            , content: ''
-
-        }, receivers: [],
-    };
-
-    const [selectedMessage, setSelectedMessage] = React.useState({
+    const [question, setQuestion] = React.useState({
         id: 0,
         message: {
             id: 0
@@ -322,51 +260,11 @@ const Messages = () => {
         }, receivers: [],
     });
 
-    const getMessageReceivers = async (message) => {
+    const setAsSeen = async (questionId) => {
 
-        if (typeof message === 'undefined') {
-            return;
-        }
+        QuestionService.setAsReserved(questionId);
 
-        try {
-
-            MessageService.getMessageReceivers(message.message.id)
-                .then(
-                    response => {
-
-                        setMessageReceivers(message, response.data);
-                        setOpen(true);
-                    }
-                )
-
-        } catch (error) {
-            setMessageReceivers(message, []);
-
-        }
     };
-
-    useEffect(() => {
-        getMessageReceivers();
-    }, []);
-
-
-    const setAsSeen = (messageId) => {
-
-        if (sendMessagesMode)
-            return;
-
-        MessageService.setAsSeen(messageId);
-    };
-
-    const setMessageReceivers = (message, receivers) => {
-
-        if (typeof message === 'undefined')
-            return;
-
-        let updatedMessage = {};
-        updatedMessage = { receivers: receivers };
-        setSelectedMessage({ ...message, ...updatedMessage });
-    }
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -376,7 +274,7 @@ const Messages = () => {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = messages.map((refugee) => refugee.id);
+            const newSelecteds = questions.map((refugee) => refugee.id);
             setSelected(newSelecteds);
             return;
         }
@@ -385,9 +283,6 @@ const Messages = () => {
 
     const handleClick = (event, id) => {
 
-        if (sendMessagesMode) {
-            return;
-        }
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -418,41 +313,14 @@ const Messages = () => {
 
     const handleActionPerformed = () => {
         setSelected([]);
-
-        if (sendMessagesMode) {
-            getSendMessages();
-        }
-        else {
-            getReceivedMessages();
-        }
-
+        getQuestions();
         setOpen(false);
-    };
-
-    const handleNewMailClicked = () => {
-
-        setSelectedMessage(newMessage);
-
-        setReadOnly(false);
-        setOpen(true);
-    };
-
-    const handleSendMessagesClicked = () => {
-
-        getSendMessages();
-        setSendMessagesMode(true);
-    };
-
-    const handleReceivedMessagesClicked = () => {
-
-        getReceivedMessages();
-        setSendMessagesMode(false);
     };
 
     const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - messages.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - questions.length) : 0;
 
     return (
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
@@ -461,11 +329,7 @@ const Messages = () => {
                     <EnhancedTableToolbar
                         selected={selected}
                         numSelected={selected.length}
-                        onActionPerformed={handleActionPerformed}
-                        onNewMailClicked={handleNewMailClicked}
-                        onSendMessagesClicked={handleSendMessagesClicked}
-                        onReceivedMessagesClicked={handleReceivedMessagesClicked}
-                        sendMessagesMode={sendMessagesMode} />
+                        onActionPerformed={handleActionPerformed} />
                     <TableContainer>
                         <Table
                             sx={{ minWidth: 750 }}
@@ -478,11 +342,11 @@ const Messages = () => {
                                 orderBy={orderBy}
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
-                                rowCount={messages.length}
-                                sendMessagesMode={sendMessagesMode}
+                                rowCount={questions.length}
+
                             />
                             <TableBody>
-                                {stableSort(messages, getComparator(order, orderBy))
+                                {stableSort(questions, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
                                         const isItemSelected = isSelected(row.id);
@@ -491,8 +355,8 @@ const Messages = () => {
                                         return (
                                             <TableRow
                                                 sx={{
-                                                    backgroundColor: sendMessagesMode || row.seen ? "#f5f5f5" : "white"
-                                                    , "& th": sendMessagesMode || row.seen ? {} : {
+                                                    backgroundColor: "white"
+                                                    , "& th": {
                                                         fontSize: "1.10rem",
                                                         fontWeight: "bold",
                                                     }
@@ -504,7 +368,7 @@ const Messages = () => {
                                                 key={row.id}
                                                 selected={isItemSelected}
                                             >
-                                                {!sendMessagesMode && <TableCell padding="checkbox">
+                                                <TableCell padding="checkbox">
                                                     <Checkbox
                                                         color="primary"
                                                         checked={isItemSelected}
@@ -512,19 +376,18 @@ const Messages = () => {
                                                             'aria-labelledby': labelId,
                                                         }}
                                                     />
-                                                </TableCell>}
-                                                <TableCell > {row.message.messageType == 'Informative' ? <InfoIcon color="primary" /> : <WarningIcon color="warning" />} </TableCell>
+                                                </TableCell>
                                                 <TableCell
                                                     component="th"
                                                     id={labelId}
                                                     scope="row"
                                                     padding="none"
                                                 >
-                                                    {row.message.sender.email}
+                                                    {row.email}
                                                 </TableCell>
-                                                <TableCell component="th">{row.message.subject}</TableCell>
-                                                <TableCell component="th">{new Date(row.message.dateReceived).toLocaleString("en-US", options)}</TableCell>
-                                                <TableCell component="th"><Button onClick={() => { setReadOnly(true); setAsSeen(row.id); getMessageReceivers(row); }}> <OpenInNewIcon /> </Button></TableCell>
+                                                <TableCell component="th">{row.name}</TableCell>
+                                                <TableCell component="th">{new Date(row.dateReceived).toLocaleString("en-US", options)}</TableCell>
+                                                <TableCell component="th"><Button onClick={() => { setAsSeen(row.id); setOpen(true); setQuestion(row); }}> <OpenInNewIcon /> </Button></TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -539,12 +402,12 @@ const Messages = () => {
                                 )}
                             </TableBody>
                         </Table>
-                        <MessageDialog open={open} selectedMessage={selectedMessage} onActionPerformed={handleActionPerformed} readOnly={readOnly} />
+                        <QuestionDialog open={open} question={question} onActionPerformed={handleActionPerformed} readOnly={readOnly} />
                     </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={messages.length}
+                        count={questions.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -556,4 +419,4 @@ const Messages = () => {
     );
 }
 
-export default Messages;
+export default Questions;

@@ -107,21 +107,18 @@ export default function DonateMoney() {
                     <Button
                         sx={{ ml: 2, mr: 2, mt: 2, mb: 2 }}
                         variant="contained"
-                        onClick={() => handleDonateButton(!show)}>
+                        onClick={() => handleDonateButton(!show)}>A
                         {show ? "Change amount" : "Donate"}
                     </Button>
                     <PayPalScriptProvider
-                        options={{
-                            "client-id": process.env.REACT_APP_CLIENT_ID,
-                        }}
-                    >
+                        options={{ "client-id": process.env.REACT_APP_CLIENT_ID }} >
                         {errorMessage && <p style={{ color: "red" }} > {errorMessage} </p>}
                         <Box margin={10} >
                             {show ? (
                                 <div>
                                     <MyText> Pick your payment method </MyText>
                                     <PayPalButtons
-                                        style={{ layout: "vertical" }}
+                                        style={{ layout: "vertical", position: 'absolute' }}
                                         createOrder={createOrder}
                                         onApprove={onApprove}
                                     />

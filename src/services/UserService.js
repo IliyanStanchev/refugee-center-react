@@ -39,6 +39,16 @@ class UserService {
     sendVerificationCode(user) {
         return axios.post(`${API_URL}/send-verification-code`, user);
     }
+
+    verifyUser(id, authorizationToken) {
+
+        let userSession = {
+            id: id,
+            authorizationToken: authorizationToken
+        }
+
+        return axios.post(`${API_URL}/verify-user`, userSession);
+    }
 }
 
 export default new UserService()

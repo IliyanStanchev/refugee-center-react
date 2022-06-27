@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import RefugeeService from "../../services/RefugeeService";
 import { ReactSession } from 'react-client-session';
 import { ThemeProvider } from "styled-components";
 import MyTheme from './../../controls/MyTheme';
 import Paper from '@mui/material/Paper';
-import { Divider } from "@mui/material";
 import Button from '@mui/material/Button';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import MuiPhoneNumber from 'material-ui-phone-number';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import { red } from '@mui/material/colors';
 
 const MIN_AGE = 1;
@@ -82,7 +80,9 @@ const RefugeeDialog = () => {
             .then(response => {
                 setEditMode(false);
                 setRefugee(response.data);
-            }).catch(error => { setErrorMessage(error.response.data) });
+            }).catch(error => {
+                setErrorMessage(error.response.data)
+            });
     }
 
     return (
@@ -178,7 +178,9 @@ const RefugeeDialog = () => {
                                     inputProps={
                                         { readOnly: !editMode, }
                                     }
-                                    onChange={(event) => { setDiseases(event.target.value) }}
+                                    onChange={(event) => {
+                                        setDiseases(event.target.value)
+                                    }}
                                     value={diseases}
                                     label="Diseases"
                                     type="text"
@@ -194,7 +196,9 @@ const RefugeeDialog = () => {
                                     inputProps={
                                         { readOnly: !editMode, }
                                     }
-                                    onChange={(event) => { setAllergens(event.target.value) }}
+                                    onChange={(event) => {
+                                        setAllergens(event.target.value)
+                                    }}
                                     value={allergens}
                                     label="Allergens"
                                     type="text"
@@ -210,19 +214,22 @@ const RefugeeDialog = () => {
                                     inputProps={
                                         { readOnly: !editMode, }
                                     }
-                                    onChange={(event) => { setSpecialDiet(event.target.value) }}
+                                    onChange={(event) => {
+                                        setSpecialDiet(event.target.value)
+                                    }}
                                     value={specialDiet}
                                     label="Special Diet"
                                     type="text"
                                     variant="outlined"
                                 />
-                                <Button sx={{ mt: 2, mb: 2 }} fullWidth variant="contained" color="primary" onClick={handleSubmit}> {editMode ? 'Save changes' : 'Edit data'} </Button>
+                                <Button sx={{ mt: 2, mb: 2 }} fullWidth variant="contained" color="primary"
+                                    onClick={handleSubmit}> {editMode ? 'Save changes' : 'Edit data'} </Button>
                             </Box>
                         </div>
                     </Paper>
                 </Box>
             </div>
-        </ThemeProvider >
+        </ThemeProvider>
 
     );
 

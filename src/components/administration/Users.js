@@ -1,5 +1,4 @@
 import React, {useEffect} from "react";
-import {useNavigate} from "react-router-dom";
 import {ReactSession} from 'react-client-session';
 import PropTypes from 'prop-types';
 import {alpha} from '@mui/material/styles';
@@ -15,20 +14,20 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import {visuallyHidden} from '@mui/utils';
-import {Country, State} from 'country-state-city';
-import {Button, DialogActions, Grid} from "@mui/material";
-import Dialog from '@mui/material/Dialog';
-import PendingRegistrationInfo from './PendingRegistrationInfo';
+import {Button, FormControl, Grid, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
 import RefugeeService from "../../services/RefugeeService";
 import CircularProgress from '@mui/material/CircularProgress';
 import {green} from '@mui/material/colors';
+import UserService from "../../services/UserService";
+import SearchIcon from '@mui/icons-material/Search';
+import UserCheckDialog from "./UserCheckDialog";
+import RefugeeCheckDialog from './RefugeeCheckDialog';
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -58,48 +57,40 @@ function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function formatAddress(address) {
-
-    let country = Country.getCountryByCode(address.countryIsoCode);
-    let state = State.getStateByCodeAndCountry(address.stateIsoCode, address.countryIsoCode);
-
-    return country.name + ' ' + state.name + ' ' + address.cityName;
-}
-
 const headCells = [
     {
         id: 'email',
         numeric: false,
-        disablePadding: true,
+        disablePadding: false,
         label: 'Email',
     },
     {
         id: 'identifier',
         numeric: false,
-        disablePadding: true,
+        disablePadding: false,
         label: 'Identifier',
     },
     {
-        id: 'age',
-        numeric: true,
+        id: 'roleType',
+        numeric: false,
         disablePadding: false,
-        label: 'Age',
+        label: 'Role',
     },
     {
-        id: 'address',
+        id: 'status',
         numeric: false,
-        disablePadding: true,
-        label: 'Address',
+        disablePadding: false,
+        label: 'Status',
     },
     {
         id: 'actions',
         numeric: false,
-        disablePadding: true,
+        disablePadding: false,
     }
 ];
 
 function EnhancedTableHead(props) {
-    const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
+    const {order, orderBy, onRequestSort} =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -108,18 +99,6 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                <TableCell padding="checkbox">
-
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
-                </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
@@ -232,7 +211,7 @@ const EnhancedTableToolbar = (props) => {
                     id="tableTitle"
                     component="div"
                 >
-                    Pending registrations
+                    Users
                 </Typography>
             )}
             {loading && (
@@ -273,16 +252,16 @@ EnhancedTableToolbar.propTypes = {
     onActionPerformed: PropTypes.func.isRequired,
 };
 
-const PendingRegistrations = () => {
+const Users = () => {
 
     const id = ReactSession.get('id');
 
-    const navigate = useNavigate();
+    const getUsers = async () => {
 
-    const getPendingRegistrations = async () => {
+        setEmail('');
         try {
 
-            RefugeeService.getPengingRegistrations()
+            UserService.getUsers(id)
                 .then(
                     response => {
                         setPendingRegistrations(response.data);
@@ -295,53 +274,24 @@ const PendingRegistrations = () => {
     };
 
     useEffect(() => {
-        getPendingRegistrations();
+        getUsers();
     }, []);
 
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('email');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [pendingRegistrations, setPendingRegistrations] = React.useState([]);
-
     const [open, setOpen] = React.useState(false);
-    const [selectedRegistration, setSelectedRegistration] = React.useState(null);
+    const [user, setUser] = React.useState(null);
     const [loading, setLoading] = React.useState(false);
+    const [email, setEmail] = React.useState('');
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = pendingRegistrations.map((refugee) => refugee.id);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
-
-    const handleClick = (event, id) => {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -354,43 +304,25 @@ const PendingRegistrations = () => {
     };
 
     const handleActionPerformed = () => {
+        setUser(null);
         setSelected([]);
-        getPendingRegistrations();
+        getUsers();
+        setOpen(false);
     };
 
-    const handleApproveRegistration = (refugee) => {
+    const doFilter = () => {
+
+        if (email.length <= 0)
+            return;
 
         setLoading(true);
-        RefugeeService.approvePendingRegistration(refugee)
-            .then((response) => {
-                actionsAfterResponse();
-            })
-            .catch((error) => {
-                actionsAfterResponse();
-            });
-
+        UserService.getUsersFiltered(id, email)
+            .then(response => {
+                    setPendingRegistrations(response.data);
+                    setLoading(false);
+                }
+            );
     }
-
-    const handleDeleteRegistration = (refugee) => {
-
-        setLoading(true);
-        RefugeeService.deletePendingRegistration(refugee)
-            .then((response) => {
-                actionsAfterResponse();
-            })
-            .catch((error) => {
-                actionsAfterResponse();
-            });
-    }
-
-    const actionsAfterResponse = () => {
-
-        getPendingRegistrations();
-        setOpen(false);
-        setLoading(false);
-    }
-
-    const isSelected = (id) => selected.indexOf(id) !== -1;
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - pendingRegistrations.length) : 0;
@@ -401,6 +333,31 @@ const PendingRegistrations = () => {
                 <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
                     <EnhancedTableToolbar selected={selected} numSelected={selected.length}
                                           onActionPerformed={handleActionPerformed}/>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <FormControl variant="outlined" fullWidth sx={{width: '97%', mt: 2, mb: 2}}>
+                            <InputLabel htmlFor="outlined-adornment-email"> Search email </InputLabel>
+                            <OutlinedInput
+                                id="outlined-adornment-email"
+                                type='text'
+                                value={email}
+                                onChange={(e) => {
+                                    e.target.value.length <= 0 ? getUsers() : setEmail(e.target.value)
+                                }}
+                                endAdornment={
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="Search email"
+                                            onClick={() => doFilter()}
+                                            edge="end"
+                                        >
+                                            <SearchIcon/>
+                                        </IconButton>
+                                    </InputAdornment>
+                                }
+                                label="Search email"
+                            />
+                        </FormControl>
+                    </div>
                     <TableContainer>
                         <Table
                             sx={{minWidth: 750}}
@@ -408,10 +365,8 @@ const PendingRegistrations = () => {
                             size={'medium'}
                         >
                             <EnhancedTableHead
-                                numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
-                                onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
                                 rowCount={pendingRegistrations.length}
                             />
@@ -419,42 +374,21 @@ const PendingRegistrations = () => {
                                 {stableSort(pendingRegistrations, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                        const isItemSelected = isSelected(row.id);
                                         const labelId = `enhanced-table-checkbox-${index}`;
-
                                         return (
                                             <TableRow
                                                 hover
-                                                onClick={(event) => handleClick(event, row.id)}
                                                 role="checkbox"
-                                                aria-checked={isItemSelected}
                                                 tabIndex={-1}
                                                 key={row.id}
-                                                selected={isItemSelected}
                                             >
-                                                <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        color="primary"
-                                                        checked={isItemSelected}
-                                                        inputProps={{
-                                                            'aria-labelledby': labelId,
-                                                        }}
-                                                    />
-                                                </TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    id={labelId}
-                                                    scope="row"
-                                                    padding="none"
-                                                >
-                                                    {row.user.email}
-                                                </TableCell>
-                                                <TableCell>{row.user.identifier}</TableCell>
-                                                <TableCell align="right">{row.age}</TableCell>
-                                                <TableCell>{formatAddress(row.address)}</TableCell>
+                                                <TableCell>{row.email}</TableCell>
+                                                <TableCell>{row.identifier}</TableCell>
+                                                <TableCell>{row.role.roleType}</TableCell>
+                                                <TableCell>{row.accountStatus.accountStatusType}</TableCell>
                                                 <TableCell><Button onClick={() => {
                                                     setOpen(true);
-                                                    setSelectedRegistration(row)
+                                                    setUser(row)
                                                 }}> <OpenInNewIcon/> </Button></TableCell>
                                             </TableRow>
                                         );
@@ -480,31 +414,13 @@ const PendingRegistrations = () => {
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
-                    <Dialog open={open} onClose={() => setOpen(false)}>
-                        {loading && (
-                            <div style={{display: 'flex', justifyContent: 'center'}}>
-                                <CircularProgress
-                                    size={40}
-                                    sx={{
-                                        color: green[500],
-                                        mt: 1,
-                                    }}
-                                />
-                            </div>
-                        )}
-                        <PendingRegistrationInfo refugee={selectedRegistration}/>
-                        <DialogActions>
-                            <Button variant="contained"
-                                    onClick={() => handleApproveRegistration(selectedRegistration)}>Approve</Button>
-                            <Button variant="contained"
-                                    onClick={() => handleDeleteRegistration(selectedRegistration)}>Decline</Button>
-                            <Button variant="contained" onClick={() => setOpen(false)}>Cancel</Button>
-                        </DialogActions>
-                    </Dialog>
+                    {user == null ? null : user.role.roleType == process.env.REACT_APP_CUSTOMER ?
+                        <RefugeeCheckDialog open={open} id={user && user.id} onAction={handleActionPerformed}/> :
+                        <UserCheckDialog open={open} id={user && user.id} onAction={handleActionPerformed}/>}
                 </Paper>
             </Box>
         </div>
     );
 }
 
-export default PendingRegistrations;
+export default Users;

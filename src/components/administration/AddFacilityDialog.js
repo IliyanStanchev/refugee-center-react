@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import { Box, Link } from "@mui/material";
+import { Autocomplete, Box, Button, Dialog, DialogActions } from "@mui/material";
 import Grid from '@mui/material/Grid';
 import UserService from "../../services/UserService";
-import { Dialog } from "@mui/material";
-import { Country, State, City } from 'country-state-city';
-import { Button } from "@mui/material";
-import { Autocomplete } from "@mui/material";
+import { City, Country, State } from 'country-state-city';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import UserInfo from './UserInfo';
 import FacilityService from "../../services/FacilityService";
-import { DialogActions } from "@mui/material";
-import MuiPhoneNumber from 'material-ui-phone-number';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 
 const MIN_VALUE = 0;
 const MAX_VALUE = 100;
@@ -198,7 +194,9 @@ const AddFacilityDialog = (props) => {
 
         FacilityService.saveFacility(facility)
             .then(onClose())
-            .catch((error) => { setErrorMessage(error.response.data) });
+            .catch((error) => {
+                setErrorMessage(error.response.data)
+            });
     }
 
     return (
@@ -209,7 +207,7 @@ const AddFacilityDialog = (props) => {
                 textAlign: 'center',
             }}>
                 <DialogTitle> Add Facility </DialogTitle>
-                <p style={{ color: 'red' }} > {errorMessage} </p>
+                <p style={{ color: 'red' }}> {errorMessage} </p>
                 <DialogContent>
                     <Autocomplete
                         sx={{ mt: 2, mb: 2 }}
@@ -447,8 +445,10 @@ const AddFacilityDialog = (props) => {
                     <Button variant="contained" onClick={() => handleSaveFacility()}>Save</Button>
                     <Button variant="contained" onClick={onClose}> Cancel </Button>
                 </DialogActions>
-            </Box >
-            <UserInfo user={selectedUser} open={openUserDialog} onClose={() => { setOpenUserDialog(false); }} />
+            </Box>
+            <UserInfo user={selectedUser} open={openUserDialog} onClose={() => {
+                setOpenUserDialog(false);
+            }} />
         </Dialog>
     );
 

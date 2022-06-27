@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import RefugeeNavigationBar from "../navigation/RefugeeNavigation";
-import { Routes, Route } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import {ReactSession} from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
 import Messages from './../administration/Messages';
@@ -26,7 +25,12 @@ const Refugee = () => {
 
         const authorizationToken = ReactSession.get('authorization');
 
-        UserService.verifyUser(id, authorizationToken).then(response => {
+        let userSession = {
+            id: id,
+            authorizationToken: authorizationToken
+        }
+
+        UserService.verifyUser(userSession).then(response => {
             if (response.data.role.roleType !== process.env.REACT_APP_CUSTOMER) {
                 navigate(-1);
                 return;
@@ -49,17 +53,17 @@ const Refugee = () => {
 
     return (
 
-        <div> <RefugeeNavigationBar />
+        <div><RefugeeNavigationBar/>
             <Box>
                 <Routes>
-                    <Route path="/request-stocks" element={<RequestStocks />} />
-                    <Route path="/request-location-change" element={<RequestLocationChange />} />
-                    <Route path="/request-medical-help" element={<RequestMedicalHelp />} />
-                    <Route path="/messages" element={<Messages />} />
-                    <Route path="/requests" element={<Requests />} />
-                    <Route path="/profile" element={<RefugeeProfile />} />
+                    <Route path="/request-stocks" element={<RequestStocks/>}/>
+                    <Route path="/request-location-change" element={<RequestLocationChange/>}/>
+                    <Route path="/request-medical-help" element={<RequestMedicalHelp/>}/>
+                    <Route path="/messages" element={<Messages/>}/>
+                    <Route path="/requests" element={<Requests/>}/>
+                    <Route path="/profile" element={<RefugeeProfile/>}/>
                 </Routes>
-                <CustomerFooter />
+                <CustomerFooter/>
             </Box>
         </div>
     );

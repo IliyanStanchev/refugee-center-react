@@ -1,22 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import Autocomplete from '@mui/material/Autocomplete';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import UserService from "../../services/UserService";
-import { green, red } from "@mui/material/colors";
-import { CircularProgress } from "@mui/material";
+import {green, red} from "@mui/material/colors";
 import UserInfo from "./UserInfo";
 import GroupUsersTable from "./GroupUsersTable";
 import GroupService from "../../services/GroupService";
 
 const GroupDialog = (props) => {
 
-    let { selectedGroup, open, onActionPerformed, readOnly } = props;
+    let {selectedGroup, open, onActionPerformed, readOnly} = props;
 
     const groupTypes = [
         'Employees'
@@ -85,20 +83,20 @@ const GroupDialog = (props) => {
     const setNewEmail = (email) => {
 
         selectedGroup.email = email;
-        setGroup({ selectedGroup });
+        setGroup({selectedGroup});
 
     };
 
     const setResponsibleUser = (user) => {
 
         selectedGroup.responsibleUser = user;
-        setGroup({ selectedGroup });
+        setGroup({selectedGroup});
     };
 
     const setGroupType = (groupType) => {
 
         selectedGroup.groupType = groupType;
-        setGroup({ selectedGroup });
+        setGroup({selectedGroup});
     };
 
     const handleUserActionPerformed = () => {
@@ -112,10 +110,10 @@ const GroupDialog = (props) => {
             m: 'auto',
             textAlign: 'center',
         }}
-            fullWidth
-            maxWidth="md" open={open} onClose={() => onActionPerformed()}>
+                fullWidth
+                maxWidth="md" open={open} onClose={() => onActionPerformed()}>
             {loading && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <CircularProgress
                         size={40}
                         sx={{
@@ -125,9 +123,9 @@ const GroupDialog = (props) => {
                     />
                 </div>
             )}
-            <Box >
+            <Box>
                 <DialogTitle> Group </DialogTitle>
-                {<p style={{ color: red[500] }}>{errorMessage}</p>}
+                {<p style={{color: red[500]}}>{errorMessage}</p>}
                 <DialogContent>
                     <TextField
                         fullWidth
@@ -149,7 +147,7 @@ const GroupDialog = (props) => {
                         }}
                     />
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         id="groupTypes"
                         value={selectedGroup && selectedGroup.groupType}
                         options={groupTypes}
@@ -161,7 +159,7 @@ const GroupDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option}
                             </Box>
                         )}
@@ -178,9 +176,9 @@ const GroupDialog = (props) => {
                                 }}
                             />
                         )}></Autocomplete>
-                    <Divider sx={{ mt: 2, mb: 2 }} />
+                    <Divider sx={{mt: 2, mb: 2}}/>
                     <Autocomplete
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                         id="users"
                         value={selectedGroup && selectedGroup.responsibleUser}
                         options={users}
@@ -191,14 +189,14 @@ const GroupDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option.email}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option.email}
                                 <Button onClick={() => {
                                     setOpenUserDialog(true);
                                     setSelectedUser(
                                         option
                                     );
-                                }}> <OpenInNewIcon /> </Button>
+                                }}> <OpenInNewIcon/> </Button>
                             </Box>
                         )}
                         renderInput={(params) => (
@@ -213,15 +211,16 @@ const GroupDialog = (props) => {
                                 }}
                             />
                         )}></Autocomplete>
-                    <Divider sx={{ mt: 2, mb: 2 }} />
-                    {selectedGroup && selectedGroup.id > 0 && <GroupUsersTable group={selectedGroup} readOnly={readOnly} />}
+                    <Divider sx={{mt: 2, mb: 2}}/>
+                    {selectedGroup && selectedGroup.id > 0 &&
+                        <GroupUsersTable group={selectedGroup} readOnly={readOnly}/>}
                 </DialogContent>
             </Box>
             <DialogActions>
                 {!readOnly && <Button variant="contained" onClick={() => handleSaveGroup()}>Save</Button>}
                 <Button variant="contained" onClick={() => onActionPerformed()}> {readOnly ? 'Ok' : 'Cancel'} </Button>
             </DialogActions>
-            <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
+            <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed}/>
         </Dialog>
     );
 }

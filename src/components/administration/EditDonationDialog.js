@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import DonationService from "../../services/DonationService";
-import Divider from '@mui/material/Divider';
-import { green } from '@mui/material/colors';
-import { CircularProgress } from "@mui/material";
+import {green} from '@mui/material/colors';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 100000;
@@ -30,7 +27,7 @@ const EditDonationDialog = (props) => {
         , 'USD'
     ]
 
-    let { donation, open, onClose, readOnly } = props;
+    let {donation, open, onClose, readOnly} = props;
 
     const [reload, setReload] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -102,7 +99,7 @@ const EditDonationDialog = (props) => {
         if (donation.name.length == 0) {
             setDonationError(true);
             return;
-        };
+        }
 
         if ((donatorEmail.length == 0 && donatorName.length != 0)
             || (donatorEmail.length != 0 && donatorName.length == 0)) {
@@ -117,7 +114,10 @@ const EditDonationDialog = (props) => {
                 setLoading(false);
                 onClose();
             })
-            .catch(error => { setLoading(false); setMessage(error.data); });
+            .catch(error => {
+                setLoading(false);
+                setMessage(error.data);
+            });
     }
 
     const getDonations = async () => {
@@ -154,14 +154,14 @@ const EditDonationDialog = (props) => {
 
     return (
         <Dialog fullWidth
-            maxWidth="xs" open={open} onClose={() => onClose()}>
+                maxWidth="xs" open={open} onClose={() => onClose()}>
             <Box sx={{
                 flexDirection: 'column',
                 textAlign: 'center',
             }}>
                 <DialogTitle> Donation </DialogTitle>
                 {loading && (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                         <CircularProgress
                             size={40}
                             sx={{
@@ -172,10 +172,10 @@ const EditDonationDialog = (props) => {
 
                     </div>
                 )}
-                <p style={{ color: green[500] }}> {message} </p>
+                <p style={{color: green[500]}}> {message} </p>
                 <DialogContent>
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         id="name"
                         fullWidth
                         freeSolo
@@ -192,7 +192,7 @@ const EditDonationDialog = (props) => {
                         }}
                         getOptionLabel={(option) => option.name}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option.name}
                             </Box>
                         )}
@@ -209,7 +209,7 @@ const EditDonationDialog = (props) => {
                             />
                         )}></Autocomplete>
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         fullWidth
                         id="donationType"
                         value={donation && donation.donationType}
@@ -221,7 +221,7 @@ const EditDonationDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option}
                             </Box>
                         )}
@@ -237,7 +237,7 @@ const EditDonationDialog = (props) => {
                         )}></Autocomplete>
                     <TextField
                         fullWidth
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                         value={donation && donation.quantity}
                         id="quantity"
                         label="Quantity"
@@ -245,7 +245,7 @@ const EditDonationDialog = (props) => {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{ inputProps: { min: MIN_VALUE, max: MAX_VALUE } }}
+                        InputProps={{inputProps: {min: MIN_VALUE, max: MAX_VALUE}}}
                         onChange={(event) => {
                             var value = parseInt(event.target.value, 10);
 
@@ -257,7 +257,7 @@ const EditDonationDialog = (props) => {
                         }}
                     />
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         id="donationType"
                         value={donation && donation.unit}
                         options={units}
@@ -269,7 +269,7 @@ const EditDonationDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option}
                             </Box>
                         )}
@@ -291,7 +291,7 @@ const EditDonationDialog = (props) => {
                     >
                         Save
                     </Button>
-                    <Button variant="contained" disabled={loading} onClick={() => onClose()}>  Cancel </Button>
+                    <Button variant="contained" disabled={loading} onClick={() => onClose()}> Cancel </Button>
                 </DialogActions>
             </Box>
         </Dialog>

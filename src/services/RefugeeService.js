@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 class RefugeeService {
@@ -45,6 +46,10 @@ class RefugeeService {
 
     updateRefugee(refugee) {
         return axios.patch(`${API_URL}/update-refugee`, refugee);
+    }
+
+    changeStatus(id) {
+        return axios.put(`${API_URL}/change-refugee-status/${id}`);
     }
 }
 

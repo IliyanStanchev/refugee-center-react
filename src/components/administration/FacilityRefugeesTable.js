@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {ReactSession} from 'react-client-session';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Box from '@mui/material/Box';
@@ -15,13 +15,13 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, LinearProgress, Link } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Button} from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
+import {green} from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ThemeProvider } from "@material-ui/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import MyTheme from '../../controls/MyTheme';
 import RefugeeService from "../../services/RefugeeService";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -88,10 +88,10 @@ const headCells = [
     }
 ];
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
+    const {order, orderBy, onRequestSort} =
         props;
 
     const createSortHandler = (property) => (event) => {
@@ -136,17 +136,17 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, loading } = props;
+    const {onActionPerformed, errorMessage, loading} = props;
 
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
             }}
         >
             <Typography
-                sx={{ flex: '1 1 100%' }}
+                sx={{flex: '1 1 100%'}}
                 variant="h6"
                 id="tableTitle"
                 component="div"
@@ -165,11 +165,11 @@ const EnhancedTableToolbar = (props) => {
                     }}
                 />
             )}
-            {<p style={{ color: "red" }} >{errorMessage}</p>}
+            {<p style={{color: "red"}}>{errorMessage}</p>}
             <Tooltip title="Add refugee to shelter">
-                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
+                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary"/></IconButton>
             </Tooltip>
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -181,7 +181,7 @@ EnhancedTableToolbar.propTypes = {
 
 const FacilityRefugeesTable = (props) => {
 
-    const { shelterId } = props;
+    const {shelterId} = props;
 
     const id = ReactSession.get('id');
 
@@ -212,7 +212,7 @@ const FacilityRefugeesTable = (props) => {
             RefugeeService.getUsersWithoutShelter()
                 .then(
                     response => {
-                        let extractedUsers = response.data?.map(({ user }) => ({
+                        let extractedUsers = response.data?.map(({user}) => ({
                             user
                         }));
                         setUsersForAdding(extractedUsers);
@@ -315,13 +315,14 @@ const FacilityRefugeesTable = (props) => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <Box sx={{ width: '100%' }}>
-                    <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <Box sx={{width: '100%'}}>
+                    <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage}
+                                              loading={loading}/>
                         <TableContainer>
                             <Table
-                                sx={{ minWidth: 750 }}
+                                sx={{minWidth: 750}}
                                 aria-labelledby="tableTitle"
                                 size={'medium'}
                             >
@@ -345,20 +346,20 @@ const FacilityRefugeesTable = (props) => {
                                                     key={row.id}
                                                 >
                                                     <TableCell> {row.user.email}  </TableCell>
-                                                    <TableCell >{row.user.name}</TableCell>
-                                                    <TableCell >{row.user.identifier}</TableCell>
-                                                    <TableCell >{row.age}</TableCell>
-                                                    <TableCell >
+                                                    <TableCell>{row.user.name}</TableCell>
+                                                    <TableCell>{row.user.identifier}</TableCell>
+                                                    <TableCell>{row.age}</TableCell>
+                                                    <TableCell>
                                                         <Tooltip title="View details">
                                                             <Button onClick={() => {
                                                                 setSelectedRefugee(row);
                                                                 setOpenRefugeeDialog(true);
-                                                            }}> <OpenInNewIcon /> </Button>
+                                                            }}> <OpenInNewIcon/> </Button>
                                                         </Tooltip>
                                                         <Tooltip title="Remove from shelter">
                                                             <Button onClick={() => {
                                                                 handleRemoveFromShelter(row);
-                                                            }}> <DeleteIcon /> </Button>
+                                                            }}> <DeleteIcon/> </Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 </TableRow>
@@ -370,7 +371,7 @@ const FacilityRefugeesTable = (props) => {
                                                 height: (53) * emptyRows,
                                             }}
                                         >
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={6}/>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -387,8 +388,10 @@ const FacilityRefugeesTable = (props) => {
                         />
                     </Paper>
                 </Box>
-                <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
-            </div >
+                <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => {
+                    setOpenAddUserDialog(false);
+                }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed}/>
+            </div>
         </ThemeProvider>
     );
 }

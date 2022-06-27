@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import TextField from '@mui/material/TextField';
-import { Box, Input, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
-import { ReactSession } from 'react-client-session';
+import {Box, Button, Dialog, DialogActions, IconButton} from "@mui/material";
+import {ReactSession} from 'react-client-session';
 import PasswordStrengthBar from "react-password-strength-bar";
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import UserService from "../../services/UserService";
@@ -19,7 +16,7 @@ const ChangePasswordDialog = (props) => {
 
     const id = ReactSession.get('id');
 
-    const { open, onClose } = props;
+    const {open, onClose} = props;
 
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -80,14 +77,14 @@ const ChangePasswordDialog = (props) => {
                 width: 'fit-content',
                 textAlign: 'center',
             }}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
-                    <LockIcon color='primary' sx={{ fontSize: 50 }} />
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
+                    <LockIcon color='primary' sx={{fontSize: 50}}/>
                 </div>
                 <DialogTitle> Change password </DialogTitle>
-                <p style={{ color: 'red' }}> {error} </p>
-                <p style={{ color: 'green' }}> {message} </p>
+                <p style={{color: 'red'}}> {error} </p>
+                <p style={{color: 'green'}}> {message} </p>
                 <DialogContent>
-                    <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
+                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
                         <InputLabel htmlFor="outlined-adornment-oldPassword">Old password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-oldPassword"
@@ -101,14 +98,14 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowOldPassword(!showOldPassword)}
                                         edge="end"
                                     >
-                                        {showOldPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showOldPassword ? <VisibilityOff/> : <Visibility/>}
                                     </IconButton>
                                 </InputAdornment>
                             }
                             label="Old password"
                         />
                     </FormControl>
-                    <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
+                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
                         <InputLabel htmlFor="outlined-adornment-newPassword">New password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-newPassword"
@@ -122,7 +119,7 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowNewPassword(!showNewPassword)}
                                         edge="end"
                                     >
-                                        {showNewPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showNewPassword ? <VisibilityOff/> : <Visibility/>}
                                     </IconButton>
                                 </InputAdornment>
                             }
@@ -141,7 +138,7 @@ const ChangePasswordDialog = (props) => {
                             "#009200"
                         ]}
                     />
-                    <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
+                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
                         <InputLabel htmlFor="outlined-adornment-password">Confirm password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
@@ -155,7 +152,7 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         edge="end"
                                     >
-                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                        {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                                     </IconButton>
                                 </InputAdornment>
                             }

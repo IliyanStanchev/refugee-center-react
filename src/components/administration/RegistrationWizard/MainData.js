@@ -1,13 +1,10 @@
-
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link, useNavigate } from "react-router-dom";
 import Box from '@mui/material/Box';
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
+import {TextValidator, ValidatorForm} from 'react-material-ui-form-validator';
 import validator from 'validator';
 
 const MainData = (props) => {
-    const navigate = useNavigate();
 
     const parentUser = props.user;
 
@@ -44,7 +41,7 @@ const MainData = (props) => {
 
         const updatedUser = {}
         updatedUser[event.target.name] = event.target.value;
-        setUser({ ...user, ...updatedUser });
+        setUser({...user, ...updatedUser});
     }
 
     useEffect(() => {
@@ -53,23 +50,22 @@ const MainData = (props) => {
 
     const handleSubmit = (event) => {
     }
-
     return (
         <ValidatorForm
             noValidate={true}
             onSubmit={handleSubmit}
         >
-            <CssBaseline />
+            <CssBaseline/>
             <Box container
-                sx={{
-                    alignItems: 'center',
-                    textAlign: 'center',
-                    marginTop: 3,
-                }}
+                 sx={{
+                     alignItems: 'center',
+                     textAlign: 'center',
+                     marginTop: 3,
+                 }}
             >
-                <Box sx={{ mt: 2, mb: 2 }}>
+                <Box sx={{mt: 2, mb: 2}}>
                     <TextValidator
-                        sx={{ width: 300, mt: 1, mb: 2 }}
+                        sx={{width: 300, mt: 1, mb: 2}}
                         label="Email"
                         onChange={handleChange}
                         name="email"
@@ -79,7 +75,7 @@ const MainData = (props) => {
                         errorMessages={['Enter email', 'Wrong email format']}
                     />
                     <TextValidator
-                        sx={{ width: 300, mt: 1, mb: 2 }}
+                        sx={{width: 300, mt: 1, mb: 2}}
                         label="First name"
                         onChange={handleChange}
                         name="firstName"
@@ -89,7 +85,7 @@ const MainData = (props) => {
                         errorMessages={['Enter first name', 'First name must be at least 2 characters long', 'Name must be letters only']}
                     />
                     <TextValidator
-                        sx={{ width: 300, mt: 1, mb: 2 }}
+                        sx={{width: 300, mt: 1, mb: 2}}
                         label="Second name"
                         onChange={handleChange}
                         name="lastName"
@@ -99,7 +95,7 @@ const MainData = (props) => {
                         errorMessages={['Enter second name', 'Second name must be at least 2 characters long', 'Name must be letters only']}
                     />
                     <TextValidator
-                        sx={{ width: 300, mt: 1, mb: 2 }}
+                        sx={{width: 300, mt: 1, mb: 2}}
                         label="Identifier"
                         onChange={handleChange}
                         name="identifier"
@@ -110,7 +106,7 @@ const MainData = (props) => {
                     />
                 </Box>
             </Box>
-        </ValidatorForm >
+        </ValidatorForm>
     );
 }
 

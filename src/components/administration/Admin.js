@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import React, {useEffect} from "react";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import AdminNavigationBar from "../navigation/AdminNavigation";
-import { Routes, Route } from "react-router-dom";
 import Registration from './Registration';
 import PendingRegistrations from './PendingRegistrations';
 import Groups from './Groups';
@@ -9,12 +8,13 @@ import Messages from './Messages';
 import Facilities from './Facilities';
 import Donations from './Donations';
 import UserProfile from './UserProfile';
-import { ReactSession } from 'react-client-session';
+import {ReactSession} from 'react-client-session';
 import Box from '@mui/material/Box';
 import UserService from "../../services/UserService";
 import CustomerFooter from './../footer/CustomerFooter';
 import Requests from './Requests';
 import Questions from './Questions';
+import Users from './Users';
 
 
 const Admin = () => {
@@ -26,10 +26,14 @@ const Admin = () => {
 
         const authorizationToken = ReactSession.get('authorization');
 
-        UserService.verifyUser(id, authorizationToken).then(response => {
+        let userSession = {
+            id: id,
+            authorizationToken: authorizationToken
+        }
+
+        UserService.verifyUser(userSession).then(response => {
             if (response.data.role.roleType !== process.env.REACT_APP_ADMINISTRATOR) {
                 navigate(-1);
-                return;
             }
         })
             .catch(error => {
@@ -47,17 +51,18 @@ const Admin = () => {
             <AdminNavigationBar></AdminNavigationBar>
             <Box>
                 <Routes>
-                    <Route path="/registration" element={<Registration />} />
-                    <Route path="/confirm-registrations" element={<PendingRegistrations />} />
-                    <Route path="/groups" element={<Groups />} />
-                    <Route path="/messages" element={<Messages />} />
-                    <Route path="/facilities" element={<Facilities />} />
-                    <Route path="/donations" element={<Donations />} />
-                    <Route path="/requests" element={<Requests />} />
-                    <Route path="/questions" element={<Questions />} />
-                    <Route path="/profile" element={<UserProfile />} />
+                    <Route path="/registration" element={<Registration/>}/>
+                    <Route path="/confirm-registrations" element={<PendingRegistrations/>}/>
+                    <Route path="/users" element={<Users/>}/>
+                    <Route path="/groups" element={<Groups/>}/>
+                    <Route path="/messages" element={<Messages/>}/>
+                    <Route path="/facilities" element={<Facilities/>}/>
+                    <Route path="/donations" element={<Donations/>}/>
+                    <Route path="/requests" element={<Requests/>}/>
+                    <Route path="/questions" element={<Questions/>}/>
+                    <Route path="/profile" element={<UserProfile/>}/>
                 </Routes>
-                <CustomerFooter />
+                <CustomerFooter/>
             </Box>
         </div>
     );

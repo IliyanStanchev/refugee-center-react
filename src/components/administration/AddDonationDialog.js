@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
 import DonationService from "../../services/DonationService";
 import Divider from '@mui/material/Divider';
-import { green } from '@mui/material/colors';
-import { CircularProgress } from "@mui/material";
+import {green} from '@mui/material/colors';
 
 const MIN_VALUE = 1;
 const MAX_VALUE = 100000;
@@ -30,9 +28,8 @@ const AddDonationDialog = (props) => {
         , 'USD'
     ]
 
-    let { open, onClose } = props;
+    let {open, onClose} = props;
 
-    const [reload, setReload] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
 
@@ -47,8 +44,8 @@ const AddDonationDialog = (props) => {
     const [donationUnit, setDonationUnit] = useState('Count');
     const [donationQuantity, setDonationQuantity] = useState(1);
 
-    const [donatorName, setDonatorName] = useState('');
-    const [donatorEmail, setDonatorEmail] = useState('');
+    const [donorName, setDonorName] = useState('');
+    const [donorEmail, setDonorEmail] = useState('');
 
     const setSelectedDonation = (newDonation) => {
 
@@ -80,13 +77,13 @@ const AddDonationDialog = (props) => {
         setDonationError(false);
         setDonorError(false);
 
-        if (donation.name.length == 0) {
+        if (donation.name.length === 0) {
             setDonationError(true);
             return;
-        };
+        }
 
-        if ((donatorEmail.length == 0 && donatorName.length != 0)
-            || (donatorEmail.length != 0 && donatorName.length == 0)) {
+        if ((donorEmail.length === 0 && donorName.length !== 0)
+            || (donorEmail.length !== 0 && donorName.length === 0)) {
             setDonorError(true);
             return;
         }
@@ -102,17 +99,20 @@ const AddDonationDialog = (props) => {
                 unit: donationUnit,
             },
             donor: {
-                email: donatorEmail,
-                name: donatorName,
+                email: donorEmail,
+                name: donorName,
             }
         };
 
         DonationService.saveDonation(donationData)
-            .then(response => {
+            .then(() => {
                 setLoading(false);
                 setMessage("Donation saved successfully. Don't forget to thank the donor!");
             })
-            .catch(error => { setLoading(false); setMessage(error.data); });
+            .catch(error => {
+                setLoading(false);
+                setMessage(error.data);
+            });
     }
 
     const getDonations = async () => {
@@ -137,14 +137,14 @@ const AddDonationDialog = (props) => {
 
     return (
         <Dialog fullWidth
-            maxWidth="xs" open={open} onClose={() => onClose()}>
+                maxWidth="xs" open={open} onClose={() => onClose()}>
             <Box sx={{
                 flexDirection: 'column',
                 textAlign: 'center',
             }}>
                 <DialogTitle> Donation </DialogTitle>
                 {loading && (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                         <CircularProgress
                             size={40}
                             sx={{
@@ -155,10 +155,10 @@ const AddDonationDialog = (props) => {
 
                     </div>
                 )}
-                <p style={{ color: green[500] }}> {message} </p>
+                <p style={{color: green[500]}}> {message} </p>
                 <DialogContent>
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         id="name"
                         fullWidth
                         freeSolo
@@ -172,7 +172,7 @@ const AddDonationDialog = (props) => {
                         }}
                         getOptionLabel={(option) => option.name}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option.name}
                             </Box>
                         )}
@@ -189,7 +189,7 @@ const AddDonationDialog = (props) => {
                             />
                         )}></Autocomplete>
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         fullWidth
                         readOnly={donation && donation.id > 0}
                         id="donationType"
@@ -202,7 +202,7 @@ const AddDonationDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option}
                             </Box>
                         )}
@@ -218,7 +218,7 @@ const AddDonationDialog = (props) => {
                         )}></Autocomplete>
                     <TextField
                         fullWidth
-                        sx={{ mb: 2 }}
+                        sx={{mb: 2}}
                         value={donationQuantity}
                         id="quantity"
                         label="Quantity"
@@ -226,9 +226,9 @@ const AddDonationDialog = (props) => {
                         InputLabelProps={{
                             shrink: true,
                         }}
-                        InputProps={{ inputProps: { min: MIN_VALUE, max: MAX_VALUE } }}
+                        InputProps={{inputProps: {min: MIN_VALUE, max: MAX_VALUE}}}
                         onChange={(event) => {
-                            var value = parseInt(event.target.value, 10);
+                            let value = parseInt(event.target.value, 10);
 
                             if (isNaN(value)) value = MIN_VALUE;
                             if (value > MAX_VALUE) value = MAX_VALUE;
@@ -238,7 +238,7 @@ const AddDonationDialog = (props) => {
                         }}
                     />
                     <Autocomplete
-                        sx={{ mt: 2, mb: 2 }}
+                        sx={{mt: 2, mb: 2}}
                         id="donationType"
                         readOnly={donation && donation.id > 0}
                         value={donationUnit}
@@ -251,7 +251,7 @@ const AddDonationDialog = (props) => {
                         autoHighlight
                         getOptionLabel={(option) => option}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option}
                             </Box>
                         )}
@@ -265,18 +265,18 @@ const AddDonationDialog = (props) => {
                             />
                         )}></Autocomplete>
 
-                    <Divider sx={{ mt: 2, mb: 2 }} />
+                    <Divider sx={{mt: 2, mb: 2}}/>
                     <TextField
                         fullWidth
                         autoFocus
                         margin="dense"
                         id="donatorEmail"
                         label="Donator Email ( Optional )"
-                        value={donatorEmail}
+                        value={donorEmail}
                         type="text"
                         variant="outlined"
                         onChange={(event) => {
-                            setDonatorEmail(event.target.value);
+                            setDonorEmail(event.target.value);
                         }}
                         error={donorError}
                         helperText={donorError ? 'Enter email' : ''}
@@ -287,11 +287,11 @@ const AddDonationDialog = (props) => {
                         margin="dense"
                         id="donatorName"
                         label="Donator Name ( Optional )"
-                        value={donatorName}
+                        value={donorName}
                         type="text"
                         variant="outlined"
                         onChange={(event) => {
-                            setDonatorName(event.target.value);
+                            setDonorName(event.target.value);
                         }}
                         error={donorError}
                         helperText={donorError ? 'Enter name' : ''}

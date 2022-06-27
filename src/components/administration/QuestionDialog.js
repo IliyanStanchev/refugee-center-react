@@ -1,17 +1,15 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, Icon, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import TextField from '@mui/material/TextField';
-import { green, red } from "@mui/material/colors";
-import { CircularProgress } from "@mui/material";
+import {green, red} from "@mui/material/colors";
 import QuestionService from "../../services/QuestionService";
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 
 const QuestionDialog = (props) => {
 
-    let { question, open, onActionPerformed } = props;
+    let {question, open, onActionPerformed} = props;
     const [loading, setLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [answer, setAnswer] = useState('');
@@ -24,7 +22,7 @@ const QuestionDialog = (props) => {
         if (answer === 0) {
             setAnswerError(true);
             return;
-        };
+        }
 
         setLoading(true);
         setErrorMessage('');
@@ -48,7 +46,9 @@ const QuestionDialog = (props) => {
     const handleCancel = () => {
 
         QuestionService.freeQuestion(question.id)
-            .then(response => { onActionPerformed() });
+            .then(response => {
+                onActionPerformed()
+            });
     }
 
     const handleSuccess = () => {
@@ -65,10 +65,10 @@ const QuestionDialog = (props) => {
             m: 'auto',
             textAlign: 'center',
         }}
-            fullWidth
-            maxWidth="md" open={open} onClose={() => handleCancel()}>
+                fullWidth
+                maxWidth="md" open={open} onClose={() => handleCancel()}>
             {loading && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <CircularProgress
                         size={40}
                         sx={{
@@ -78,10 +78,10 @@ const QuestionDialog = (props) => {
                     />
                 </div>
             )}
-            <Box >
-                <HelpCenterIcon color='primary' fontSize="100%" />
+            <Box>
+                <HelpCenterIcon color='primary' fontSize="100%"/>
                 <DialogTitle> Question </DialogTitle>
-                {<p style={{ color: red[500] }}>{errorMessage}</p>}
+                {<p style={{color: red[500]}}>{errorMessage}</p>}
                 <DialogContent>
                     <TextField
                         fullWidth

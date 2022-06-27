@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -7,19 +8,17 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import MainData from './RegistrationWizard/MainData';
 import PersonalData from './RegistrationWizard/PersonalData';
 import AdditionalData from './RegistrationWizard/AdditionalData';
-import { lightGreen } from '@mui/material/colors';
+import {lightGreen} from '@mui/material/colors';
 import HowToRegSharpIcon from '@mui/icons-material/HowToRegSharp';
 import Avatar from '@mui/material/Avatar';
 import MyTheme from '../../controls/MyTheme';
 import UserService from '../../services/UserService';
-import { useEffect } from 'react';
-import { ReactSession } from 'react-client-session';
+import {ReactSession} from 'react-client-session';
 
 const ABSTRACT_API_URL = process.env.REACT_APP_ABSTRACT_API_URL;
 const DELIVERABLE_EMAIL = 'DELIVERABLE';
@@ -51,6 +50,7 @@ const Registration = () => {
         , specialDiet: ''
         , hasError: true
     });
+
     const [errorMessage, setErrorMessage] = React.useState(null);
 
     const [emailError, setEmailError] = React.useState(true);
@@ -60,6 +60,15 @@ const Registration = () => {
 
     const [activeStep, setActiveStep] = React.useState(0);
     const [userRole, setUserRole] = React.useState(process.env.REACT_APP_MODERATOR)
+
+    useEffect(() => {
+
+        UserService.getUser(id).then(response => {
+            setUserRole(response.data.role.roleType);
+        })
+
+    });
+
 
     const handleNext = () => {
 
@@ -136,7 +145,7 @@ const Registration = () => {
             , age: user.age
             , facility: user.shelter
             , diseases: user.diseases
-            , allergens: user.alergens
+            , allergens: user.allergens
             , specialDiet: user.specialDiet
         }
 
@@ -155,8 +164,7 @@ const Registration = () => {
         if (response.status == process.env.REACT_APP_HTTP_STATUS_OK) {
             setActiveStep(steps.length);
             setUserRole(response.data);
-        }
-        else {
+        } else {
             handleError(response);
         }
     }
@@ -168,11 +176,9 @@ const Registration = () => {
 
         if (response.status == process.env.REACT_APP_HTTP_STATUS_INTERNAL_SERVER_ERROR) {
             setErrorMessage("Something went wrong. Please try again later");
-        }
-        else if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
+        } else if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
             setErrorMessage(response.data);
-        }
-        else {
+        } else {
             setErrorMessage("Something went wrong. Please try again later");
         }
 
@@ -214,11 +220,11 @@ const Registration = () => {
     const getStepContent = (step) => {
         switch (step) {
             case MAIN_DATA_STEP:
-                return <MainData user={user} />;
+                return <MainData user={user}/>;
             case PERSONAL_DATA_STEP:
-                return <PersonalData user={user} />;
+                return <PersonalData user={user}/>;
             case ADDITIONAL_DATA_STEP:
-                return <AdditionalData user={user} />;
+                return <AdditionalData user={user}/>;
             default:
                 return;
         }
@@ -240,25 +246,25 @@ const Registration = () => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <CssBaseline />
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                    <div style={{ display: 'flex', justifyContent: 'center' }} >
-                        <Avatar sx={{ bgcolor: lightGreen[800] }}>
-                            <HowToRegSharpIcon />
+            <CssBaseline/>
+            <Container component="main" maxWidth="sm" sx={{mb: 4}}>
+                <Paper variant="outlined" sx={{my: {xs: 3, md: 6}, p: {xs: 2, md: 3}}}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Avatar sx={{bgcolor: lightGreen[800]}}>
+                            <HowToRegSharpIcon/>
                         </Avatar>
                     </div>
                     <Typography component="h1" variant="h4" align="center">
                         Registration
                     </Typography>
-                    <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+                    <Stepper activeStep={activeStep} sx={{pt: 3, pb: 5}}>
                         {steps.map((label) => (
-                            <Step sx={{ color: lightGreen[800] }} key={label}>
+                            <Step sx={{color: lightGreen[800]}} key={label}>
                                 <StepLabel>{label}</StepLabel>
                             </Step>
                         ))}
                     </Stepper>
-                    {errorMessage && <p style={{ color: "red", textAlign: "center" }} >{errorMessage}</p>}
+                    {errorMessage && <p style={{color: "red", textAlign: "center"}}>{errorMessage}</p>}
                     <React.Fragment>
                         {activeStep === steps.length ? (
                             <React.Fragment>
@@ -275,26 +281,29 @@ const Registration = () => {
                         ) : (
                             <React.Fragment>
                                 {getStepContent(activeStep)}
-                                <Box sx={{ display: 'flex', justifyContent: 'flex', textAlign: 'center' }}>
-                                    <Button variant="contained"
-                                        onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
-                                        {activeStep == MAIN_DATA_STEP ? 'Employee Registration' : 'Back'}
-                                    </Button>
+                                <Box sx={{display: 'flex', justifyContent: 'flex', textAlign: 'center'}}>
+                                    {(userRole === process.env.REACT_APP_ADMINISTRATOR || (userRole === process.env.REACT_APP_MODERATOR && activeStep != MAIN_DATA_STEP)) &&
+                                        <Button variant="contained"
+                                                onClick={handleBack} sx={{mt: 3, ml: 1}}>
+                                            {activeStep == MAIN_DATA_STEP ? 'Employee Registration' : 'Back'}
+                                        </Button>}
                                     <Button
                                         variant="contained"
+                                        fullWidth={userRole == process.env.REACT_APP_MODERATOR && activeStep == MAIN_DATA_STEP}
                                         onClick={handleNext}
-                                        sx={{ mt: 3, ml: 1 }}
+                                        sx={{mt: 3, ml: 1}}
                                         disabled={disableNext}
                                     >
                                         {activeStep == MAIN_DATA_STEP ? 'Refugee Registration' : activeStep === steps.length - 1 ? 'Finish registration' : 'Next'}
+
                                     </Button>
                                 </Box>
                             </React.Fragment>
                         )}
                     </React.Fragment>
                 </Paper>
-            </Container >
-        </ThemeProvider >
+            </Container>
+        </ThemeProvider>
     );
 }
 

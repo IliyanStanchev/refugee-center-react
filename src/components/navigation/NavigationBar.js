@@ -7,18 +7,17 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import logoImage from "../../images/safe_shelter_logo.png"
-import { lightGreen } from '@mui/material/colors';
+import {lightGreen} from '@mui/material/colors';
 import LoginIcon from '@mui/icons-material/Login';
 
 const AdminNavigationBar = (props) => {
 
-    const { handleLoginClick } = props;
+    const {handleLoginClick} = props;
 
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -77,7 +76,7 @@ const AdminNavigationBar = (props) => {
 
     return (
         <div>
-            <AppBar position="static" sx={{ backgroundColor: lightGreen[800] }}>
+            <AppBar position="static" sx={{backgroundColor: lightGreen[800]}}>
                 <Container maxWidth="x1">
                     <Toolbar disableGutters>
                         <Typography
@@ -87,7 +86,7 @@ const AdminNavigationBar = (props) => {
 
                             sx={{
                                 mr: 2,
-                                display: { xs: 'none', md: 'flex' },
+                                display: {xs: 'none', md: 'flex'},
                                 fontFamily: 'monospace',
                                 fontWeight: 700,
                                 letterSpacing: '.3rem',
@@ -98,9 +97,9 @@ const AdminNavigationBar = (props) => {
                             <img src={logoImage} style={{
                                 width: 120,
                                 height: 60,
-                            }} />
+                            }}/>
                         </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+                        <Box sx={{flexGrow: 1, display: {xs: 'flex', md: 'none'}}}>
                             <IconButton
                                 size="large"
                                 aria-label="account of current user"
@@ -109,7 +108,7 @@ const AdminNavigationBar = (props) => {
                                 onClick={handleOpenNavMenu}
                                 color="inherit"
                             >
-                                <MenuIcon />
+                                <MenuIcon/>
                             </IconButton>
                             <Menu
                                 id="menu-appbar"
@@ -126,7 +125,7 @@ const AdminNavigationBar = (props) => {
                                 open={Boolean(anchorElNav)}
                                 onClose={handleCloseNavMenu}
                                 sx={{
-                                    display: { xs: 'block', md: 'none' },
+                                    display: {xs: 'block', md: 'none'},
                                 }}
                             >
                                 <MenuItem onClick={handleRegisterUser}> Home </MenuItem>
@@ -142,7 +141,7 @@ const AdminNavigationBar = (props) => {
                             noWrap
                             sx={{
                                 mr: 2,
-                                display: { xs: 'flex', md: 'none' },
+                                display: {xs: 'flex', md: 'none'},
                                 flexGrow: 1,
                                 fontFamily: 'monospace',
                                 fontWeight: 700,
@@ -154,55 +153,55 @@ const AdminNavigationBar = (props) => {
                             <img src={logoImage} style={{
                                 width: 120,
                                 height: 60,
-                            }} />
+                            }}/>
                         </Typography>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+                        <Box sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
                             <Button
                                 onClick={handleRegisterUser}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 Home
                             </Button>
                             <Button
                                 onClick={handleConfirmRegistrations}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 About
                             </Button>
                             <Button
                                 onClick={handleGroups}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 News
                             </Button>
                             <Button
                                 onClick={handleMessages}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 Volunteer
                             </Button>
                             <Button
                                 onClick={handleFacilities}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 Contact
                             </Button>
                             <Button
                                 onClick={handleDonations}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{my: 2, color: 'white', display: 'block'}}
                             >
                                 Donate
                             </Button>
                         </Box>
 
-                        <Box sx={{ flexGrow: 0 }}>
+                        <Box sx={{flexGrow: 0}}>
                             <Tooltip title="Open settings">
-                                <IconButton onClick={handleLoginClick} sx={{ p: 0 }}>
-                                    <LoginIcon />
+                                <IconButton onClick={handleLoginClick} sx={{p: 0}}>
+                                    <LoginIcon/>
                                 </IconButton>
                             </Tooltip>
                             <Menu
-                                sx={{ mt: '45px' }}
+                                sx={{mt: '45px'}}
                                 id="menu-appbar"
                                 anchorEl={anchorElUser}
                                 anchorOrigin={{
@@ -221,17 +220,17 @@ const AdminNavigationBar = (props) => {
                         </Box>
                     </Toolbar>
                 </Container>
-            </AppBar >
-            <AppBar position="static" sx={{ height: 50, backgroundColor: lightGreen[300] }}>
+            </AppBar>
+            <AppBar position="static" sx={{height: 50, backgroundColor: lightGreen[300]}}>
                 <Container maxWidth="x1">
-                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                    <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
                         <Typography
                             variant="h6"
                             noWrap
 
                             sx={{
                                 mr: 2,
-                                display: { xs: 'none', md: 'flex' },
+                                display: {xs: 'none', md: 'flex'},
                                 fontWeight: 700,
                                 letterSpacing: '.3rem',
                                 color: 'inherit',
@@ -239,7 +238,8 @@ const AdminNavigationBar = (props) => {
                             }}
                         >
                             {pageTitle}
-                        </Typography> </div> </Container>
+                        </Typography></div>
+                </Container>
             </AppBar>
         </div>
     );

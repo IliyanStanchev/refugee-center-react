@@ -1,7 +1,7 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { lightGreen } from '@mui/material/colors';
+import {createTheme} from '@mui/material/styles';
+import {lightGreen} from '@mui/material/colors';
 
-const { palette } = createTheme()
+const {palette} = createTheme()
 
 const MyTheme = createTheme({
     palette: {

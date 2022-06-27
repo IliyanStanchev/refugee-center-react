@@ -1,13 +1,12 @@
-
-import React, { useState, useEffect } from "react";
-import { Country, State, City } from 'country-state-city';
+import React, { useEffect, useState } from "react";
+import { City, Country, State } from 'country-state-city';
 import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import Box from '@mui/material/Box';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import MyTheme from '../../../controls/MyTheme';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiPhoneNumber from 'material-ui-phone-number';
+import MuiPhoneNumber from 'material-ui-phone-number-2';
 import FacilityService from "../../../services/FacilityService";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -79,15 +78,6 @@ const PersonalData = (props) => {
         setUser({ ...user, ...updatedUser });
     }
 
-    const setCountry = (value) => {
-
-        setUser({
-            ...user, country: {
-                isoCode: value.isoCode,
-                name: value.name
-            }
-        });
-    }
 
     const setAge = (value) => {
 
@@ -106,7 +96,7 @@ const PersonalData = (props) => {
         const getCountries = async () => {
             try {
                 const result = Country.getAllCountries();
-                let allCountries = [];
+                let allCountries;
                 allCountries = result?.map(({ isoCode, name }) => ({
                     isoCode,
                     name,
@@ -126,7 +116,7 @@ const PersonalData = (props) => {
         const getStates = async () => {
             try {
                 const result = State.getStatesOfCountry(selectedCountry.isoCode);
-                let allStates = [];
+                let allStates;
                 allStates = result?.map(({ isoCode, name }) => ({
                     isoCode,
                     name
@@ -150,7 +140,7 @@ const PersonalData = (props) => {
                     selectedCountry.isoCode,
                     selectedState.isoCode
                 );
-                let allCities = [];
+                let allCities;
                 allCities = result?.map(({ name }) => ({
                     name
                 }));
@@ -223,7 +213,7 @@ const PersonalData = (props) => {
 
         if (parentUser.shelter === null) {
             setHasError(true);
-            return;
+
         }
     });
 
@@ -345,8 +335,8 @@ const PersonalData = (props) => {
                     id="outlined"
                     label="Address"
                     name="address"
-                    error={addressChanged && user.address == ''}
-                    helperText={addressChanged && user.address == '' ? 'Please fill address' : ''}
+                    error={addressChanged && user.address === ''}
+                    helperText={addressChanged && user.address === '' ? 'Please fill address' : ''}
                     multiline
                     onChange={(event) => {
                         handleChange(event);
@@ -378,7 +368,7 @@ const PersonalData = (props) => {
                     }}
                     InputProps={{ inputProps: { min: MIN_AGE, max: MAX_AGE } }}
                     onChange={(event) => {
-                        var value = parseInt(event.target.value, 10);
+                        let value = parseInt(event.target.value, 10);
 
                         if (isNaN(value)) value = MIN_AGE;
                         if (value > MAX_AGE) value = MAX_AGE;
@@ -431,8 +421,8 @@ const PersonalData = (props) => {
                         <Button variant="contained" onClick={() => toggleOpen(false)}>Ok</Button>
                     </DialogActions>
                 </Dialog>
-            </Box >
-        </ThemeProvider >
+            </Box>
+        </ThemeProvider>
     );
 }
 

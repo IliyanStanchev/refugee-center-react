@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { green, red } from "@mui/material/colors";
-import { CircularProgress } from "@mui/material";
+import {green, red} from "@mui/material/colors";
 import UserInfo from "./UserInfo";
 import Grid from '@mui/material/Grid';
 import AddressResolver from "../../utils/AddressResolver";
@@ -18,7 +16,7 @@ const STOCKS_MODE = 0;
 
 const RequestDialog = (props) => {
 
-    let { requestType, employeeMode, request, open, onActionPerformed } = props;
+    let {requestType, employeeMode, request, open, onActionPerformed} = props;
 
     const [loading, setLoading] = useState(false);
 
@@ -42,12 +40,18 @@ const RequestDialog = (props) => {
             RequestService.approveStockRequest(request).then(() => {
                 onActionPerformed();
                 setLoading(false);
-            }).catch(error => { setLoading(false); setErrorMessage(error.response.data) });
+            }).catch(error => {
+                setLoading(false);
+                setErrorMessage(error.response.data)
+            });
         } else {
             RequestService.approveLocationChangeRequest(request).then(() => {
                 onActionPerformed();
                 setLoading(false);
-            }).catch(error => { setLoading(false); setErrorMessage(error.response.data) });
+            }).catch(error => {
+                setLoading(false);
+                setErrorMessage(error.response.data)
+            });
         }
 
         setEmployeeComment('');
@@ -65,12 +69,18 @@ const RequestDialog = (props) => {
             RequestService.declineStockRequest(request).then(() => {
                 onActionPerformed();
                 setLoading(false);
-            }).catch(error => { setLoading(false); setErrorMessage(error.response.data) });
+            }).catch(error => {
+                setLoading(false);
+                setErrorMessage(error.response.data)
+            });
         } else {
             RequestService.declineLocationChangeRequest(request).then(() => {
                 onActionPerformed();
                 setLoading(false);
-            }).catch(error => { setLoading(false); setErrorMessage(error.response.data) });
+            }).catch(error => {
+                setLoading(false);
+                setErrorMessage(error.response.data)
+            });
         }
 
         setEmployeeComment('');
@@ -87,10 +97,10 @@ const RequestDialog = (props) => {
             m: 'auto',
             textAlign: 'center',
         }}
-            fullWidth
-            maxWidth="md" open={open} onClose={() => onActionPerformed()}>
+                fullWidth
+                maxWidth="md" open={open} onClose={() => onActionPerformed()}>
             {loading && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <CircularProgress
                         size={40}
                         sx={{
@@ -100,11 +110,11 @@ const RequestDialog = (props) => {
                     />
                 </div>
             )}
-            <Box >
+            <Box>
                 <DialogTitle> {requestType == STOCKS_MODE ? 'Stock request' : 'Location change request'} </DialogTitle>
-                {<p style={{ color: red[500] }}>{errorMessage}</p>}
+                {<p style={{color: red[500]}}>{errorMessage}</p>}
                 <DialogContent>
-                    <Grid container >
+                    <Grid container>
                         <Grid item xs={11.5}>
                             <TextField
                                 fullWidth
@@ -126,7 +136,7 @@ const RequestDialog = (props) => {
                                 setSelectedUser(
                                     request.refugee.user
                                 );
-                            }}> <OpenInNewIcon /> </Button>
+                            }}> <OpenInNewIcon/> </Button>
                         </Grid>
                     </Grid>
                     <TextField
@@ -168,7 +178,7 @@ const RequestDialog = (props) => {
                             label="Reason"
                             type="text"
                             variant="outlined"
-                        /> : <Grid container >
+                        /> : <Grid container>
                             <Grid item xs={11.5}>
                                 <TextField
                                     fullWidth
@@ -190,34 +200,37 @@ const RequestDialog = (props) => {
                                     setDialogFacility(
                                         request.shelter
                                     );
-                                }}> <OpenInNewIcon /> </Button>
+                                }}> <OpenInNewIcon/> </Button>
                             </Grid>
                         </Grid>}
-                    <Divider sx={{ mt: 2, mb: 2 }} />  <TextField
-                        fullWidth
-                        autoFocus
-                        margin="dense"
-                        InputProps={{
-                            readOnly: !employeeMode,
-                        }}
-                        id="comment"
-                        value={employeeMode ? employeeComment : (request && request.employeeComment)}
-                        label="Employee comment"
-                        type="text"
-                        variant="outlined"
-                        onChange={(e) => { setEmployeeComment(e.target.value) }}
-                    />
+                    <Divider sx={{mt: 2, mb: 2}}/> <TextField
+                    fullWidth
+                    autoFocus
+                    margin="dense"
+                    InputProps={{
+                        readOnly: !employeeMode,
+                    }}
+                    id="comment"
+                    value={employeeMode ? employeeComment : (request && request.employeeComment)}
+                    label="Employee comment"
+                    type="text"
+                    variant="outlined"
+                    onChange={(e) => {
+                        setEmployeeComment(e.target.value)
+                    }}
+                />
 
                 </DialogContent>
             </Box>
             <DialogActions>
                 {employeeMode && <Button variant="contained" onClick={() => handleApprove()}> Approve </Button>}
-                {request && request.requestStatus === 'Pending' && <Button variant="contained" onClick={() => handleDecline()}> Decline </Button>}
+                {request && request.requestStatus === 'Pending' &&
+                    <Button variant="contained" onClick={() => handleDecline()}> Decline </Button>}
                 <Button variant="contained" onClick={() => onActionPerformed()}> Cancel </Button>
             </DialogActions>
-            <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
+            <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed}/>
             <Dialog open={openFacilityDialog} onClose={() => setOpenFacilityDialog(false)}>
-                <FacilityInfo facility={dialogFacility} />
+                <FacilityInfo facility={dialogFacility}/>
                 <DialogActions>
                     <Button variant="contained" onClick={() => setOpenFacilityDialog(false)}>Ok</Button>
                 </DialogActions>

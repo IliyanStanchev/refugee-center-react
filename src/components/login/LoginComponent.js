@@ -1,9 +1,9 @@
-import React, { useRef, useState } from 'react';
+import React, {useState} from 'react';
 import UserService from '../../services/UserService';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -11,11 +11,11 @@ import Typography from '@mui/material/Typography';
 import Reaptcha from 'reaptcha';
 import validator from 'validator';
 import Tooltip from '@mui/material/Tooltip';
-import { ReactSession } from 'react-client-session';
+import {ReactSession} from 'react-client-session';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import MyTheme from '../../controls/MyTheme';
 import lightGreen from '@mui/material/colors/lightGreen';
-import { TextField } from '@mui/material';
+import {TextField} from '@mui/material';
 
 const ADMINISTRATOR = process.env.REACT_APP_ADMINISTRATOR;
 const MODERATOR = process.env.REACT_APP_MODERATOR;
@@ -86,8 +86,7 @@ export default function LoginComponent() {
         if (response.status == process.env.REACT_APP_HTTP_STATUS_OK) {
 
             loginUser(response.data);
-        }
-        else {
+        } else {
             handleError(response);
         }
     }
@@ -96,11 +95,9 @@ export default function LoginComponent() {
 
         if (response.status == process.env.REACT_APP_HTTP_STATUS_INTERNAL_SERVER_ERROR) {
             setLoginMessage("Something went wrong. Please try again later");
-        }
-        else if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
+        } else if (response.status == process.env.REACT_APP_HTTP_STATUS_CUSTOM_SERVER_ERROR) {
             setLoginMessage(response.data);
-        }
-        else {
+        } else {
             setLoginMessage("Something went wrong. Please try again later");
         }
     }
@@ -131,27 +128,27 @@ export default function LoginComponent() {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <CssBaseline />
-            <div style={{ display: 'flex', justifyContent: 'center' }} >
+            <CssBaseline/>
+            <div style={{display: 'flex', justifyContent: 'center'}}>
                 <Box container
-                    sx={{
-                        alignItems: 'center',
-                        textAlign: 'center',
-                        marginTop: 8,
-                    }}
+                     sx={{
+                         alignItems: 'center',
+                         textAlign: 'center',
+                         marginTop: 8,
+                     }}
                 >
-                    <div style={{ display: 'flex', justifyContent: 'center' }} >
-                        <Avatar sx={{ bgcolor: lightGreen[800] }}>
-                            <LockOutlinedIcon />
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
+                        <Avatar sx={{bgcolor: lightGreen[800]}}>
+                            <LockOutlinedIcon/>
                         </Avatar>
                     </div>
-                    <Typography component="h1" variant="h5" >
+                    <Typography component="h1" variant="h5">
                         Login
                     </Typography>
-                    <Box sx={{ mt: 2, mb: 2 }}>
-                        {loginMessage && <p style={{ color: "red" }} >{loginMessage}</p>}
+                    <Box sx={{mt: 2, mb: 2}}>
+                        {loginMessage && <p style={{color: "red"}}>{loginMessage}</p>}
                         <TextField
-                            sx={{ width: 300, mt: 1, mb: 2 }}
+                            sx={{width: 300, mt: 1, mb: 2}}
                             label="Email"
                             onChange={handleEmailChange}
                             name="email"
@@ -160,7 +157,7 @@ export default function LoginComponent() {
 
                         />
                         <TextField
-                            sx={{ width: 300, mt: 1, mb: 2 }}
+                            sx={{width: 300, mt: 1, mb: 2}}
                             label="Password"
                             onChange={handlePasswordChange}
                             name="password"
@@ -169,30 +166,31 @@ export default function LoginComponent() {
                             required
 
                         />
-                        <div style={{ display: 'flex', justifyContent: 'center' }} >
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
                             <Reaptcha
                                 sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
                                 onVerify={handleOnVerify}
                             />
                         </div>
-                        {reCaptchaMessage && <p style={{ color: "red" }} >{reCaptchaMessage}</p>}
+                        {reCaptchaMessage && <p style={{color: "red"}}>{reCaptchaMessage}</p>}
                         <Button
-                            sx={{ mt: 2, mb: 2 }}
+                            sx={{mt: 2, mb: 2}}
                             onClick={handleSubmit}
                             variant="contained"
                         >
                             Login
                         </Button>
-                        <Grid container sx={{ mt: 1, mb: 2 }} >
+                        <Grid container sx={{mt: 1, mb: 2}}>
                             <Grid item xs>
                                 <Link to="/forgot-password" variant="body2">
                                     Forgot password
                                 </Link>
                             </Grid>
                         </Grid>
-                        <Grid container sx={{ mt: 2, mb: 2 }}>
+                        <Grid container sx={{mt: 2, mb: 2}}>
                             <Grid item xs>
-                                <Tooltip title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
+                                <Tooltip
+                                    title="In order to register as a refugee you need to visit our office. For more information click the Contact tab">
                                     <Link to="/" variant="body2">
                                         I am a refugee
                                     </Link>

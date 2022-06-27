@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import { Box, Grid, Link } from "@mui/material";
+import {Box, Grid, Link} from "@mui/material";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
@@ -35,7 +35,7 @@ const PendingRegistrationInfo = (props) => {
             width: 'fit-content',
             textAlign: 'center',
         }}>
-            <DialogTitle > Refugee Data</DialogTitle>
+            <DialogTitle> Refugee Data</DialogTitle>
             <DialogContent>
                 <TextField
                     fullWidth
@@ -67,9 +67,9 @@ const PendingRegistrationInfo = (props) => {
                     type="text"
                     variant="outlined"
                 />
-                <Divider sx={{ mt: 2, mb: 2 }} />
+                <Divider sx={{mt: 2, mb: 2}}/>
                 <TextField
-                    sx={{ mr: 13 }}
+                    sx={{mr: 13}}
                     autoFocus
                     margin="dense"
                     id="name"
@@ -98,8 +98,8 @@ const PendingRegistrationInfo = (props) => {
                     type="text"
                     variant="outlined"
                 />
-                <Divider sx={{ mt: 2, mb: 2 }} />
-                <Grid container >
+                <Divider sx={{mt: 2, mb: 2}}/>
+                <Grid container>
                     <Grid item sm={11}>
                         <TextField
                             fullWidth
@@ -113,7 +113,9 @@ const PendingRegistrationInfo = (props) => {
                         />
                     </Grid>
                     <Grid item sm={1}>
-                        <Link onClick={() => { setOpen(true) }} ><OpenInNewIcon /></Link>
+                        <Link onClick={() => {
+                            setOpen(true)
+                        }}><OpenInNewIcon/></Link>
                     </Grid>
                 </Grid>
                 <TextField
@@ -154,12 +156,12 @@ const PendingRegistrationInfo = (props) => {
                 />
             </DialogContent>
             <Dialog open={open} onClose={() => setOpen(false)}>
-                <FacilityInfo facility={refugee.facility} />
+                <FacilityInfo facility={refugee.facility}/>
                 <DialogActions>
                     <Button variant="contained" onClick={() => setOpen(false)}>Ok</Button>
                 </DialogActions>
             </Dialog>
-        </Box >
+        </Box>
     );
 
 }

@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import React, {useState} from "react";
+import {PayPalButtons, PayPalScriptProvider} from "@paypal/react-paypal-js";
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
-import { Button } from "@mui/material";
+import {Button} from "@mui/material";
 import InputAdornment from '@mui/material/InputAdornment'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import Card from '@mui/material/Card';
 import MyText from "../../controls/MyText";
 import DonationService from "../../services/DonationService";
-import { lightGreen } from '@mui/material/colors';
+import {lightGreen} from '@mui/material/colors';
 import Grid from '@mui/material/Grid';
 import RecentDonors from './RecentDonors';
 
@@ -73,9 +73,9 @@ export default function DonateMoney() {
     }
 
     return (
-        <Grid container >
+        <Grid container>
             <Grid item xs={3.5}>
-                <RecentDonors />
+                <RecentDonors/>
             </Grid>
             <Grid item xs={7.5}>
                 <Card
@@ -89,7 +89,7 @@ export default function DonateMoney() {
                         , borderRadius: '16px'
                         , mt: 5
                     }}>
-                    <FormControl variant="outlined" sx={{ ml: 2, mr: 2, mt: 2, mb: 2 }}>
+                    <FormControl variant="outlined" sx={{ml: 2, mr: 2, mt: 2, mb: 2}}>
                         <InputLabel htmlFor="outlined-adornment-oldPassword">Amount</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-oldPassword"
@@ -105,28 +105,28 @@ export default function DonateMoney() {
                         />
                     </FormControl>
                     <Button
-                        sx={{ ml: 2, mr: 2, mt: 2, mb: 2 }}
+                        sx={{ml: 2, mr: 2, mt: 2, mb: 2}}
                         variant="contained"
                         onClick={() => handleDonateButton(!show)}>A
                         {show ? "Change amount" : "Donate"}
                     </Button>
                     <PayPalScriptProvider
-                        options={{ "client-id": process.env.REACT_APP_CLIENT_ID }} >
-                        {errorMessage && <p style={{ color: "red" }} > {errorMessage} </p>}
-                        <Box margin={10} >
+                        options={{"client-id": process.env.REACT_APP_CLIENT_ID}}>
+                        {errorMessage && <p style={{color: "red"}}> {errorMessage} </p>}
+                        <Box margin={10}>
                             {show ? (
                                 <div>
                                     <MyText> Pick your payment method </MyText>
                                     <PayPalButtons
-                                        style={{ layout: "vertical", position: 'absolute' }}
+                                        style={{layout: "vertical", position: 'absolute'}}
                                         createOrder={createOrder}
                                         onApprove={onApprove}
                                     />
                                 </div>
-                            ) : success ? (<MyText> Thank you for donating!  </MyText>) : null}
+                            ) : success ? (<MyText> Thank you for donating! </MyText>) : null}
                         </Box>
                     </PayPalScriptProvider>
-                </ Card >
+                </ Card>
             </Grid>
         </Grid>
     );

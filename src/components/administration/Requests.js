@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
+import React, {useEffect} from "react";
+import {ReactSession} from 'react-client-session';
+import {alpha} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -20,8 +18,8 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { visuallyHidden } from '@mui/utils';
-import { Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Grid, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
@@ -34,7 +32,7 @@ const STOCKS_MODE = 0;
 const LOCATION_CHANGE_MODE = 1;
 const MEDICAL_HELP_MODE = 2;
 
-const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
+const options = {year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false};
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -97,13 +95,15 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick
+    const {
+        onSelectAllClick
         , order
         , orderBy
         , numSelected
         , rowCount
         , onRequestSort
-        , requestMode } = props;
+        , requestMode
+    } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -111,7 +111,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {requestMode != MEDICAL_HELP_MODE && <TableCell padding="checkbox" >
+                {requestMode != MEDICAL_HELP_MODE && <TableCell padding="checkbox">
 
                     <Checkbox
                         color="primary"
@@ -150,13 +150,15 @@ function EnhancedTableHead(props) {
 }
 
 const EnhancedTableToolbar = (props) => {
-    const { selected
+    const {
+        selected
         , numSelected
         , onActionPerformed
         , onStockRequestClicked
         , onLocationChangeRequestClicked
         , onMedicalRequestClicked
-        , requestMode } = props;
+        , requestMode
+    } = props;
 
 
     const handleDeclineSelected = () => {
@@ -166,13 +168,11 @@ const EnhancedTableToolbar = (props) => {
             RequestService.declineStockRequests(selected).then(() => {
                 onActionPerformed();
             });
-        }
-        else if (requestMode === LOCATION_CHANGE_MODE) {
+        } else if (requestMode === LOCATION_CHANGE_MODE) {
             RequestService.declineLocationChangeRequests(selected).then(() => {
                 onActionPerformed();
             });
-        }
-        else if (requestMode === MEDICAL_HELP_MODE) {
+        } else if (requestMode === MEDICAL_HELP_MODE) {
             RequestService.declineMedicalHelpRequests(selected).then(() => {
                 onActionPerformed();
             });
@@ -182,8 +182,8 @@ const EnhancedTableToolbar = (props) => {
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
                 ...(numSelected > 0 && {
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -192,7 +192,7 @@ const EnhancedTableToolbar = (props) => {
         >
             {numSelected > 0 && requestMode != MEDICAL_HELP_MODE ? (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -201,29 +201,34 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     variant="h6"
                     id="tableTitle"
                     component="div"
                 >
                     <ToggleButtonGroup value={requestMode} color="primary">
-                        <ToggleButton value={STOCKS_MODE} onClick={onStockRequestClicked} > <InventoryIcon color='primary' sx={{ mr: 2 }} /> Stock requests </ToggleButton>
-                        <ToggleButton value={LOCATION_CHANGE_MODE} onClick={onLocationChangeRequestClicked}> <EditLocationAltIcon color='primary' sx={{ mr: 2 }} /> Location change requests </ToggleButton>
-                        <ToggleButton value={MEDICAL_HELP_MODE} onClick={onMedicalRequestClicked}> <MedicalServicesIcon color='primary' sx={{ mr: 2 }} /> Medical help request </ToggleButton>
+                        <ToggleButton value={STOCKS_MODE} onClick={onStockRequestClicked}> <InventoryIcon
+                            color='primary' sx={{mr: 2}}/> Stock requests </ToggleButton>
+                        <ToggleButton value={LOCATION_CHANGE_MODE} onClick={onLocationChangeRequestClicked}>
+                            <EditLocationAltIcon color='primary' sx={{mr: 2}}/> Location change requests </ToggleButton>
+                        <ToggleButton value={MEDICAL_HELP_MODE} onClick={onMedicalRequestClicked}> <MedicalServicesIcon
+                            color='primary' sx={{mr: 2}}/> Medical help request </ToggleButton>
                     </ToggleButtonGroup>
                 </Typography>
             )}
             {numSelected > 0 && requestMode != MEDICAL_HELP_MODE ? (
                 <Grid container sx={{
                     justifyContent: 'flex-end',
-                }} >
+                }}>
                     <Tooltip title="Decline all">
-                        <IconButton onClick={() => { handleDeclineSelected() }}> <DeleteIcon color="primary" /></IconButton>
+                        <IconButton onClick={() => {
+                            handleDeclineSelected()
+                        }}> <DeleteIcon color="primary"/></IconButton>
                     </Tooltip>
                 </Grid>
             ) : (null)
             }
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -299,7 +304,7 @@ const Requests = () => {
             setEmployeeMode(true);
         }).catch(error => {
             setEmployeeMode(false);
-            return;
+
         });
     });
 
@@ -371,11 +376,9 @@ const Requests = () => {
         if (requestMode === STOCKS_MODE) {
 
             getStockRequests();
-        }
-        else if (requestMode === LOCATION_CHANGE_MODE) {
+        } else if (requestMode === LOCATION_CHANGE_MODE) {
             getLocationChangeRequests();
-        }
-        else if (requestMode === MEDICAL_HELP_MODE) {
+        } else if (requestMode === MEDICAL_HELP_MODE) {
             getMedicalHelpRequests();
         }
     };
@@ -407,9 +410,9 @@ const Requests = () => {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - requests.length) : 0;
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-            <Box sx={{ width: '80%' }}>
-                <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
+            <Box sx={{width: '80%'}}>
+                <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
                     <EnhancedTableToolbar
                         selected={selected}
                         numSelected={selected.length}
@@ -417,10 +420,10 @@ const Requests = () => {
                         onStockRequestClicked={handleStockRequestClicked}
                         onLocationChangeRequestClicked={handleLocationChangeRequestClicked}
                         onMedicalRequestClicked={handleMedicalHelpRequestClicked}
-                        requestMode={requestMode} />
+                        requestMode={requestMode}/>
                     <TableContainer>
                         <Table
-                            sx={{ minWidth: 750 }}
+                            sx={{minWidth: 750}}
                             aria-labelledby="tableTitle"
                             size={'medium'}
                         >
@@ -431,7 +434,7 @@ const Requests = () => {
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
                                 rowCount={requests.length}
-                                requestMode={requestMode} />
+                                requestMode={requestMode}/>
 
                             <TableBody>
                                 {stableSort(requests, getComparator(order, orderBy))
@@ -465,14 +468,19 @@ const Requests = () => {
                                                         }}
                                                     />
                                                 </TableCell>}
-                                                <TableCell > {requestMode === STOCKS_MODE ? <InventoryIcon color="primary" /> : requestMode === LOCATION_CHANGE_MODE ? <EditLocationAltIcon color="primary" /> : <MedicalServicesIcon color="primary" />}  </TableCell>
+                                                <TableCell> {requestMode === STOCKS_MODE ? <InventoryIcon
+                                                    color="primary"/> : requestMode === LOCATION_CHANGE_MODE ?
+                                                    <EditLocationAltIcon color="primary"/> :
+                                                    <MedicalServicesIcon color="primary"/>}  </TableCell>
                                                 <TableCell component="th">{row.description}</TableCell>
-                                                <TableCell component="th">{new Date(row.dateCreated).toLocaleString("en-US", options)}</TableCell>
+                                                <TableCell
+                                                    component="th">{new Date(row.dateCreated).toLocaleString("en-US", options)}</TableCell>
                                                 <TableCell component="th">{row.requestStatus}</TableCell>
-                                                <TableCell component="th"> {requestMode != MEDICAL_HELP_MODE && <Button onClick={() => {
-                                                    setOpenRequestDialog(true);
-                                                    setSelectedRequest(row);
-                                                }}> <OpenInNewIcon /> </Button>} </TableCell>
+                                                <TableCell component="th"> {requestMode != MEDICAL_HELP_MODE &&
+                                                    <Button onClick={() => {
+                                                        setOpenRequestDialog(true);
+                                                        setSelectedRequest(row);
+                                                    }}> <OpenInNewIcon/> </Button>} </TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -482,7 +490,7 @@ const Requests = () => {
                                             height: (53) * emptyRows,
                                         }}
                                     >
-                                        <TableCell colSpan={6} />
+                                        <TableCell colSpan={6}/>
                                     </TableRow>
                                 )}
                             </TableBody>
@@ -498,7 +506,8 @@ const Requests = () => {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <RequestDialog requestType={requestMode} employeeMode={employeeMode} open={openRequestDialog} onActionPerformed={handleActionPerformed} request={selectedRequest} />
+                <RequestDialog requestType={requestMode} employeeMode={employeeMode} open={openRequestDialog}
+                               onActionPerformed={handleActionPerformed} request={selectedRequest}/>
             </Box>
         </div>
     );

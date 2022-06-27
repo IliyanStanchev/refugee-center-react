@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import Autocomplete from '@mui/material/Autocomplete';
-import DonationService from "../../services/DonationService";
-import { green } from '@mui/material/colors';
-import { CircularProgress } from "@mui/material";
+import {green} from '@mui/material/colors';
 import DonationAbsorptionService from "../../services/DonationAbsorptionService";
 import DialogContentText from '@mui/material/DialogContentText';
 
@@ -15,7 +12,7 @@ const MIN_VALUE = 0;
 
 const DonationAbsorptionDialog = (props) => {
 
-    let { shelterId, donation, open, onClose } = props;
+    let {shelterId, donation, open, onClose} = props;
 
     const [reload, setReload] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -46,7 +43,10 @@ const DonationAbsorptionDialog = (props) => {
                 setLoading(false);
                 onClose();
             })
-            .catch(error => { setLoading(false); setMessage(error.data); });
+            .catch(error => {
+                setLoading(false);
+                setMessage(error.data);
+            });
     }
 
     const getDonations = async () => {
@@ -70,14 +70,14 @@ const DonationAbsorptionDialog = (props) => {
 
     return (
         <Dialog fullWidth
-            maxWidth="xs" open={open} onClose={() => onClose()}>
+                maxWidth="xs" open={open} onClose={() => onClose()}>
             <Box sx={{
                 flexDirection: 'column',
                 textAlign: 'center',
             }}>
                 <DialogTitle> Donation Absorption </DialogTitle>
                 {loading && (
-                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{display: 'flex', justifyContent: 'center'}}>
                         <CircularProgress
                             size={40}
                             sx={{
@@ -88,12 +88,12 @@ const DonationAbsorptionDialog = (props) => {
 
                     </div>
                 )}
-                <p style={{ color: green[500] }}> {message} </p>
+                <p style={{color: green[500]}}> {message} </p>
                 <DialogContent>
                     {donations.length < 0 || (donation && donation.id > 0) ? (
                         <>
                             <Autocomplete
-                                sx={{ mt: 2, mb: 2 }}
+                                sx={{mt: 2, mb: 2}}
                                 id="name"
                                 fullWidth
                                 readOnly={donation && donation.id > 0}
@@ -108,7 +108,7 @@ const DonationAbsorptionDialog = (props) => {
                                 }}
                                 getOptionLabel={(option) => option.name}
                                 renderOption={(props, option) => (
-                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                    <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                         {option.name}
                                     </Box>
                                 )}
@@ -123,7 +123,7 @@ const DonationAbsorptionDialog = (props) => {
                                 )}></Autocomplete>
                             <TextField
                                 fullWidth
-                                sx={{ mb: 2 }}
+                                sx={{mb: 2}}
                                 value={donation && donation.donation && donation.donation.donationType}
                                 id="donationType"
                                 label="Donation type"
@@ -134,7 +134,7 @@ const DonationAbsorptionDialog = (props) => {
                             />
                             <TextField
                                 fullWidth
-                                sx={{ mb: 2 }}
+                                sx={{mb: 2}}
                                 value={donation && donation.donation && donation.donation.quantity + ' ' + donation.donation.unit}
                                 id="quantity"
                                 label="Quantity"
@@ -145,7 +145,7 @@ const DonationAbsorptionDialog = (props) => {
                             />
                             <TextField
                                 fullWidth
-                                sx={{ mb: 2 }}
+                                sx={{mb: 2}}
                                 value={donation && donation.absorption}
                                 id="quantity"
                                 label="Quantity"
@@ -153,7 +153,12 @@ const DonationAbsorptionDialog = (props) => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
-                                InputProps={{ inputProps: { min: MIN_VALUE, max: donation == null ? MIN_VALUE : donation.donation == null ? MIN_VALUE : donation.donation.quantity } }}
+                                InputProps={{
+                                    inputProps: {
+                                        min: MIN_VALUE,
+                                        max: donation == null ? MIN_VALUE : donation.donation == null ? MIN_VALUE : donation.donation.quantity
+                                    }
+                                }}
                                 onChange={(event) => {
                                     var value = parseInt(event.target.value, 10);
 
@@ -173,7 +178,8 @@ const DonationAbsorptionDialog = (props) => {
                     >
                         Save
                     </Button>}
-                    <Button variant="contained" disabled={loading} onClick={() => onClose()}> {donations.length < 0 || (donation && donation.id > 0) ? 'Cancel' : 'OK'} </Button>
+                    <Button variant="contained" disabled={loading}
+                            onClick={() => onClose()}> {donations.length < 0 || (donation && donation.id > 0) ? 'Cancel' : 'OK'} </Button>
                 </DialogActions>
             </Box>
         </Dialog>

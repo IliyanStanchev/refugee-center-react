@@ -1,20 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import { Button } from "@mui/material";
-import InputAdornment from '@mui/material/InputAdornment'
-import OutlinedInput from '@mui/material/OutlinedInput'
+import React, {useEffect, useState} from "react";
+import {CardContent} from "@mui/material";
 import Card from '@mui/material/Card';
-import MyText from "../../controls/MyText";
 import DonationService from "../../services/DonationService";
-import { lightGreen } from '@mui/material/colors';
-import { CardContent } from "@mui/material";
+import {lightGreen} from '@mui/material/colors';
 import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
@@ -64,7 +55,7 @@ export default function RecentDonors() {
                     {donors.map((donor, index) => {
                         return (<ListItem>
                             <ListItemIcon>
-                                <VolunteerActivismIcon />
+                                <VolunteerActivismIcon/>
                             </ListItemIcon>
                             <ListItemText
                                 primary={donor.name}
@@ -76,6 +67,6 @@ export default function RecentDonors() {
                 </List>
 
             </CardContent>
-        </ Card >
+        </ Card>
     );
 }

@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, Dialog, DialogActions} from "@mui/material";
 
 const UserInfo = (props) => {
 
-    const { user, open, onClose } = props;
+    const {user, open, onClose} = props;
 
     return (
         <Dialog open={open} onClose={() => onClose()}>

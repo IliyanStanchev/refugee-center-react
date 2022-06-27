@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import Grid from '@mui/material/Grid';
 import Map from './../../Map';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { lightGreen } from '@mui/material/colors';
-import { TextField } from "@mui/material";
+import {lightGreen} from '@mui/material/colors';
+import {Button, TextField} from "@mui/material";
 import Reaptcha from 'reaptcha';
-import { Button } from "@mui/material";
 import QuestionService from "../../services/QuestionService";
 
 const Contact = () => {
@@ -62,60 +61,69 @@ const Contact = () => {
     }
 
     return (
-        <Grid container >
+        <Grid container>
             <Grid item zeroMinWidth xs={6}>
-                <Card sx={{ border: 1, borderColor: lightGreen[800], borderRadius: '16px', maxWidth: 700, ml: 5, mt: 10 }}>
+                <Card
+                    sx={{border: 1, borderColor: lightGreen[800], borderRadius: '16px', maxWidth: 700, ml: 5, mt: 10}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Our centres
                         </Typography>
                     </CardContent>
-                    <Map />
+                    <Map/>
                 </Card>
             </Grid>
             <Grid item zeroMinWidth xs={6}>
-                <Card sx={{ border: 1, borderColor: lightGreen[800], borderRadius: '16px', maxWidth: 700, mt: 10 }}>
+                <Card sx={{border: 1, borderColor: lightGreen[800], borderRadius: '16px', maxWidth: 700, mt: 10}}>
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
                             Ask us something
-                            <p style={{ color: lightGreen[800] }}> {responseMessage} </p>
+                            <p style={{color: lightGreen[800]}}> {responseMessage} </p>
                         </Typography>
-                        <TextField sx={{ mt: 2, mb: 2 }}
-                            fullWidth
-                            label="Email"
-                            variant="outlined"
-                            onChange={(event) => { setEmail(event.target.value) }}
-                            error={emailError}
-                            helperText={emailError ? 'Fill correct email' : ''}
+                        <TextField sx={{mt: 2, mb: 2}}
+                                   fullWidth
+                                   label="Email"
+                                   variant="outlined"
+                                   onChange={(event) => {
+                                       setEmail(event.target.value)
+                                   }}
+                                   error={emailError}
+                                   helperText={emailError ? 'Fill correct email' : ''}
                         />
-                        <TextField sx={{ mt: 2, mb: 2 }}
-                            fullWidth
-                            label="Name"
-                            variant="outlined"
-                            onChange={(event) => { setName(event.target.value) }}
-                            error={nameError}
-                            helperText={nameError ? 'Fill your name' : ''}
+                        <TextField sx={{mt: 2, mb: 2}}
+                                   fullWidth
+                                   label="Name"
+                                   variant="outlined"
+                                   onChange={(event) => {
+                                       setName(event.target.value)
+                                   }}
+                                   error={nameError}
+                                   helperText={nameError ? 'Fill your name' : ''}
                         />
-                        <TextField sx={{ mt: 2, mb: 2 }}
-                            multiline
-                            fullWidth
-                            label="Message"
-                            variant="outlined"
-                            onChange={(event) => { setMessage(event.target.value) }}
-                            error={messageError}
-                            helperText={messageError ? 'Fill message' : ''}
+                        <TextField sx={{mt: 2, mb: 2}}
+                                   multiline
+                                   fullWidth
+                                   label="Message"
+                                   variant="outlined"
+                                   onChange={(event) => {
+                                       setMessage(event.target.value)
+                                   }}
+                                   error={messageError}
+                                   helperText={messageError ? 'Fill message' : ''}
                         />
-                        <div style={{ display: 'flex', justifyContent: 'center' }} >
+                        <div style={{display: 'flex', justifyContent: 'center'}}>
                             <Reaptcha
                                 sitekey="6LcvR68fAAAAAJOX3feeHRMvDMe3J2bxVIyY0k9O"
-                                onVerify={(response) => { setVerify(true) }}
-                                reset />
-                            <Button variant="contained" readOnly={!verify} onClick={handleSubmit} >Submit</Button>
+                                onVerify={(response) => {
+                                    setVerify(true)
+                                }}
+                                reset/>
+                            <Button variant="contained" readOnly={!verify} onClick={handleSubmit}>Submit</Button>
                         </div>
                     </CardContent>
                 </Card>
             </Grid>
-        </Grid >
+        </Grid>
     );
 
 }

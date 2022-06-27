@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import React, {useEffect, useState} from "react";
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Box from '@mui/material/Box';
@@ -15,13 +13,13 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, LinearProgress, Link } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Button, Link} from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
+import {green} from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ThemeProvider } from "@material-ui/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import MyTheme from './../../controls/MyTheme';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import FacilityService from "../../services/FacilityService";
@@ -90,10 +88,10 @@ const headCells = [
     }
 ];
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
+    const {order, orderBy, onRequestSort} =
         props;
 
     const createSortHandler = (property) => (event) => {
@@ -138,17 +136,17 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, loading } = props;
+    const {onActionPerformed, errorMessage, loading} = props;
 
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
             }}
         >
             <Typography
-                sx={{ flex: '1 1 100%' }}
+                sx={{flex: '1 1 100%'}}
                 variant="h6"
                 id="tableTitle"
                 component="div"
@@ -167,11 +165,11 @@ const EnhancedTableToolbar = (props) => {
                     }}
                 />
             )}
-            {<p style={{ color: "red" }} >{errorMessage}</p>}
+            {<p style={{color: "red"}}>{errorMessage}</p>}
             <Tooltip title="Register facility">
-                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
+                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary"/></IconButton>
             </Tooltip>
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -259,13 +257,14 @@ const Facilities = () => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '80%' }}>
-                    <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
+                <Box sx={{width: '80%'}}>
+                    <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage}
+                                              loading={loading}/>
                         <TableContainer>
                             <Table
-                                sx={{ minWidth: 750 }}
+                                sx={{minWidth: 750}}
                                 aria-labelledby="tableTitle"
                                 size={'medium'}
                             >
@@ -296,16 +295,16 @@ const Facilities = () => {
                                                             {row.responsibleUser.name}
                                                         </Link>
                                                     </TableCell>
-                                                    <TableCell >{row.facilityType}</TableCell>
-                                                    <TableCell >{getAddress(row)}</TableCell>
-                                                    <TableCell >{calculateCapacity(row)}</TableCell>
-                                                    <TableCell >
+                                                    <TableCell>{row.facilityType}</TableCell>
+                                                    <TableCell>{getAddress(row)}</TableCell>
+                                                    <TableCell>{calculateCapacity(row)}</TableCell>
+                                                    <TableCell>
                                                         <Tooltip title="View details">
                                                             <Button onClick={() => {
                                                                 setSelectedFacility(row);
                                                                 setOpenFacilityDialog(true);
                                                                 setReadOnly(true);
-                                                            }}> <OpenInNewIcon /> </Button>
+                                                            }}> <OpenInNewIcon/> </Button>
                                                         </Tooltip>
                                                     </TableCell>
                                                 </TableRow>
@@ -317,7 +316,7 @@ const Facilities = () => {
                                                 height: (53) * emptyRows,
                                             }}
                                         >
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={6}/>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -332,12 +331,15 @@ const Facilities = () => {
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <UserInfo user={selectedUser} open={openUserDialog} onClose={() => { setOpenUserDialog(false); }} />
-                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog} onClose={handleFacilityActionPerformed} viewMode={false} />
-                        <AddFacilityDialog open={openAddFacilityDialog} onClose={handleFacilityActionPerformed} />
+                        <UserInfo user={selectedUser} open={openUserDialog} onClose={() => {
+                            setOpenUserDialog(false);
+                        }}/>
+                        <FacilityDialog facility={selectedFacility} open={openFacilityDialog}
+                                        onClose={handleFacilityActionPerformed} viewMode={false}/>
+                        <AddFacilityDialog open={openAddFacilityDialog} onClose={handleFacilityActionPerformed}/>
                     </Paper>
                 </Box>
-            </div >
+            </div>
         </ThemeProvider>
     );
 }

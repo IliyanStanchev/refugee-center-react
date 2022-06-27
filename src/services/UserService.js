@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 class UserService {
@@ -40,14 +41,24 @@ class UserService {
         return axios.post(`${API_URL}/send-verification-code`, user);
     }
 
-    verifyUser(id, authorizationToken) {
-
-        let userSession = {
-            id: id,
-            authorizationToken: authorizationToken
-        }
-
+    verifyUser(userSession) {
         return axios.post(`${API_URL}/verify-user`, userSession);
+    }
+
+    getUsers(id) {
+        return axios.get(`${API_URL}/get-users/${id}`);
+    }
+
+    getUsersFiltered(id, email) {
+        return axios.get(`${API_URL}/get-users-filtered/${id}/${email}`);
+    }
+
+    updateUser(user) {
+        return axios.post(`${API_URL}/update-user`, user);
+    }
+
+    changeStatus(id) {
+        return axios.put(`${API_URL}/change-status/${id}`);
     }
 }
 

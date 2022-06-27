@@ -1,10 +1,10 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 import MyTheme from '../../../controls/MyTheme';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useEffect } from 'react';
 
 const AdditionalData = (props) => {
 
@@ -16,7 +16,7 @@ const AdditionalData = (props) => {
 
         const updatedUser = {}
         updatedUser[event.target.name] = event.target.value;
-        setUser({ ...user, ...updatedUser });
+        setUser({...user, ...updatedUser});
     }
 
     useEffect(() => {
@@ -29,16 +29,16 @@ const AdditionalData = (props) => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <CssBaseline />
+            <CssBaseline/>
             <Box container
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    textAlign: 'center',
-                }}
+                 sx={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     textAlign: 'center',
+                 }}
             >
                 <TextField
-                    sx={{ mb: 2 }}
+                    sx={{mb: 2}}
                     value={user.diseases}
                     id="outlined"
                     label="Diseases"
@@ -48,28 +48,28 @@ const AdditionalData = (props) => {
                         handleChange(event);
                     }}
                 /> <TextField
-                    sx={{ mb: 2 }}
-                    value={user.alergens}
-                    id="outlined"
-                    label="Alergens"
-                    name="alergens"
-                    multiline
-                    onChange={(event) => {
-                        handleChange(event);
-                    }}
-                /> <TextField
-                    sx={{ mb: 2 }}
-                    value={user.specialDiet}
-                    id="outlined"
-                    label="Special diet"
-                    name="specialDiet"
-                    multiline
-                    onChange={(event) => {
-                        handleChange(event);
-                    }}
-                />
+                sx={{mb: 2}}
+                value={user.allergens}
+                id="outlined"
+                label="Allergens"
+                name="allergens"
+                multiline
+                onChange={(event) => {
+                    handleChange(event);
+                }}
+            /> <TextField
+                sx={{mb: 2}}
+                value={user.specialDiet}
+                id="outlined"
+                label="Special diet"
+                name="specialDiet"
+                multiline
+                onChange={(event) => {
+                    handleChange(event);
+                }}
+            />
             </Box>
-        </ThemeProvider >
+        </ThemeProvider>
     );
 }
 

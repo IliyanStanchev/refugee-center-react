@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {ReactSession} from 'react-client-session';
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Box from '@mui/material/Box';
@@ -15,13 +15,13 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, LinearProgress, Link } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Button} from "@mui/material";
 import GroupService from "../../services/GroupService";
 import UserInfo from './UserInfo';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ThemeProvider } from "@material-ui/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import MyTheme from '../../controls/MyTheme';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SelectUserDialog from "./SelectUserDialog";
@@ -80,10 +80,10 @@ const headCells = [
     }
 ];
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
+    const {order, orderBy, onRequestSort} =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -127,30 +127,30 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, successMessage, readOnly } = props;
+    const {onActionPerformed, errorMessage, successMessage, readOnly} = props;
 
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
             }}
         >
             <Typography
-                sx={{ flex: '1 1 100%' }}
+                sx={{flex: '1 1 100%'}}
                 variant="h6"
                 id="tableTitle"
                 component="div"
             >
                 Group users
-                {<p style={{ color: "red" }} >{errorMessage}</p>}
-                {<p style={{ color: "green" }} >{successMessage}</p>}
+                {<p style={{color: "red"}}>{errorMessage}</p>}
+                {<p style={{color: "green"}}>{successMessage}</p>}
             </Typography>
 
             {!readOnly && (<Tooltip title="Add user to group">
-                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
+                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary"/></IconButton>
             </Tooltip>)}
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -162,7 +162,7 @@ EnhancedTableToolbar.propTypes = {
 
 const GroupUsersTable = (props) => {
 
-    const { group, readOnly } = props;
+    const {group, readOnly} = props;
 
     const [newGroup, setNewGroup] = useState(group.id == 0 ? true : false);
 
@@ -195,7 +195,7 @@ const GroupUsersTable = (props) => {
             GroupService.getUsersForAdding(group)
                 .then(
                     response => {
-                        let extractedUsers = response.data?.map(({ user }) => ({
+                        let extractedUsers = response.data?.map(({user}) => ({
                             user
                         }));
                         setUsersForAdding(extractedUsers);
@@ -264,8 +264,12 @@ const GroupUsersTable = (props) => {
         }
 
         GroupService.addUserToGroup(userGroup)
-            .then((response) => { actionsAfterResponse(response); })
-            .catch((error) => { actionsAfterResponse(error.response); });
+            .then((response) => {
+                actionsAfterResponse(response);
+            })
+            .catch((error) => {
+                actionsAfterResponse(error.response);
+            });
 
     }
 
@@ -279,8 +283,12 @@ const GroupUsersTable = (props) => {
         }
 
         GroupService.removeUserFromGroup(userGroup)
-            .then((response) => { actionsAfterResponse(response); })
-            .catch((error) => { actionsAfterResponse(error.response); });
+            .then((response) => {
+                actionsAfterResponse(response);
+            })
+            .catch((error) => {
+                actionsAfterResponse(error.response);
+            });
     }
 
     const actionsAfterResponse = (response) => {
@@ -305,13 +313,14 @@ const GroupUsersTable = (props) => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '100%' }}>
-                    <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} successMessage={successMessage} loading={loading} readOnly={readOnly} />
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
+                <Box sx={{width: '100%'}}>
+                    <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage}
+                                              successMessage={successMessage} loading={loading} readOnly={readOnly}/>
                         <TableContainer>
                             <Table
-                                sx={{ minWidth: 750 }}
+                                sx={{minWidth: 750}}
                                 aria-labelledby="tableTitle"
                                 size={'medium'}
                             >
@@ -335,12 +344,12 @@ const GroupUsersTable = (props) => {
                                                     key={row.id}
                                                 >
                                                     <TableCell> {row.email}</TableCell>
-                                                    <TableCell >{row.name}</TableCell>
-                                                    <TableCell >{row.role.roleType}</TableCell>
-                                                    <TableCell >{!readOnly && <Button onClick={() => {
+                                                    <TableCell>{row.name}</TableCell>
+                                                    <TableCell>{row.role.roleType}</TableCell>
+                                                    <TableCell>{!readOnly && <Button onClick={() => {
                                                         handleRemoveUserFromGroup(row);
 
-                                                    }}> <DeleteIcon /> </Button>}</TableCell>
+                                                    }}> <DeleteIcon/> </Button>}</TableCell>
                                                 </TableRow>
                                             );
                                         })}
@@ -350,7 +359,7 @@ const GroupUsersTable = (props) => {
                                                 height: (53) * emptyRows,
                                             }}
                                         >
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={6}/>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -365,11 +374,13 @@ const GroupUsersTable = (props) => {
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
+                        <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed}/>
                     </Paper>
-                    <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => { setOpenAddUserDialog(false); }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed} />
+                    <SelectUserDialog loading={loading} open={openAddUserDialog} onClose={() => {
+                        setOpenAddUserDialog(false);
+                    }} users={usersForAdding} onActionPerformed={handleAddUserActionPerformed}/>
                 </Box>
-            </div >
+            </div>
         </ThemeProvider>)
 }
 

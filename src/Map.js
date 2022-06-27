@@ -1,11 +1,7 @@
-import React from 'react'
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useEffect } from 'react';
-import { Country, State, City } from 'country-state-city';
+import React, {useEffect, useState} from 'react'
+import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 import FacilityService from './services/FacilityService';
 import AddressResolver from './utils/AddressResolver';
-import { useState } from 'react';
-import { GoogleApiWrapper } from 'google-maps-react';
 
 const GOOGLE_API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
@@ -61,12 +57,12 @@ const Map = () => {
                 zoom={7}
             >
                 {locations.map((location, index) => {
-                    return (<Marker position={location} />)
+                    return (<Marker position={location}/>)
 
                 })}
 
             </GoogleMap>
-        </LoadScript >
+        </LoadScript>
     )
 }
 

@@ -1,19 +1,17 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, {useEffect, useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Box, Icon, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, CircularProgress, Dialog, DialogActions} from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { green, red } from "@mui/material/colors";
-import { CircularProgress } from "@mui/material";
+import {green, red} from "@mui/material/colors";
 import MessageService from "../../services/MessageService";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import ReceiverDialog from './ReceiverDialog';
 
 const MessageDialog = (props) => {
 
-    let { selectedMessage, open, onActionPerformed, readOnly } = props;
+    let {selectedMessage, open, onActionPerformed, readOnly} = props;
 
     const messageTypes = [
         'Informative',
@@ -62,7 +60,7 @@ const MessageDialog = (props) => {
         if (selectedMessage.receivers.length === 0) {
             setReceiverError(true);
             return;
-        };
+        }
 
         if (selectedMessage.message.subject === '') {
             setSubjectError(true);
@@ -126,10 +124,10 @@ const MessageDialog = (props) => {
             m: 'auto',
             textAlign: 'center',
         }}
-            fullWidth
-            maxWidth="md" open={open} onClose={() => onActionPerformed()}>
+                fullWidth
+                maxWidth="md" open={open} onClose={() => onActionPerformed()}>
             {loading && (
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{display: 'flex', justifyContent: 'center'}}>
                     <CircularProgress
                         size={40}
                         sx={{
@@ -139,13 +137,13 @@ const MessageDialog = (props) => {
                     />
                 </div>
             )}
-            <Box >
+            <Box>
                 <DialogTitle> Message </DialogTitle>
-                {<p style={{ color: red[500] }}>{errorMessage}</p>}
+                {<p style={{color: red[500]}}>{errorMessage}</p>}
 
                 <DialogContent>
                     <Autocomplete
-                        sx={{ mt: 2, mb: 1 }}
+                        sx={{mt: 2, mb: 1}}
                         multiple
                         id="tags-outlined"
                         options={receivers}
@@ -157,14 +155,14 @@ const MessageDialog = (props) => {
                             setSelectedReceivers(newValue);
                         }}
                         renderOption={(props, option) => (
-                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                            <Box component="li" sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
                                 {option.email}
                                 <Button onClick={() => {
                                     setOpenReceiverDialog(true);
                                     setSelectedReceiver(
                                         option
                                     );
-                                }}> <OpenInNewIcon /> </Button>
+                                }}> <OpenInNewIcon/> </Button>
                             </Box>
                         )}
                         renderInput={(params) => (
@@ -246,7 +244,9 @@ const MessageDialog = (props) => {
                 {!readOnly && <Button variant="contained" onClick={handleSendMessage}>Send Message</Button>}
                 <Button variant="contained" onClick={() => onActionPerformed()}> {readOnly ? 'OK' : 'Cancel'}</Button>
             </DialogActions>
-            <ReceiverDialog receiver={selectedReceiver} open={openReceiverDialog} onClose={() => { setOpenReceiverDialog(false) }} />
+            <ReceiverDialog receiver={selectedReceiver} open={openReceiverDialog} onClose={() => {
+                setOpenReceiverDialog(false)
+            }}/>
         </Dialog>
     );
 }

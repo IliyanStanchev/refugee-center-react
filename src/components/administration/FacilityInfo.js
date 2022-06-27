@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import Divider from '@mui/material/Divider';
-import { Box, Link } from "@mui/material";
+import {Box} from "@mui/material";
 import Grid from '@mui/material/Grid';
 
 const FacilityInfo = (props) => {
@@ -32,7 +32,7 @@ const FacilityInfo = (props) => {
                     type="text"
                     variant="outlined"
                 />
-                <Divider sx={{ mt: 2, mb: 2 }} />
+                <Divider sx={{mt: 2, mb: 2}}/>
                 <Grid container spacing={3}>
                     <Grid item xs={6}>
                         <TextField
@@ -73,7 +73,7 @@ const FacilityInfo = (props) => {
                     type="text"
                     variant="outlined"
                 />
-                <Divider sx={{ mt: 2, mb: 2 }} />
+                <Divider sx={{mt: 2, mb: 2}}/>
                 <TextField
 
                     fullWidth

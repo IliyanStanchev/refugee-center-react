@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import React, {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
+import {ReactSession} from 'react-client-session';
 import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
+import {alpha} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -20,8 +20,8 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Button, Grid, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import MessageService from "../../services/MessageService";
 import MarkEmailReadIcon from '@mui/icons-material/MarkEmailRead';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -30,9 +30,8 @@ import MessageDialog from "./MessageDialog";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import SendIcon from '@mui/icons-material/Send';
 import InboxIcon from '@mui/icons-material/Inbox';
-import SearchBar from "material-ui-search-bar";
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
@@ -94,13 +93,15 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick
+    const {
+        onSelectAllClick
         , order
         , orderBy
         , numSelected
         , rowCount
         , onRequestSort
-        , sendMessagesMode } = props;
+        , sendMessagesMode
+    } = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -108,7 +109,7 @@ function EnhancedTableHead(props) {
     return (
         <TableHead>
             <TableRow>
-                {!sendMessagesMode && <TableCell padding="checkbox" >
+                {!sendMessagesMode && <TableCell padding="checkbox">
 
                     <Checkbox
                         color="primary"
@@ -156,13 +157,15 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { selected
+    const {
+        selected
         , numSelected
         , onActionPerformed
         , onNewMailClicked
         , onSendMessagesClicked
         , onReceivedMessagesClicked
-        , sendMessagesMode } = props;
+        , sendMessagesMode
+    } = props;
 
     const handleMarkAsRead = () => {
 
@@ -182,8 +185,8 @@ const EnhancedTableToolbar = (props) => {
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
                 ...(numSelected > 0 && {
                     bgcolor: (theme) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
@@ -192,7 +195,7 @@ const EnhancedTableToolbar = (props) => {
         >
             {numSelected > 0 ? (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     color="inherit"
                     variant="subtitle1"
                     component="div"
@@ -201,35 +204,43 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             ) : (
                 <Typography
-                    sx={{ flex: '1 1 100%' }}
+                    sx={{flex: '1 1 100%'}}
                     variant="h6"
                     id="tableTitle"
                     component="div"
                 >
                     <ToggleButtonGroup value={sendMessagesMode} color="primary">
-                        <ToggleButton value={false} onClick={onReceivedMessagesClicked} > <InboxIcon color='primary' sx={{ mr: 2 }} /> Received messages </ToggleButton>
-                        <ToggleButton value={true} onClick={onSendMessagesClicked}> <SendIcon color='primary' sx={{ mr: 2 }} /> Send messages </ToggleButton>
+                        <ToggleButton value={false} onClick={onReceivedMessagesClicked}> <InboxIcon color='primary'
+                                                                                                    sx={{mr: 2}}/> Received
+                            messages </ToggleButton>
+                        <ToggleButton value={true} onClick={onSendMessagesClicked}> <SendIcon color='primary'
+                                                                                              sx={{mr: 2}}/> Send
+                            messages </ToggleButton>
                     </ToggleButtonGroup>
                 </Typography>
             )}
             {numSelected > 0 ? (
                 <Grid container sx={{
                     justifyContent: 'flex-end',
-                }} >
+                }}>
                     <Tooltip title="Mark as read">
-                        <IconButton onClick={() => { handleMarkAsRead() }}> <MarkEmailReadIcon color="primary" /></IconButton>
+                        <IconButton onClick={() => {
+                            handleMarkAsRead()
+                        }}> <MarkEmailReadIcon color="primary"/></IconButton>
                     </Tooltip>
                     <Tooltip title="Delete selected">
-                        <IconButton onClick={() => { handleDeleteSelected() }}> <DeleteIcon color="primary" /></IconButton>
+                        <IconButton onClick={() => {
+                            handleDeleteSelected()
+                        }}> <DeleteIcon color="primary"/></IconButton>
                     </Tooltip>
                 </Grid>
             ) : (
                 <Tooltip title="New message">
-                    <IconButton onClick={onNewMailClicked}> <AddBoxIcon color="primary" /></IconButton>
+                    <IconButton onClick={onNewMailClicked}> <AddBoxIcon color="primary"/></IconButton>
                 </Tooltip>
             )
             }
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -302,7 +313,7 @@ const Messages = () => {
         id: 0,
         message: {
             id: 0
-            , sender: { id: id }
+            , sender: {id: id}
             , messageType: 'Informative'
             , subject: ''
             , content: ''
@@ -314,7 +325,7 @@ const Messages = () => {
         id: 0,
         message: {
             id: 0
-            , sender: { id: id }
+            , sender: {id: id}
             , messageType: 'Informative'
             , subject: ''
             , content: ''
@@ -364,8 +375,8 @@ const Messages = () => {
             return;
 
         let updatedMessage = {};
-        updatedMessage = { receivers: receivers };
-        setSelectedMessage({ ...message, ...updatedMessage });
+        updatedMessage = {receivers: receivers};
+        setSelectedMessage({...message, ...updatedMessage});
     }
 
     const handleRequestSort = (event, property) => {
@@ -421,8 +432,7 @@ const Messages = () => {
 
         if (sendMessagesMode) {
             getSendMessages();
-        }
-        else {
+        } else {
             getReceivedMessages();
         }
 
@@ -455,9 +465,9 @@ const Messages = () => {
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - messages.length) : 0;
 
     return (
-        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-            <Box sx={{ width: '80%' }}>
-                <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
+            <Box sx={{width: '80%'}}>
+                <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
                     <EnhancedTableToolbar
                         selected={selected}
                         numSelected={selected.length}
@@ -465,10 +475,10 @@ const Messages = () => {
                         onNewMailClicked={handleNewMailClicked}
                         onSendMessagesClicked={handleSendMessagesClicked}
                         onReceivedMessagesClicked={handleReceivedMessagesClicked}
-                        sendMessagesMode={sendMessagesMode} />
+                        sendMessagesMode={sendMessagesMode}/>
                     <TableContainer>
                         <Table
-                            sx={{ minWidth: 750 }}
+                            sx={{minWidth: 750}}
                             aria-labelledby="tableTitle"
                             size={'medium'}
                         >
@@ -513,7 +523,9 @@ const Messages = () => {
                                                         }}
                                                     />
                                                 </TableCell>}
-                                                <TableCell > {row.message.messageType == 'Informative' ? <InfoIcon color="primary" /> : <WarningIcon color="warning" />} </TableCell>
+                                                <TableCell> {row.message.messageType == 'Informative' ?
+                                                    <InfoIcon color="primary"/> :
+                                                    <WarningIcon color="warning"/>} </TableCell>
                                                 <TableCell
                                                     component="th"
                                                     id={labelId}
@@ -523,8 +535,13 @@ const Messages = () => {
                                                     {row.message.sender.email}
                                                 </TableCell>
                                                 <TableCell component="th">{row.message.subject}</TableCell>
-                                                <TableCell component="th">{new Date(row.message.dateReceived).toLocaleString("en-US", options)}</TableCell>
-                                                <TableCell component="th"><Button onClick={() => { setReadOnly(true); setAsSeen(row.id); getMessageReceivers(row); }}> <OpenInNewIcon /> </Button></TableCell>
+                                                <TableCell
+                                                    component="th">{new Date(row.message.dateReceived).toLocaleString("en-US", options)}</TableCell>
+                                                <TableCell component="th"><Button onClick={() => {
+                                                    setReadOnly(true);
+                                                    setAsSeen(row.id);
+                                                    getMessageReceivers(row);
+                                                }}> <OpenInNewIcon/> </Button></TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -534,12 +551,13 @@ const Messages = () => {
                                             height: (53) * emptyRows,
                                         }}
                                     >
-                                        <TableCell colSpan={6} />
+                                        <TableCell colSpan={6}/>
                                     </TableRow>
                                 )}
                             </TableBody>
                         </Table>
-                        <MessageDialog open={open} selectedMessage={selectedMessage} onActionPerformed={handleActionPerformed} readOnly={readOnly} />
+                        <MessageDialog open={open} selectedMessage={selectedMessage}
+                                       onActionPerformed={handleActionPerformed} readOnly={readOnly}/>
                     </TableContainer>
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}

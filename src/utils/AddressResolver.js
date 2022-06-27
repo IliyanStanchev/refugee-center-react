@@ -1,4 +1,4 @@
-import { Country, State, City } from 'country-state-city';
+import {Country, State} from 'country-state-city';
 
 class AddressResolver {
 
@@ -21,8 +21,9 @@ class AddressResolver {
 
     getFacilityLocation(facility) {
         let facilityState = State.getStateByCodeAndCountry(facility.address.stateIsoCode, facility.address.countryIsoCode);
-        return { lat: parseFloat(facilityState.latitude), lng: parseFloat(facilityState.longitude) };
+        return {lat: parseFloat(facilityState.latitude), lng: parseFloat(facilityState.longitude)};
 
     }
 }
+
 export default new AddressResolver;

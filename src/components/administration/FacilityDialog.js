@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-import { Box, Link } from "@mui/material";
-import { Dialog, DialogActions, Button } from "@mui/material";
+import {Box, Button, Dialog, DialogActions, ToggleButton, ToggleButtonGroup} from "@mui/material";
 import Divider from '@mui/material/Divider';
-import { ToggleButtonGroup, ToggleButton } from "@mui/material";
 
 import DonationAbsorptionsTable from './DonationAbsorptionsTable';
 import Grid from '@mui/material/Grid';
@@ -13,14 +11,14 @@ import FacilityRefugeesTable from './FacilityRefugeesTable';
 
 const FacilityDialog = (props) => {
 
-    let { facility, open, onClose, viewMode } = props;
+    let {facility, open, onClose, viewMode} = props;
 
     const [refugeesMode, setRefugeesMode] = useState(true);
     const [reload, setReload] = useState(false);
 
     return (
         <Dialog fullWidth
-            maxWidth="md" open={open} onClose={() => onClose()}>
+                maxWidth="md" open={open} onClose={() => onClose()}>
             <Box sx={{
                 flexDirection: 'column',
                 textAlign: 'center',
@@ -30,7 +28,7 @@ const FacilityDialog = (props) => {
                     <Grid container spacing={3}>
                         <Grid item xs={6}>
                             <TextField
-                                sx={{ mr: 13 }}
+                                sx={{mr: 13}}
                                 fullWidth
                                 margin="dense"
                                 id="name"
@@ -79,13 +77,13 @@ const FacilityDialog = (props) => {
                         type="text"
                         variant="outlined"
                     />
-                    <Divider sx={{ mt: 2, mb: 2 }} />
+                    <Divider sx={{mt: 2, mb: 2}}/>
 
                     {facility && facility.facilityType === 'Shelter' ? (
                         <Grid container spacing={3}>
                             <Grid item xs={6}>
                                 <TextField
-                                    sx={{ mr: 13 }}
+                                    sx={{mr: 13}}
                                     fullWidth
                                     margin="dense"
                                     id="name"
@@ -111,30 +109,34 @@ const FacilityDialog = (props) => {
                             </Grid>
                         </Grid>) : (<TextField
 
-                            fullWidth
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            value={facility && facility.responsibleUser.email}
+                        fullWidth
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        value={facility && facility.responsibleUser.email}
 
-                            label="Responsible person"
-                            type="text"
-                            variant="outlined"
-                        />)}
-                    <Divider sx={{ mt: 2, mb: 2 }} />
+                        label="Responsible person"
+                        type="text"
+                        variant="outlined"
+                    />)}
+                    <Divider sx={{mt: 2, mb: 2}}/>
                     {!viewMode && facility && facility.facilityType === 'Shelter' ?
                         <div>
                             <ToggleButtonGroup value={refugeesMode} color="primary">
-                                <ToggleButton value={true} onClick={() => setRefugeesMode(true)} >   Shelter refugees </ToggleButton>
-                                <ToggleButton value={false} onClick={() => setRefugeesMode(false)}>  Donation Absorptions </ToggleButton>
+                                <ToggleButton value={true} onClick={() => setRefugeesMode(true)}> Shelter
+                                    refugees </ToggleButton>
+                                <ToggleButton value={false} onClick={() => setRefugeesMode(false)}> Donation
+                                    Absorptions </ToggleButton>
                             </ToggleButtonGroup>
-                            {refugeesMode ? <FacilityRefugeesTable shelterId={facility == null ? 0 : facility.id} /> : <DonationAbsorptionsTable shelterId={facility == null ? 0 : facility.id} />} </div> : null}
+                            {refugeesMode ? <FacilityRefugeesTable shelterId={facility == null ? 0 : facility.id}/> :
+                                <DonationAbsorptionsTable shelterId={facility == null ? 0 : facility.id}/>}
+                        </div> : null}
                 </DialogContent>
                 <DialogActions>
                     <Button variant="contained" onClick={() => onClose()}> OK </Button>
                 </DialogActions>
-            </Box >
-        </Dialog >
+            </Box>
+        </Dialog>
     );
 
 }

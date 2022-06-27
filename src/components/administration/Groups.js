@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
-import { ReactSession } from 'react-client-session';
+import React, {useEffect} from "react";
 import PropTypes from 'prop-types';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Box from '@mui/material/Box';
@@ -15,17 +13,16 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { visuallyHidden } from '@mui/utils';
-import { Button, Grid, LinearProgress, Link } from "@mui/material";
+import {visuallyHidden} from '@mui/utils';
+import {Button, Link} from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
-import { green } from '@mui/material/colors';
+import {green} from '@mui/material/colors';
 import GroupService from "../../services/GroupService";
 import UserInfo from './UserInfo';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import GroupDialog from './GroupDialog';
-import { ThemeProvider } from "@material-ui/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import MyTheme from './../../controls/MyTheme';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -90,10 +87,10 @@ const headCells = [
     }
 ];
 
-const options = { year: 'numeric', month: 'long', day: 'numeric' };
+const options = {year: 'numeric', month: 'long', day: 'numeric'};
 
 function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } =
+    const {order, orderBy, onRequestSort} =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -137,17 +134,17 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-    const { onActionPerformed, errorMessage, loading } = props;
+    const {onActionPerformed, errorMessage, loading} = props;
 
     return (
         <Toolbar
             sx={{
-                pl: { sm: 2 },
-                pr: { xs: 1, sm: 1 },
+                pl: {sm: 2},
+                pr: {xs: 1, sm: 1},
             }}
         >
             <Typography
-                sx={{ flex: '1 1 100%' }}
+                sx={{flex: '1 1 100%'}}
                 variant="h6"
                 id="tableTitle"
                 component="div"
@@ -166,11 +163,11 @@ const EnhancedTableToolbar = (props) => {
                     }}
                 />
             )}
-            {<p style={{ color: "red" }} >{errorMessage}</p>}
+            {<p style={{color: "red"}}>{errorMessage}</p>}
             <Tooltip title="Add new group">
-                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary" /></IconButton>
+                <IconButton onClick={onActionPerformed}> <AddBoxIcon color="primary"/></IconButton>
             </Tooltip>
-        </Toolbar >
+        </Toolbar>
     );
 };
 
@@ -282,13 +279,14 @@ const Groups = () => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
-                <Box sx={{ width: '80%' }}>
-                    <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
-                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage} loading={loading} />
+            <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
+                <Box sx={{width: '80%'}}>
+                    <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
+                        <EnhancedTableToolbar onActionPerformed={handleActionPerformed} errorMessage={errorMessage}
+                                              loading={loading}/>
                         <TableContainer>
                             <Table
-                                sx={{ minWidth: 750 }}
+                                sx={{minWidth: 750}}
                                 aria-labelledby="tableTitle"
                                 size={'medium'}
                             >
@@ -312,25 +310,27 @@ const Groups = () => {
                                                     key={row.id}
                                                 >
                                                     <TableCell>
-                                                        <Link component="button" onClick={() => { handleOpenUserDialog(row.responsibleUser) }} underline="hover">
+                                                        <Link component="button" onClick={() => {
+                                                            handleOpenUserDialog(row.responsibleUser)
+                                                        }} underline="hover">
                                                             {row.responsibleUser.name}
 
                                                         </Link>
                                                     </TableCell>
-                                                    <TableCell >{row.email}</TableCell>
-                                                    <TableCell >{row.groupType}</TableCell>
-                                                    <TableCell >{new Date(row.creationDate).toLocaleDateString("en-US", options)}</TableCell>
-                                                    <TableCell >
+                                                    <TableCell>{row.email}</TableCell>
+                                                    <TableCell>{row.groupType}</TableCell>
+                                                    <TableCell>{new Date(row.creationDate).toLocaleDateString("en-US", options)}</TableCell>
+                                                    <TableCell>
                                                         <Tooltip title="Edit group">
                                                             <Button onClick={() => {
                                                                 setSelectedGroup(row);
                                                                 setOpenGroupDialog(true);
-                                                            }}> <EditIcon /> </Button>
+                                                            }}> <EditIcon/> </Button>
                                                         </Tooltip>
                                                         <Tooltip title="Remove group">
                                                             <Button onClick={() => {
                                                                 handleDeleteGroup(row);
-                                                            }}> <DeleteIcon /> </Button>
+                                                            }}> <DeleteIcon/> </Button>
                                                         </Tooltip></TableCell>
                                                 </TableRow>
                                             );
@@ -341,7 +341,7 @@ const Groups = () => {
                                                 height: (53) * emptyRows,
                                             }}
                                         >
-                                            <TableCell colSpan={6} />
+                                            <TableCell colSpan={6}/>
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -356,11 +356,12 @@ const Groups = () => {
                             onPageChange={handleChangePage}
                             onRowsPerPageChange={handleChangeRowsPerPage}
                         />
-                        <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed} />
-                        <GroupDialog selectedGroup={selectedGroup} open={openGroupDialog} onActionPerformed={handleGroupActionPerformed} readOnly={false} />
+                        <UserInfo user={selectedUser} open={openUserDialog} onClose={handleUserActionPerformed}/>
+                        <GroupDialog selectedGroup={selectedGroup} open={openGroupDialog}
+                                     onActionPerformed={handleGroupActionPerformed} readOnly={false}/>
                     </Paper>
                 </Box>
-            </div >
+            </div>
         </ThemeProvider>
     );
 }

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Dialog, DialogActions, Button, DialogContentText, TextField } from "@mui/material";
+import {Button, Dialog, DialogContentText} from "@mui/material";
 import NoEncryptionGmailerrorredIcon from '@mui/icons-material/NoEncryptionGmailerrorred';
-import { ThemeProvider } from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 import MyTheme from './../../controls/MyTheme';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const UnauthorizedPage = () => {
 
@@ -13,11 +13,11 @@ const UnauthorizedPage = () => {
 
     return (
         <ThemeProvider theme={MyTheme}>
-            <Dialog open={true} >
-                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 22 }}>
-                    <NoEncryptionGmailerrorredIcon color='primary' style={{ fontSize: '100px' }} />
+            <Dialog open={true}>
+                <div style={{display: 'flex', justifyContent: 'center', marginTop: 22}}>
+                    <NoEncryptionGmailerrorredIcon color='primary' style={{fontSize: '100px'}}/>
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', textAlign: 'center' }}>
+                <div style={{display: 'flex', justifyContent: 'center', flexDirection: 'column', textAlign: 'center'}}>
 
                     <DialogTitle> Unauthorized access </DialogTitle>
                 </div>
@@ -27,8 +27,10 @@ const UnauthorizedPage = () => {
                         <br></br> We suggest logging in again.
                     </DialogContentText>
                 </DialogContent>
-                <Button variant="contained" onClick={() => { navigate("/") }}> Go back </Button>
-            </Dialog >
+                <Button variant="contained" onClick={() => {
+                    navigate("/")
+                }}> Go back </Button>
+            </Dialog>
         </ThemeProvider>
     );
 

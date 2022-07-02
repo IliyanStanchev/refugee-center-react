@@ -11,6 +11,10 @@ class VerificationCodeService {
     verifyVerificationCode(verificationCode) {
         return axios.post(`${API_URL}/verify-verification-code`, verificationCode);
     }
+
+    resetPasswordVerificationCode(verificationCode) {
+        return axios.post(`${API_URL}/reset-password-verification`, verificationCode);
+    }
 }
 
 export default new VerificationCodeService()

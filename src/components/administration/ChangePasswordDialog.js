@@ -1,22 +1,24 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import {Box, Button, Dialog, DialogActions, IconButton} from "@mui/material";
-import {ReactSession} from 'react-client-session';
+import { Box, Button, Dialog, DialogActions, IconButton } from "@mui/material";
+import { ReactSession } from 'react-client-session';
 import PasswordStrengthBar from "react-password-strength-bar";
 import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
-import {Visibility, VisibilityOff} from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormControl from '@mui/material/FormControl';
 import UserService from "../../services/UserService";
 import LockIcon from '@mui/icons-material/Lock';
+import { useNavigate } from "react-router-dom";
 
 const ChangePasswordDialog = (props) => {
 
     const id = ReactSession.get('id');
+    const navigate = useNavigate();
 
-    const {open, onClose} = props;
+    const { open, resetPasswordMode, onClose } = props;
 
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -29,7 +31,14 @@ const ChangePasswordDialog = (props) => {
     const [error, setError] = useState('');
     const [message, setMessage] = useState('');
 
+    const [passwordChanged, setPasswordChanged] = useState(false);
+
     const onChangePassword = () => {
+
+        if (passwordChanged) {
+            navigate("/");
+            return;
+        }
 
         setError('');
         setMessage('');
@@ -51,6 +60,7 @@ const ChangePasswordDialog = (props) => {
 
         let accountData = {
             id: id,
+            resetPasswordMode: resetPasswordMode,
             oldPassword: oldPassword,
             newPassword: newPassword
         };
@@ -66,10 +76,15 @@ const ChangePasswordDialog = (props) => {
         setNewPassword('');
         setConfirmPassword('');
         setMessage("Password changed successfully");
+
+        if (resetPasswordMode) {
+            setPasswordChanged(true);
+        }
     }
 
     return (
-        <Dialog open={open} onClose={() => onClose()}>
+        <Dialog fullWidth
+            maxWidth="xs" open={open} onClose={() => onClose()}>
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -77,14 +92,14 @@ const ChangePasswordDialog = (props) => {
                 width: 'fit-content',
                 textAlign: 'center',
             }}>
-                <div style={{display: 'flex', justifyContent: 'center', marginTop: 10}}>
-                    <LockIcon color='primary' sx={{fontSize: 50}}/>
+                <div style={{ display: 'flex', justifyContent: 'center', marginTop: 10 }}>
+                    <LockIcon color='primary' sx={{ fontSize: 50 }} />
                 </div>
-                <DialogTitle> Change password </DialogTitle>
-                <p style={{color: 'red'}}> {error} </p>
-                <p style={{color: 'green'}}> {message} </p>
+                <DialogTitle> {resetPasswordMode ? 'Set your password' : 'Change password'} </DialogTitle>
+                <p style={{ color: 'red' }}> {error} </p>
+                <p style={{ color: 'green' }}> {message} </p>
                 <DialogContent>
-                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
+                    {!resetPasswordMode && <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
                         <InputLabel htmlFor="outlined-adornment-oldPassword">Old password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-oldPassword"
@@ -98,14 +113,14 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowOldPassword(!showOldPassword)}
                                         edge="end"
                                     >
-                                        {showOldPassword ? <VisibilityOff/> : <Visibility/>}
+                                        {showOldPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                             }
                             label="Old password"
                         />
-                    </FormControl>
-                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
+                    </FormControl>}
+                    {!passwordChanged && <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
                         <InputLabel htmlFor="outlined-adornment-newPassword">New password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-newPassword"
@@ -119,26 +134,27 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowNewPassword(!showNewPassword)}
                                         edge="end"
                                     >
-                                        {showNewPassword ? <VisibilityOff/> : <Visibility/>}
+                                        {showNewPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                             }
                             label="New password"
                         />
-                    </FormControl>
-                    <PasswordStrengthBar
-                        minLength={8}
-                        password={newPassword}
-                        barColors={[
-                            "#B83E26",
-                            "#FFB829",
-                            "#009200",
-                            "#009200",
-                            "#009200",
-                            "#009200"
-                        ]}
-                    />
-                    <FormControl variant="outlined" fullWidth sx={{mt: 2, mb: 2}}>
+                    </FormControl>}
+                    {!passwordChanged &&
+                        < PasswordStrengthBar
+                            minLength={8}
+                            password={newPassword}
+                            barColors={[
+                                "#B83E26",
+                                "#FFB829",
+                                "#009200",
+                                "#009200",
+                                "#009200",
+                                "#009200"
+                            ]}
+                        />}
+                    {!passwordChanged && <FormControl variant="outlined" fullWidth sx={{ mt: 2, mb: 2 }}>
                         <InputLabel htmlFor="outlined-adornment-password">Confirm password</InputLabel>
                         <OutlinedInput
                             id="outlined-adornment-password"
@@ -152,17 +168,17 @@ const ChangePasswordDialog = (props) => {
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                                         edge="end"
                                     >
-                                        {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                                     </IconButton>
                                 </InputAdornment>
                             }
                             label="Confirm password"
                         />
-                    </FormControl>
+                    </FormControl>}
                 </DialogContent>
                 <DialogActions>
-                    <Button variant="contained" onClick={onChangePassword}>Change password</Button>
-                    <Button variant="contained" onClick={() => onClose()}>Cancel</Button>
+                    <Button variant="contained" onClick={onChangePassword}> {passwordChanged ? 'Go to Home page' : 'Change password'}</Button>
+                    {!resetPasswordMode && <Button variant="contained" onClick={() => onClose()}>Cancel</Button>}
                 </DialogActions>
             </Box>
         </Dialog>

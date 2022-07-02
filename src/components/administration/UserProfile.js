@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import TextField from '@mui/material/TextField';
-import {Box, Divider} from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import UserService from "../../services/UserService";
-import {ReactSession} from 'react-client-session';
-import {ThemeProvider} from "styled-components";
+import { ReactSession } from 'react-client-session';
+import { ThemeProvider } from "styled-components";
 import MyTheme from './../../controls/MyTheme';
 import Paper from '@mui/material/Paper';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import Button from '@mui/material/Button';
 import ChangePasswordDialog from "./ChangePasswordDialog";
 
-const options = {year: 'numeric', month: 'long', day: 'numeric'};
+const options = { year: 'numeric', month: 'long', day: 'numeric' };
 
 const UserProfile = () => {
 
@@ -41,17 +41,17 @@ const UserProfile = () => {
     return (
 
         <ThemeProvider theme={MyTheme}>
-            <div style={{display: 'flex', justifyContent: 'center'}}>
-                <Box sx={{width: '50%'}}>
-                    <Paper variant='outlined' sx={{width: '100%', mb: 2, borderRadius: '16px'}}>
-                        <div style={{display: 'flex', justifyContent: 'center', marginTop: 40}}>
-                            <Box sx={{width: '60%'}}>
-                                <div style={{display: 'flex', justifyContent: 'center'}}>
-                                    <AdminPanelSettingsIcon sx={{fontSize: 50}} color='primary'/>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <Box sx={{ width: '50%' }}>
+                    <Paper variant='outlined' sx={{ width: '100%', mb: 2, borderRadius: '16px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 40 }}>
+                            <Box sx={{ width: '60%' }}>
+                                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                    <AdminPanelSettingsIcon sx={{ fontSize: 50 }} color='primary' />
                                 </div>
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -63,8 +63,8 @@ const UserProfile = () => {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -76,8 +76,8 @@ const UserProfile = () => {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -89,8 +89,8 @@ const UserProfile = () => {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -101,10 +101,10 @@ const UserProfile = () => {
                                     type="text"
                                     variant="outlined"
                                 />
-                                <Divider sx={{mt: 2, mb: 2}}/>
+                                <Divider sx={{ mt: 2, mb: 2 }} />
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -116,8 +116,8 @@ const UserProfile = () => {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    InputLabelProps={{shrink: true}}
-                                    sx={{mt: 2, mb: 2}}
+                                    InputLabelProps={{ shrink: true }}
+                                    sx={{ mt: 2, mb: 2 }}
                                     fullWidth
                                     autoFocus
                                     margin="dense"
@@ -128,14 +128,14 @@ const UserProfile = () => {
                                     type="text"
                                     variant="outlined"
                                 />
-                                <Button sx={{mt: 2, mb: 2}} fullWidth variant="contained" color="primary"
-                                        onClick={() => {
-                                            setOpenChangePassword(true)
-                                        }}> Change password </Button>
-                                <ChangePasswordDialog open={openChangePassword} onClose={() => {
+                                <Button sx={{ mt: 2, mb: 2 }} fullWidth variant="contained" color="primary"
+                                    onClick={() => {
+                                        setOpenChangePassword(true)
+                                    }}> Change password </Button>
+                                <ChangePasswordDialog open={openChangePassword} resetPasswordMode={false} onClose={() => {
                                     getUser();
                                     setOpenChangePassword(false)
-                                }}/>
+                                }} />
                             </Box>
                         </div>
                     </Paper>
